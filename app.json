@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.topsteppa.imbbank"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +38,13 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "owner": "topsteppa",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9ffe18f7-79b1-446e-b142-30fbf658f357"
+      }
     }
   }
 }
