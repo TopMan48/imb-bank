@@ -37,7 +37,8 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "baseUrl": "/77271ef9-6968-4a1f-a12a-b2f304b89894/3fbcbc4debf02d45/"
     },
     "owner": "topsteppa",
     "extra": {
