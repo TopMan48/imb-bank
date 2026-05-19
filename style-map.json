@@ -1,7 +1,1953 @@
 {
   "version": 1,
-  "generatedAt": 1778319912380,
+  "generatedAt": 1778728090934,
   "entries": {
+    "PasscodeLoginScreen@app/(auth)/passcode-login.tsx:31": {
+      "element": {
+        "file": "app/(auth)/passcode-login.tsx",
+        "line": 31
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/(auth)/passcode-login.tsx",
+          "defLine": 43,
+          "properties": {
+            "flex": {
+              "line": 44,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodeSetupScreen@app/(auth)/passcode-setup.tsx:36": {
+      "element": {
+        "file": "app/(auth)/passcode-setup.tsx",
+        "line": 36
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/(auth)/passcode-setup.tsx",
+          "defLine": 56,
+          "properties": {
+            "flex": {
+              "line": 57,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "RootLayout@app/_layout.tsx:26": {
+      "element": {
+        "file": "app/_layout.tsx",
+        "line": 26
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/_layout.tsx",
+          "properties": {
+            "flex": {
+              "line": 26,
+              "col": 43,
+              "endCol": 44,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "HomeScreen@app/(main)/index.tsx:24": {
+      "element": {
+        "file": "app/(main)/index.tsx",
+        "line": 24
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/(main)/index.tsx",
+          "defLine": 61,
+          "properties": {
+            "flex": {
+              "line": 62,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "HomeScreen@app/(main)/index.tsx:26": {
+      "element": {
+        "file": "app/(main)/index.tsx",
+        "line": 26
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.scroll",
+          "file": "app/(main)/index.tsx",
+          "defLine": 65,
+          "properties": {
+            "flex": {
+              "line": 66,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "HomeScreen@app/(main)/index.tsx:41": {
+      "element": {
+        "file": "app/(main)/index.tsx",
+        "line": 41
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.promoSection",
+          "file": "app/(main)/index.tsx",
+          "defLine": 71,
+          "properties": {
+            "paddingVertical": {
+              "line": 72,
+              "col": 21,
+              "endCol": 23,
+              "raw": "24"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:70": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 70
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 127,
+          "properties": {
+            "flex": {
+              "line": 128,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "alignItems": {
+              "line": 129,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 130,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "paddingHorizontal": {
+              "line": 131,
+              "col": 23,
+              "endCol": 25,
+              "raw": "40"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:71": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 71
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.header",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 133,
+          "properties": {
+            "alignItems": {
+              "line": 134,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "marginBottom": {
+              "line": 135,
+              "col": 18,
+              "endCol": 20,
+              "raw": "40"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:72": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 72
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.title",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 137,
+          "properties": {
+            "fontSize": {
+              "line": 138,
+              "col": 14,
+              "endCol": 16,
+              "raw": "24"
+            },
+            "textAlign": {
+              "line": 141,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:73": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 73
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.subtitle",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 143,
+          "properties": {
+            "fontSize": {
+              "line": 144,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "marginTop": {
+              "line": 147,
+              "col": 15,
+              "endCol": 16,
+              "raw": "8"
+            },
+            "textAlign": {
+              "line": 148,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:76": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 76
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.dotsContainer",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 150,
+          "properties": {
+            "flexDirection": {
+              "line": 151,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "gap": {
+              "line": 152,
+              "col": 9,
+              "endCol": 11,
+              "raw": "16"
+            },
+            "marginBottom": {
+              "line": 153,
+              "col": 18,
+              "endCol": 20,
+              "raw": "20"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:78": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 78
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.dot",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 155,
+          "properties": {
+            "width": {
+              "line": 156,
+              "col": 11,
+              "endCol": 13,
+              "raw": "16"
+            },
+            "height": {
+              "line": 157,
+              "col": 12,
+              "endCol": 14,
+              "raw": "16"
+            },
+            "borderRadius": {
+              "line": 158,
+              "col": 18,
+              "endCol": 19,
+              "raw": "8"
+            },
+            "borderWidth": {
+              "line": 159,
+              "col": 17,
+              "endCol": 18,
+              "raw": "2"
+            },
+            "backgroundColor": {
+              "line": 161,
+              "col": 21,
+              "endCol": 34,
+              "raw": "'transparent'"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:85": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 85
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.error",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 166,
+          "properties": {
+            "fontSize": {
+              "line": 167,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            },
+            "marginBottom": {
+              "line": 170,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            },
+            "textAlign": {
+              "line": 171,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:87": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 87
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.pad",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 173,
+          "properties": {
+            "flexDirection": {
+              "line": 174,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "flexWrap": {
+              "line": 175,
+              "col": 14,
+              "endCol": 20,
+              "raw": "'wrap'"
+            },
+            "width": {
+              "line": 176,
+              "col": 11,
+              "endCol": 14,
+              "raw": "260"
+            },
+            "marginTop": {
+              "line": 177,
+              "col": 15,
+              "endCol": 17,
+              "raw": "20"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:90": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 90
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.key",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 179,
+          "properties": {
+            "height": {
+              "line": 181,
+              "col": 12,
+              "endCol": 14,
+              "raw": "68"
+            },
+            "alignItems": {
+              "line": 182,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 183,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "borderRadius": {
+              "line": 184,
+              "col": 18,
+              "endCol": 20,
+              "raw": "34"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:94": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 94
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:103": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 103
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.keyTextSmall",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 194,
+          "properties": {
+            "fontSize": {
+              "line": 195,
+              "col": 14,
+              "endCol": 16,
+              "raw": "22"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:108": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 108
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:117": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 117
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.keyText",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 189,
+          "properties": {
+            "fontSize": {
+              "line": 190,
+              "col": 14,
+              "endCol": 16,
+              "raw": "28"
+            }
+          }
+        }
+      ]
+    },
+    "ServiceBanner@components/service-banner.tsx:21": {
+      "element": {
+        "file": "components/service-banner.tsx",
+        "line": 21
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/service-banner.tsx",
+          "defLine": 49,
+          "properties": {
+            "flexDirection": {
+              "line": 50,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "paddingVertical": {
+              "line": 52,
+              "col": 21,
+              "endCol": 23,
+              "raw": "14"
+            },
+            "paddingHorizontal": {
+              "line": 53,
+              "col": 23,
+              "endCol": 25,
+              "raw": "16"
+            },
+            "gap": {
+              "line": 54,
+              "col": 9,
+              "endCol": 11,
+              "raw": "10"
+            },
+            "alignItems": {
+              "line": 55,
+              "col": 16,
+              "endCol": 28,
+              "raw": "'flex-start'"
+            }
+          }
+        }
+      ]
+    },
+    "ServiceBanner@components/service-banner.tsx:22": {
+      "element": {
+        "file": "components/service-banner.tsx",
+        "line": 22
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.iconWrap",
+          "file": "components/service-banner.tsx",
+          "defLine": 57,
+          "properties": {
+            "paddingTop": {
+              "line": 58,
+              "col": 16,
+              "endCol": 17,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "ServiceBanner@components/service-banner.tsx:25": {
+      "element": {
+        "file": "components/service-banner.tsx",
+        "line": 25
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.content",
+          "file": "components/service-banner.tsx",
+          "defLine": 60,
+          "properties": {
+            "flex": {
+              "line": 61,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "flexDirection": {
+              "line": 62,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "flexWrap": {
+              "line": 63,
+              "col": 14,
+              "endCol": 20,
+              "raw": "'wrap'"
+            }
+          }
+        }
+      ]
+    },
+    "ServiceBanner@components/service-banner.tsx:26": {
+      "element": {
+        "file": "components/service-banner.tsx",
+        "line": 26
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.label",
+          "file": "components/service-banner.tsx",
+          "defLine": 65,
+          "properties": {
+            "fontSize": {
+              "line": 66,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            }
+          }
+        }
+      ]
+    },
+    "ServiceBanner@components/service-banner.tsx:27": {
+      "element": {
+        "file": "components/service-banner.tsx",
+        "line": 27
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.message",
+          "file": "components/service-banner.tsx",
+          "defLine": 70,
+          "properties": {
+            "fontSize": {
+              "line": 71,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            },
+            "lineHeight": {
+              "line": 74,
+              "col": 16,
+              "endCol": 18,
+              "raw": "19"
+            }
+          }
+        }
+      ]
+    },
+    "ServiceBanner@components/service-banner.tsx:30": {
+      "element": {
+        "file": "components/service-banner.tsx",
+        "line": 30
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.link",
+          "file": "components/service-banner.tsx",
+          "defLine": 76,
+          "properties": {
+            "fontSize": {
+              "line": 77,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            },
+            "textDecorationLine": {
+              "line": 80,
+              "col": 24,
+              "endCol": 35,
+              "raw": "'underline'"
+            }
+          }
+        }
+      ]
+    },
+    "ServiceBanner@components/service-banner.tsx:37": {
+      "element": {
+        "file": "components/service-banner.tsx",
+        "line": 37
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.closeButton",
+          "file": "components/service-banner.tsx",
+          "defLine": 82,
+          "properties": {
+            "width": {
+              "line": 83,
+              "col": 11,
+              "endCol": 13,
+              "raw": "32"
+            },
+            "height": {
+              "line": 84,
+              "col": 12,
+              "endCol": 14,
+              "raw": "32"
+            },
+            "alignItems": {
+              "line": 85,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 86,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "FooterNav@components/footer-nav.tsx:19": {
+      "element": {
+        "file": "components/footer-nav.tsx",
+        "line": 19
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/footer-nav.tsx",
+          "defLine": 37,
+          "properties": {
+            "borderTopWidth": {
+              "line": 38,
+              "col": 20,
+              "endCol": 21,
+              "raw": "1"
+            },
+            "paddingVertical": {
+              "line": 41,
+              "col": 21,
+              "endCol": 23,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "FooterNav@components/footer-nav.tsx:20": {
+      "element": {
+        "file": "components/footer-nav.tsx",
+        "line": 20
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "components/footer-nav.tsx",
+          "properties": {
+            "flexGrow": {
+              "line": 23,
+              "col": 27,
+              "endCol": 28,
+              "raw": "0"
+            }
+          }
+        }
+      ]
+    },
+    "FooterNav@components/footer-nav.tsx:27": {
+      "element": {
+        "file": "components/footer-nav.tsx",
+        "line": 27
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.navItem",
+          "file": "components/footer-nav.tsx",
+          "defLine": 47,
+          "properties": {
+            "minHeight": {
+              "line": 48,
+              "col": 15,
+              "endCol": 17,
+              "raw": "44"
+            },
+            "justifyContent": {
+              "line": 49,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "FooterNav@components/footer-nav.tsx:28": {
+      "element": {
+        "file": "components/footer-nav.tsx",
+        "line": 28
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.navText",
+          "file": "components/footer-nav.tsx",
+          "defLine": 51,
+          "properties": {
+            "fontSize": {
+              "line": 52,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:16": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 16
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/contact-section.tsx",
+          "defLine": 50,
+          "properties": {
+            "paddingHorizontal": {
+              "line": 51,
+              "col": 23,
+              "endCol": 25,
+              "raw": "16"
+            },
+            "paddingVertical": {
+              "line": 52,
+              "col": 21,
+              "endCol": 23,
+              "raw": "24"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:17": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 17
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.card",
+          "file": "components/contact-section.tsx",
+          "defLine": 54,
+          "properties": {
+            "borderRadius": {
+              "line": 56,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            },
+            "padding": {
+              "line": 57,
+              "col": 13,
+              "endCol": 15,
+              "raw": "28"
+            },
+            "borderCurve": {
+              "line": 58,
+              "col": 17,
+              "endCol": 29,
+              "raw": "'continuous'"
+            },
+            "marginBottom": {
+              "line": 59,
+              "col": 18,
+              "endCol": 20,
+              "raw": "24"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:18": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 18
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.heading",
+          "file": "components/contact-section.tsx",
+          "defLine": 61,
+          "properties": {
+            "fontSize": {
+              "line": 62,
+              "col": 14,
+              "endCol": 16,
+              "raw": "26"
+            },
+            "lineHeight": {
+              "line": 65,
+              "col": 16,
+              "endCol": 18,
+              "raw": "34"
+            },
+            "marginBottom": {
+              "line": 66,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:19": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 19
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.description",
+          "file": "components/contact-section.tsx",
+          "defLine": 68,
+          "properties": {
+            "fontSize": {
+              "line": 69,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "color": {
+              "line": 71,
+              "col": 11,
+              "endCol": 35,
+              "raw": "'rgba(255,255,255,0.85)'"
+            },
+            "lineHeight": {
+              "line": 72,
+              "col": 16,
+              "endCol": 18,
+              "raw": "21"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:25": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 25
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.helpfulLinks",
+          "file": "components/contact-section.tsx",
+          "defLine": 74,
+          "properties": {
+            "borderRadius": {
+              "line": 76,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            },
+            "padding": {
+              "line": 77,
+              "col": 13,
+              "endCol": 15,
+              "raw": "20"
+            },
+            "borderCurve": {
+              "line": 78,
+              "col": 17,
+              "endCol": 29,
+              "raw": "'continuous'"
+            },
+            "boxShadow": {
+              "line": 79,
+              "col": 15,
+              "endCol": 44,
+              "raw": "'0 2px 10px rgba(0,0,0,0.06)'"
+            },
+            "marginBottom": {
+              "line": 80,
+              "col": 18,
+              "endCol": 20,
+              "raw": "32"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:26": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 26
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.helpfulTitle",
+          "file": "components/contact-section.tsx",
+          "defLine": 82,
+          "properties": {
+            "fontSize": {
+              "line": 83,
+              "col": 14,
+              "endCol": 16,
+              "raw": "12"
+            },
+            "letterSpacing": {
+              "line": 86,
+              "col": 19,
+              "endCol": 22,
+              "raw": "0.5"
+            },
+            "marginBottom": {
+              "line": 87,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:28": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 28
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.linkRow",
+          "file": "components/contact-section.tsx",
+          "defLine": 89,
+          "properties": {
+            "flexDirection": {
+              "line": 90,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 91,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 92,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            },
+            "paddingVertical": {
+              "line": 93,
+              "col": 21,
+              "endCol": 23,
+              "raw": "12"
+            },
+            "borderBottomWidth": {
+              "line": 94,
+              "col": 23,
+              "endCol": 24,
+              "raw": "1"
+            },
+            "minHeight": {
+              "line": 96,
+              "col": 15,
+              "endCol": 17,
+              "raw": "44"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:29": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 29
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.linkText",
+          "file": "components/contact-section.tsx",
+          "defLine": 98,
+          "properties": {
+            "fontSize": {
+              "line": 99,
+              "col": 14,
+              "endCol": 16,
+              "raw": "15"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:35": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 35
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.callSection",
+          "file": "components/contact-section.tsx",
+          "defLine": 103,
+          "properties": {
+            "paddingVertical": {
+              "line": 104,
+              "col": 21,
+              "endCol": 23,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:36": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 36
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.callTitle",
+          "file": "components/contact-section.tsx",
+          "defLine": 106,
+          "properties": {
+            "fontSize": {
+              "line": 107,
+              "col": 14,
+              "endCol": 16,
+              "raw": "22"
+            },
+            "marginBottom": {
+              "line": 110,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:37": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 37
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.phoneRow",
+          "file": "components/contact-section.tsx",
+          "defLine": 112,
+          "properties": {
+            "flexDirection": {
+              "line": 113,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 114,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 115,
+              "col": 9,
+              "endCol": 10,
+              "raw": "8"
+            },
+            "marginBottom": {
+              "line": 116,
+              "col": 18,
+              "endCol": 19,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:39": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 39
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.phoneText",
+          "file": "components/contact-section.tsx",
+          "defLine": 118,
+          "properties": {
+            "fontSize": {
+              "line": 119,
+              "col": 14,
+              "endCol": 16,
+              "raw": "18"
+            }
+          }
+        }
+      ]
+    },
+    "ContactSection@components/contact-section.tsx:41": {
+      "element": {
+        "file": "components/contact-section.tsx",
+        "line": 41
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.callHours",
+          "file": "components/contact-section.tsx",
+          "defLine": 123,
+          "properties": {
+            "fontSize": {
+              "line": 124,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:17": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 17
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/about-section.tsx",
+          "defLine": 40,
+          "properties": {
+            "paddingHorizontal": {
+              "line": 41,
+              "col": 23,
+              "endCol": 25,
+              "raw": "16"
+            },
+            "paddingVertical": {
+              "line": 42,
+              "col": 21,
+              "endCol": 23,
+              "raw": "24"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:18": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 18
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.card",
+          "file": "components/about-section.tsx",
+          "defLine": 44,
+          "properties": {
+            "borderRadius": {
+              "line": 46,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            },
+            "padding": {
+              "line": 47,
+              "col": 13,
+              "endCol": 15,
+              "raw": "28"
+            },
+            "borderCurve": {
+              "line": 48,
+              "col": 17,
+              "endCol": 29,
+              "raw": "'continuous'"
+            },
+            "marginBottom": {
+              "line": 49,
+              "col": 18,
+              "endCol": 20,
+              "raw": "32"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:19": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 19
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.heading",
+          "file": "components/about-section.tsx",
+          "defLine": 51,
+          "properties": {
+            "fontSize": {
+              "line": 52,
+              "col": 14,
+              "endCol": 16,
+              "raw": "28"
+            },
+            "lineHeight": {
+              "line": 55,
+              "col": 16,
+              "endCol": 18,
+              "raw": "36"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:20": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 20
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.highlight",
+          "file": "components/about-section.tsx",
+          "defLine": 57,
+          "properties": {
+            "fontSize": {
+              "line": 58,
+              "col": 14,
+              "endCol": 16,
+              "raw": "28"
+            },
+            "marginTop": {
+              "line": 61,
+              "col": 15,
+              "endCol": 16,
+              "raw": "4"
+            },
+            "marginBottom": {
+              "line": 62,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:21": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 21
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.description",
+          "file": "components/about-section.tsx",
+          "defLine": 64,
+          "properties": {
+            "fontSize": {
+              "line": 65,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "color": {
+              "line": 67,
+              "col": 11,
+              "endCol": 35,
+              "raw": "'rgba(255,255,255,0.85)'"
+            },
+            "lineHeight": {
+              "line": 68,
+              "col": 16,
+              "endCol": 18,
+              "raw": "21"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:26": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 26
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.linksSection",
+          "file": "components/about-section.tsx",
+          "defLine": 70,
+          "properties": {
+            "gap": {
+              "line": 71,
+              "col": 9,
+              "endCol": 10,
+              "raw": "0"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:27": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 27
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.linksTitle",
+          "file": "components/about-section.tsx",
+          "defLine": 73,
+          "properties": {
+            "fontSize": {
+              "line": 74,
+              "col": 14,
+              "endCol": 16,
+              "raw": "12"
+            },
+            "letterSpacing": {
+              "line": 77,
+              "col": 19,
+              "endCol": 22,
+              "raw": "0.5"
+            },
+            "marginBottom": {
+              "line": 78,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:29": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 29
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.linkRow",
+          "file": "components/about-section.tsx",
+          "defLine": 80,
+          "properties": {
+            "flexDirection": {
+              "line": 81,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 82,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 83,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            },
+            "paddingVertical": {
+              "line": 84,
+              "col": 21,
+              "endCol": 23,
+              "raw": "14"
+            },
+            "borderBottomWidth": {
+              "line": 85,
+              "col": 23,
+              "endCol": 24,
+              "raw": "1"
+            },
+            "minHeight": {
+              "line": 87,
+              "col": 15,
+              "endCol": 17,
+              "raw": "48"
+            }
+          }
+        }
+      ]
+    },
+    "AboutSection@components/about-section.tsx:30": {
+      "element": {
+        "file": "components/about-section.tsx",
+        "line": 30
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.linkText",
+          "file": "components/about-section.tsx",
+          "defLine": 89,
+          "properties": {
+            "fontSize": {
+              "line": 90,
+              "col": 14,
+              "endCol": 16,
+              "raw": "15"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:18": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 18
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/imb-header.tsx",
+          "defLine": 59,
+          "properties": {
+            "borderBottomWidth": {
+              "line": 61,
+              "col": 23,
+              "endCol": 24,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:19": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 19
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.inner",
+          "file": "components/imb-header.tsx",
+          "defLine": 64,
+          "properties": {
+            "flexDirection": {
+              "line": 65,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 66,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 67,
+              "col": 20,
+              "endCol": 35,
+              "raw": "'space-between'"
+            },
+            "height": {
+              "line": 68,
+              "col": 12,
+              "endCol": 14,
+              "raw": "56"
+            },
+            "paddingHorizontal": {
+              "line": 69,
+              "col": 23,
+              "endCol": 25,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:20": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 20
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.iconButton",
+          "file": "components/imb-header.tsx",
+          "defLine": 71,
+          "properties": {
+            "width": {
+              "line": 72,
+              "col": 11,
+              "endCol": 13,
+              "raw": "44"
+            },
+            "height": {
+              "line": 73,
+              "col": 12,
+              "endCol": 14,
+              "raw": "44"
+            },
+            "alignItems": {
+              "line": 74,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 75,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:28": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 28
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.logoContainer",
+          "file": "components/imb-header.tsx",
+          "defLine": 77,
+          "properties": {
+            "flex": {
+              "line": 78,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "alignItems": {
+              "line": 79,
+              "col": 16,
+              "endCol": 28,
+              "raw": "'flex-start'"
+            },
+            "paddingLeft": {
+              "line": 80,
+              "col": 17,
+              "endCol": 18,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:29": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 29
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.logo",
+          "file": "components/imb-header.tsx",
+          "defLine": 82,
+          "properties": {
+            "flexDirection": {
+              "line": 83,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 84,
+              "col": 16,
+              "endCol": 26,
+              "raw": "'baseline'"
+            },
+            "gap": {
+              "line": 85,
+              "col": 9,
+              "endCol": 10,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:30": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 30
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.logoText",
+          "file": "components/imb-header.tsx",
+          "defLine": 87,
+          "properties": {
+            "fontSize": {
+              "line": 88,
+              "col": 14,
+              "endCol": 16,
+              "raw": "28"
+            },
+            "letterSpacing": {
+              "line": 91,
+              "col": 19,
+              "endCol": 23,
+              "raw": "-0.5"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:31": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 31
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.logoSubtext",
+          "file": "components/imb-header.tsx",
+          "defLine": 93,
+          "properties": {
+            "fontSize": {
+              "line": 94,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "marginLeft": {
+              "line": 97,
+              "col": 16,
+              "endCol": 17,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:35": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 35
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.rightActions",
+          "file": "components/imb-header.tsx",
+          "defLine": 99,
+          "properties": {
+            "flexDirection": {
+              "line": 100,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 101,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 102,
+              "col": 9,
+              "endCol": 10,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:36": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 36
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.iconButton",
+          "file": "components/imb-header.tsx",
+          "defLine": 71,
+          "properties": {
+            "width": {
+              "line": 72,
+              "col": 11,
+              "endCol": 13,
+              "raw": "44"
+            },
+            "height": {
+              "line": 73,
+              "col": 12,
+              "endCol": 14,
+              "raw": "44"
+            },
+            "alignItems": {
+              "line": 74,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 75,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:44": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 44
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.loginButton",
+          "file": "components/imb-header.tsx",
+          "defLine": 104,
+          "properties": {
+            "flexDirection": {
+              "line": 105,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 106,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "paddingHorizontal": {
+              "line": 108,
+              "col": 23,
+              "endCol": 25,
+              "raw": "14"
+            },
+            "paddingVertical": {
+              "line": 109,
+              "col": 21,
+              "endCol": 22,
+              "raw": "8"
+            },
+            "borderRadius": {
+              "line": 110,
+              "col": 18,
+              "endCol": 20,
+              "raw": "20"
+            },
+            "gap": {
+              "line": 111,
+              "col": 9,
+              "endCol": 10,
+              "raw": "6"
+            }
+          }
+        }
+      ]
+    },
+    "IMBHeader@components/imb-header.tsx:50": {
+      "element": {
+        "file": "components/imb-header.tsx",
+        "line": 50
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.loginText",
+          "file": "components/imb-header.tsx",
+          "defLine": 113,
+          "properties": {
+            "fontSize": {
+              "line": 114,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            }
+          }
+        }
+      ]
+    },
     "HeroSection@components/hero-section.tsx:45": {
       "element": {
         "file": "components/hero-section.tsx",
