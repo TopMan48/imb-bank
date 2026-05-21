@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": 1779179102174,
+  "generatedAt": 1779347740201,
   "entries": {
     "AboutSection@components/about-section.tsx:17": {
       "element": {
@@ -2006,850 +2006,6 @@
               "line": 89,
               "col": 20,
               "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "RootLayout@app/_layout.tsx:26": {
-      "element": {
-        "file": "app/_layout.tsx",
-        "line": 26
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/_layout.tsx",
-          "properties": {
-            "flex": {
-              "line": 26,
-              "col": 43,
-              "endCol": 44,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "MenuItem@app/(main)/more.tsx:27": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 27
-      },
-      "styles": [
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "MenuItem@app/(main)/more.tsx:31": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 31
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.menuIcon",
-          "file": "app/(main)/more.tsx",
-          "defLine": 329,
-          "properties": {
-            "width": {
-              "line": 330,
-              "col": 11,
-              "endCol": 13,
-              "raw": "38"
-            },
-            "height": {
-              "line": 331,
-              "col": 12,
-              "endCol": 14,
-              "raw": "38"
-            },
-            "borderRadius": {
-              "line": 332,
-              "col": 18,
-              "endCol": 20,
-              "raw": "10"
-            },
-            "alignItems": {
-              "line": 334,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 335,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "borderCurve": {
-              "line": 336,
-              "col": 17,
-              "endCol": 29,
-              "raw": "'continuous'"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "MenuItem@app/(main)/more.tsx:38": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 38
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.menuText",
-          "file": "app/(main)/more.tsx",
-          "defLine": 341,
-          "properties": {
-            "flex": {
-              "line": 342,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "gap": {
-              "line": 343,
-              "col": 9,
-              "endCol": 10,
-              "raw": "2"
-            }
-          }
-        }
-      ]
-    },
-    "MenuItem@app/(main)/more.tsx:39": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 39
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.menuLabel",
-          "file": "app/(main)/more.tsx",
-          "defLine": 345,
-          "properties": {
-            "fontSize": {
-              "line": 346,
-              "col": 14,
-              "endCol": 16,
-              "raw": "14"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "MenuItem@app/(main)/more.tsx:43": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 43
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.menuSubtitle",
-          "file": "app/(main)/more.tsx",
-          "defLine": 353,
-          "properties": {
-            "fontSize": {
-              "line": 354,
-              "col": 14,
-              "endCol": 16,
-              "raw": "12"
-            }
-          }
-        }
-      ]
-    },
-    "MenuSection@app/(main)/more.tsx:55": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 55
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.section",
-          "file": "app/(main)/more.tsx",
-          "defLine": 304,
-          "properties": {
-            "gap": {
-              "line": 305,
-              "col": 9,
-              "endCol": 11,
-              "raw": "10"
-            }
-          }
-        }
-      ]
-    },
-    "MenuSection@app/(main)/more.tsx:56": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 56
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.sectionTitle",
-          "file": "app/(main)/more.tsx",
-          "defLine": 307,
-          "properties": {
-            "fontSize": {
-              "line": 308,
-              "col": 14,
-              "endCol": 16,
-              "raw": "12"
-            },
-            "textTransform": {
-              "line": 311,
-              "col": 19,
-              "endCol": 30,
-              "raw": "'uppercase'"
-            },
-            "letterSpacing": {
-              "line": 312,
-              "col": 19,
-              "endCol": 22,
-              "raw": "0.5"
-            },
-            "paddingHorizontal": {
-              "line": 313,
-              "col": 23,
-              "endCol": 24,
-              "raw": "4"
-            }
-          }
-        }
-      ]
-    },
-    "MenuSection@app/(main)/more.tsx:57": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 57
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.sectionCard",
-          "file": "app/(main)/more.tsx",
-          "defLine": 315,
-          "properties": {
-            "borderRadius": {
-              "line": 317,
-              "col": 18,
-              "endCol": 20,
-              "raw": "16"
-            },
-            "overflow": {
-              "line": 318,
-              "col": 14,
-              "endCol": 22,
-              "raw": "'hidden'"
-            },
-            "borderCurve": {
-              "line": 319,
-              "col": 17,
-              "endCol": 29,
-              "raw": "'continuous'"
-            },
-            "boxShadow": {
-              "line": 320,
-              "col": 15,
-              "endCol": 49,
-              "raw": "'0 2px 10px rgba(0, 75, 90, 0.06)'"
-            }
-          }
-        }
-      ]
-    },
-    "MenuSection@app/(main)/more.tsx:61": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 61
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.divider",
-          "file": "app/(main)/more.tsx",
-          "defLine": 358,
-          "properties": {
-            "height": {
-              "line": 359,
-              "col": 12,
-              "endCol": 13,
-              "raw": "1"
-            },
-            "marginLeft": {
-              "line": 361,
-              "col": 16,
-              "endCol": 18,
-              "raw": "64"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:161": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 161
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.container",
-          "file": "app/(main)/more.tsx",
-          "defLine": 211,
-          "properties": {
-            "flex": {
-              "line": 212,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:162": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 162
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.header",
-          "file": "app/(main)/more.tsx",
-          "defLine": 215,
-          "properties": {
-            "paddingHorizontal": {
-              "line": 216,
-              "col": 23,
-              "endCol": 25,
-              "raw": "20"
-            },
-            "paddingVertical": {
-              "line": 217,
-              "col": 21,
-              "endCol": 23,
-              "raw": "16"
-            },
-            "borderBottomWidth": {
-              "line": 219,
-              "col": 23,
-              "endCol": 24,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:163": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 163
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.headerTitle",
-          "file": "app/(main)/more.tsx",
-          "defLine": 222,
-          "properties": {
-            "fontSize": {
-              "line": 223,
-              "col": 14,
-              "endCol": 16,
-              "raw": "22"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:168": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 168
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.profileCard",
-          "file": "app/(main)/more.tsx",
-          "defLine": 232,
-          "properties": {
-            "borderRadius": {
-              "line": 234,
-              "col": 18,
-              "endCol": 20,
-              "raw": "20"
-            },
-            "padding": {
-              "line": 235,
-              "col": 13,
-              "endCol": 15,
-              "raw": "20"
-            },
-            "flexDirection": {
-              "line": 236,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 237,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "gap": {
-              "line": 238,
-              "col": 9,
-              "endCol": 11,
-              "raw": "16"
-            },
-            "borderCurve": {
-              "line": 239,
-              "col": 17,
-              "endCol": 29,
-              "raw": "'continuous'"
-            },
-            "boxShadow": {
-              "line": 240,
-              "col": 15,
-              "endCol": 49,
-              "raw": "'0 8px 24px rgba(0, 75, 90, 0.25)'"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:169": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 169
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.avatarContainer",
-          "file": "app/(main)/more.tsx",
-          "defLine": 242,
-          "properties": {
-            "position": {
-              "line": 243,
-              "col": 14,
-              "endCol": 24,
-              "raw": "'relative'"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:170": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 170
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.avatar",
-          "file": "app/(main)/more.tsx",
-          "defLine": 245,
-          "properties": {
-            "width": {
-              "line": 246,
-              "col": 11,
-              "endCol": 13,
-              "raw": "56"
-            },
-            "height": {
-              "line": 247,
-              "col": 12,
-              "endCol": 14,
-              "raw": "56"
-            },
-            "borderRadius": {
-              "line": 248,
-              "col": 18,
-              "endCol": 20,
-              "raw": "28"
-            },
-            "alignItems": {
-              "line": 250,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 251,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:171": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 171
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.avatarText",
-          "file": "app/(main)/more.tsx",
-          "defLine": 253,
-          "properties": {
-            "fontSize": {
-              "line": 254,
-              "col": 14,
-              "endCol": 16,
-              "raw": "20"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:173": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 173
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.avatarBadge",
-          "file": "app/(main)/more.tsx",
-          "defLine": 258,
-          "properties": {
-            "position": {
-              "line": 259,
-              "col": 14,
-              "endCol": 24,
-              "raw": "'absolute'"
-            },
-            "bottom": {
-              "line": 260,
-              "col": 12,
-              "endCol": 13,
-              "raw": "0"
-            },
-            "right": {
-              "line": 261,
-              "col": 11,
-              "endCol": 12,
-              "raw": "0"
-            },
-            "width": {
-              "line": 262,
-              "col": 11,
-              "endCol": 13,
-              "raw": "18"
-            },
-            "height": {
-              "line": 263,
-              "col": 12,
-              "endCol": 14,
-              "raw": "18"
-            },
-            "borderRadius": {
-              "line": 264,
-              "col": 18,
-              "endCol": 19,
-              "raw": "9"
-            },
-            "alignItems": {
-              "line": 266,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 267,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "borderWidth": {
-              "line": 268,
-              "col": 17,
-              "endCol": 18,
-              "raw": "2"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:177": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 177
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.profileInfo",
-          "file": "app/(main)/more.tsx",
-          "defLine": 271,
-          "properties": {
-            "flex": {
-              "line": 272,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "gap": {
-              "line": 273,
-              "col": 9,
-              "endCol": 10,
-              "raw": "3"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:178": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 178
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.profileName",
-          "file": "app/(main)/more.tsx",
-          "defLine": 275,
-          "properties": {
-            "fontSize": {
-              "line": 276,
-              "col": 14,
-              "endCol": 16,
-              "raw": "18"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:179": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 179
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.profileSub",
-          "file": "app/(main)/more.tsx",
-          "defLine": 280,
-          "properties": {
-            "fontSize": {
-              "line": 281,
-              "col": 14,
-              "endCol": 16,
-              "raw": "12"
-            },
-            "color": {
-              "line": 283,
-              "col": 11,
-              "endCol": 35,
-              "raw": "'rgba(255,255,255,0.65)'"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:180": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 180
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.membershipBadge",
-          "file": "app/(main)/more.tsx",
-          "defLine": 285,
-          "properties": {
-            "flexDirection": {
-              "line": 286,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 287,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "gap": {
-              "line": 288,
-              "col": 9,
-              "endCol": 10,
-              "raw": "4"
-            },
-            "marginTop": {
-              "line": 289,
-              "col": 15,
-              "endCol": 16,
-              "raw": "4"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:182": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 182
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.membershipText",
-          "file": "app/(main)/more.tsx",
-          "defLine": 291,
-          "properties": {
-            "fontSize": {
-              "line": 292,
-              "col": 14,
-              "endCol": 16,
-              "raw": "11"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:185": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 185
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.editBtn",
-          "file": "app/(main)/more.tsx",
-          "defLine": 296,
-          "properties": {
-            "width": {
-              "line": 297,
-              "col": 11,
-              "endCol": 13,
-              "raw": "36"
-            },
-            "height": {
-              "line": 298,
-              "col": 12,
-              "endCol": 14,
-              "raw": "36"
-            },
-            "borderRadius": {
-              "line": 299,
-              "col": 18,
-              "endCol": 20,
-              "raw": "18"
-            },
-            "backgroundColor": {
-              "line": 300,
-              "col": 21,
-              "endCol": 45,
-              "raw": "'rgba(255,255,255,0.15)'"
-            },
-            "alignItems": {
-              "line": 301,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 302,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:195": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 195
-      },
-      "styles": [
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:200": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 200
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.signOutText",
-          "file": "app/(main)/more.tsx",
-          "defLine": 376,
-          "properties": {
-            "fontSize": {
-              "line": 377,
-              "col": 14,
-              "endCol": 16,
-              "raw": "15"
-            }
-          }
-        }
-      ]
-    },
-    "MoreScreen@app/(main)/more.tsx:204": {
-      "element": {
-        "file": "app/(main)/more.tsx",
-        "line": 204
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.version",
-          "file": "app/(main)/more.tsx",
-          "defLine": 381,
-          "properties": {
-            "fontSize": {
-              "line": 382,
-              "col": 14,
-              "endCol": 16,
-              "raw": "11"
-            },
-            "textAlign": {
-              "line": 385,
-              "col": 15,
-              "endCol": 23,
               "raw": "'center'"
             }
           }
@@ -4988,6 +4144,428 @@
         }
       ]
     },
+    "PasscodeLoginScreen@app/(auth)/passcode-login.tsx:31": {
+      "element": {
+        "file": "app/(auth)/passcode-login.tsx",
+        "line": 31
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/(auth)/passcode-login.tsx",
+          "defLine": 43,
+          "properties": {
+            "flex": {
+              "line": 44,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:70": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 70
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 127,
+          "properties": {
+            "flex": {
+              "line": 128,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "alignItems": {
+              "line": 129,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 130,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "paddingHorizontal": {
+              "line": 131,
+              "col": 23,
+              "endCol": 25,
+              "raw": "40"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:71": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 71
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.header",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 133,
+          "properties": {
+            "alignItems": {
+              "line": 134,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "marginBottom": {
+              "line": 135,
+              "col": 18,
+              "endCol": 20,
+              "raw": "40"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:72": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 72
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.title",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 137,
+          "properties": {
+            "fontSize": {
+              "line": 138,
+              "col": 14,
+              "endCol": 16,
+              "raw": "24"
+            },
+            "textAlign": {
+              "line": 141,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:73": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 73
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.subtitle",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 143,
+          "properties": {
+            "fontSize": {
+              "line": 144,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            },
+            "marginTop": {
+              "line": 147,
+              "col": 15,
+              "endCol": 16,
+              "raw": "8"
+            },
+            "textAlign": {
+              "line": 148,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:76": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 76
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.dotsContainer",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 150,
+          "properties": {
+            "flexDirection": {
+              "line": 151,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "gap": {
+              "line": 152,
+              "col": 9,
+              "endCol": 11,
+              "raw": "16"
+            },
+            "marginBottom": {
+              "line": 153,
+              "col": 18,
+              "endCol": 20,
+              "raw": "20"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:78": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 78
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.dot",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 155,
+          "properties": {
+            "width": {
+              "line": 156,
+              "col": 11,
+              "endCol": 13,
+              "raw": "16"
+            },
+            "height": {
+              "line": 157,
+              "col": 12,
+              "endCol": 14,
+              "raw": "16"
+            },
+            "borderRadius": {
+              "line": 158,
+              "col": 18,
+              "endCol": 19,
+              "raw": "8"
+            },
+            "borderWidth": {
+              "line": 159,
+              "col": 17,
+              "endCol": 18,
+              "raw": "2"
+            },
+            "backgroundColor": {
+              "line": 161,
+              "col": 21,
+              "endCol": 34,
+              "raw": "'transparent'"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:85": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 85
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.error",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 166,
+          "properties": {
+            "fontSize": {
+              "line": 167,
+              "col": 14,
+              "endCol": 16,
+              "raw": "13"
+            },
+            "marginBottom": {
+              "line": 170,
+              "col": 18,
+              "endCol": 20,
+              "raw": "12"
+            },
+            "textAlign": {
+              "line": 171,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:87": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 87
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.pad",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 173,
+          "properties": {
+            "flexDirection": {
+              "line": 174,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "flexWrap": {
+              "line": 175,
+              "col": 14,
+              "endCol": 20,
+              "raw": "'wrap'"
+            },
+            "width": {
+              "line": 176,
+              "col": 11,
+              "endCol": 14,
+              "raw": "260"
+            },
+            "marginTop": {
+              "line": 177,
+              "col": 15,
+              "endCol": 17,
+              "raw": "20"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:90": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 90
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.key",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 179,
+          "properties": {
+            "height": {
+              "line": 181,
+              "col": 12,
+              "endCol": 14,
+              "raw": "68"
+            },
+            "alignItems": {
+              "line": 182,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 183,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "borderRadius": {
+              "line": 184,
+              "col": 18,
+              "endCol": 20,
+              "raw": "34"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:94": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 94
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:103": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 103
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.keyTextSmall",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 194,
+          "properties": {
+            "fontSize": {
+              "line": 195,
+              "col": 14,
+              "endCol": 16,
+              "raw": "22"
+            }
+          }
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:108": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 108
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "PasscodePad@components/passcode-pad.tsx:117": {
+      "element": {
+        "file": "components/passcode-pad.tsx",
+        "line": 117
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.keyText",
+          "file": "components/passcode-pad.tsx",
+          "defLine": 189,
+          "properties": {
+            "fontSize": {
+              "line": 190,
+              "col": 14,
+              "endCol": 16,
+              "raw": "28"
+            }
+          }
+        }
+      ]
+    },
     "PasscodeSetupScreen@app/(auth)/passcode-setup.tsx:36": {
       "element": {
         "file": "app/(auth)/passcode-setup.tsx",
@@ -5010,23 +4588,845 @@
         }
       ]
     },
-    "PasscodeLoginScreen@app/(auth)/passcode-login.tsx:31": {
+    "RootLayout@app/_layout.tsx:26": {
       "element": {
-        "file": "app/(auth)/passcode-login.tsx",
+        "file": "app/_layout.tsx",
+        "line": 26
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/_layout.tsx",
+          "properties": {
+            "flex": {
+              "line": 26,
+              "col": 43,
+              "endCol": 44,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "MenuItem@app/(main)/more.tsx:27": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 27
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "MenuItem@app/(main)/more.tsx:31": {
+      "element": {
+        "file": "app/(main)/more.tsx",
         "line": 31
       },
       "styles": [
         {
           "origin": "stylesheet",
-          "ref": "styles.container",
-          "file": "app/(auth)/passcode-login.tsx",
-          "defLine": 43,
+          "ref": "styles.menuIcon",
+          "file": "app/(main)/more.tsx",
+          "defLine": 329,
+          "properties": {
+            "width": {
+              "line": 330,
+              "col": 11,
+              "endCol": 13,
+              "raw": "38"
+            },
+            "height": {
+              "line": 331,
+              "col": 12,
+              "endCol": 14,
+              "raw": "38"
+            },
+            "borderRadius": {
+              "line": 332,
+              "col": 18,
+              "endCol": 20,
+              "raw": "10"
+            },
+            "alignItems": {
+              "line": 334,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 335,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "borderCurve": {
+              "line": 336,
+              "col": 17,
+              "endCol": 29,
+              "raw": "'continuous'"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "MenuItem@app/(main)/more.tsx:38": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 38
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.menuText",
+          "file": "app/(main)/more.tsx",
+          "defLine": 341,
           "properties": {
             "flex": {
-              "line": 44,
+              "line": 342,
               "col": 10,
               "endCol": 11,
               "raw": "1"
+            },
+            "gap": {
+              "line": 343,
+              "col": 9,
+              "endCol": 10,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "MenuItem@app/(main)/more.tsx:39": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 39
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.menuLabel",
+          "file": "app/(main)/more.tsx",
+          "defLine": 345,
+          "properties": {
+            "fontSize": {
+              "line": 346,
+              "col": 14,
+              "endCol": 16,
+              "raw": "14"
+            }
+          }
+        },
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "MenuItem@app/(main)/more.tsx:43": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 43
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.menuSubtitle",
+          "file": "app/(main)/more.tsx",
+          "defLine": 353,
+          "properties": {
+            "fontSize": {
+              "line": 354,
+              "col": 14,
+              "endCol": 16,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "MenuSection@app/(main)/more.tsx:55": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 55
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.section",
+          "file": "app/(main)/more.tsx",
+          "defLine": 304,
+          "properties": {
+            "gap": {
+              "line": 305,
+              "col": 9,
+              "endCol": 11,
+              "raw": "10"
+            }
+          }
+        }
+      ]
+    },
+    "MenuSection@app/(main)/more.tsx:56": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 56
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.sectionTitle",
+          "file": "app/(main)/more.tsx",
+          "defLine": 307,
+          "properties": {
+            "fontSize": {
+              "line": 308,
+              "col": 14,
+              "endCol": 16,
+              "raw": "12"
+            },
+            "textTransform": {
+              "line": 311,
+              "col": 19,
+              "endCol": 30,
+              "raw": "'uppercase'"
+            },
+            "letterSpacing": {
+              "line": 312,
+              "col": 19,
+              "endCol": 22,
+              "raw": "0.5"
+            },
+            "paddingHorizontal": {
+              "line": 313,
+              "col": 23,
+              "endCol": 24,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "MenuSection@app/(main)/more.tsx:57": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 57
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.sectionCard",
+          "file": "app/(main)/more.tsx",
+          "defLine": 315,
+          "properties": {
+            "borderRadius": {
+              "line": 317,
+              "col": 18,
+              "endCol": 20,
+              "raw": "16"
+            },
+            "overflow": {
+              "line": 318,
+              "col": 14,
+              "endCol": 22,
+              "raw": "'hidden'"
+            },
+            "borderCurve": {
+              "line": 319,
+              "col": 17,
+              "endCol": 29,
+              "raw": "'continuous'"
+            },
+            "boxShadow": {
+              "line": 320,
+              "col": 15,
+              "endCol": 49,
+              "raw": "'0 2px 10px rgba(0, 75, 90, 0.06)'"
+            }
+          }
+        }
+      ]
+    },
+    "MenuSection@app/(main)/more.tsx:61": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 61
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.divider",
+          "file": "app/(main)/more.tsx",
+          "defLine": 358,
+          "properties": {
+            "height": {
+              "line": 359,
+              "col": 12,
+              "endCol": 13,
+              "raw": "1"
+            },
+            "marginLeft": {
+              "line": 361,
+              "col": 16,
+              "endCol": 18,
+              "raw": "64"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:161": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 161
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.container",
+          "file": "app/(main)/more.tsx",
+          "defLine": 211,
+          "properties": {
+            "flex": {
+              "line": 212,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:162": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 162
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.header",
+          "file": "app/(main)/more.tsx",
+          "defLine": 215,
+          "properties": {
+            "paddingHorizontal": {
+              "line": 216,
+              "col": 23,
+              "endCol": 25,
+              "raw": "20"
+            },
+            "paddingVertical": {
+              "line": 217,
+              "col": 21,
+              "endCol": 23,
+              "raw": "16"
+            },
+            "borderBottomWidth": {
+              "line": 219,
+              "col": 23,
+              "endCol": 24,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:163": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 163
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.headerTitle",
+          "file": "app/(main)/more.tsx",
+          "defLine": 222,
+          "properties": {
+            "fontSize": {
+              "line": 223,
+              "col": 14,
+              "endCol": 16,
+              "raw": "22"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:168": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 168
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.profileCard",
+          "file": "app/(main)/more.tsx",
+          "defLine": 232,
+          "properties": {
+            "borderRadius": {
+              "line": 234,
+              "col": 18,
+              "endCol": 20,
+              "raw": "20"
+            },
+            "padding": {
+              "line": 235,
+              "col": 13,
+              "endCol": 15,
+              "raw": "20"
+            },
+            "flexDirection": {
+              "line": 236,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 237,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 238,
+              "col": 9,
+              "endCol": 11,
+              "raw": "16"
+            },
+            "borderCurve": {
+              "line": 239,
+              "col": 17,
+              "endCol": 29,
+              "raw": "'continuous'"
+            },
+            "boxShadow": {
+              "line": 240,
+              "col": 15,
+              "endCol": 49,
+              "raw": "'0 8px 24px rgba(0, 75, 90, 0.25)'"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:169": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 169
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.avatarContainer",
+          "file": "app/(main)/more.tsx",
+          "defLine": 242,
+          "properties": {
+            "position": {
+              "line": 243,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'relative'"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:170": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 170
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.avatar",
+          "file": "app/(main)/more.tsx",
+          "defLine": 245,
+          "properties": {
+            "width": {
+              "line": 246,
+              "col": 11,
+              "endCol": 13,
+              "raw": "56"
+            },
+            "height": {
+              "line": 247,
+              "col": 12,
+              "endCol": 14,
+              "raw": "56"
+            },
+            "borderRadius": {
+              "line": 248,
+              "col": 18,
+              "endCol": 20,
+              "raw": "28"
+            },
+            "alignItems": {
+              "line": 250,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 251,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:171": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 171
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.avatarText",
+          "file": "app/(main)/more.tsx",
+          "defLine": 253,
+          "properties": {
+            "fontSize": {
+              "line": 254,
+              "col": 14,
+              "endCol": 16,
+              "raw": "20"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:173": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 173
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.avatarBadge",
+          "file": "app/(main)/more.tsx",
+          "defLine": 258,
+          "properties": {
+            "position": {
+              "line": 259,
+              "col": 14,
+              "endCol": 24,
+              "raw": "'absolute'"
+            },
+            "bottom": {
+              "line": 260,
+              "col": 12,
+              "endCol": 13,
+              "raw": "0"
+            },
+            "right": {
+              "line": 261,
+              "col": 11,
+              "endCol": 12,
+              "raw": "0"
+            },
+            "width": {
+              "line": 262,
+              "col": 11,
+              "endCol": 13,
+              "raw": "18"
+            },
+            "height": {
+              "line": 263,
+              "col": 12,
+              "endCol": 14,
+              "raw": "18"
+            },
+            "borderRadius": {
+              "line": 264,
+              "col": 18,
+              "endCol": 19,
+              "raw": "9"
+            },
+            "alignItems": {
+              "line": 266,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 267,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            },
+            "borderWidth": {
+              "line": 268,
+              "col": 17,
+              "endCol": 18,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:177": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 177
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.profileInfo",
+          "file": "app/(main)/more.tsx",
+          "defLine": 271,
+          "properties": {
+            "flex": {
+              "line": 272,
+              "col": 10,
+              "endCol": 11,
+              "raw": "1"
+            },
+            "gap": {
+              "line": 273,
+              "col": 9,
+              "endCol": 10,
+              "raw": "3"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:178": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 178
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.profileName",
+          "file": "app/(main)/more.tsx",
+          "defLine": 275,
+          "properties": {
+            "fontSize": {
+              "line": 276,
+              "col": 14,
+              "endCol": 16,
+              "raw": "18"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:179": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 179
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.profileSub",
+          "file": "app/(main)/more.tsx",
+          "defLine": 280,
+          "properties": {
+            "fontSize": {
+              "line": 281,
+              "col": 14,
+              "endCol": 16,
+              "raw": "12"
+            },
+            "color": {
+              "line": 283,
+              "col": 11,
+              "endCol": 35,
+              "raw": "'rgba(255,255,255,0.65)'"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:180": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 180
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.membershipBadge",
+          "file": "app/(main)/more.tsx",
+          "defLine": 285,
+          "properties": {
+            "flexDirection": {
+              "line": 286,
+              "col": 19,
+              "endCol": 24,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 287,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 288,
+              "col": 9,
+              "endCol": 10,
+              "raw": "4"
+            },
+            "marginTop": {
+              "line": 289,
+              "col": 15,
+              "endCol": 16,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:182": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 182
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.membershipText",
+          "file": "app/(main)/more.tsx",
+          "defLine": 291,
+          "properties": {
+            "fontSize": {
+              "line": 292,
+              "col": 14,
+              "endCol": 16,
+              "raw": "11"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:185": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 185
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.editBtn",
+          "file": "app/(main)/more.tsx",
+          "defLine": 296,
+          "properties": {
+            "width": {
+              "line": 297,
+              "col": 11,
+              "endCol": 13,
+              "raw": "36"
+            },
+            "height": {
+              "line": 298,
+              "col": 12,
+              "endCol": 14,
+              "raw": "36"
+            },
+            "borderRadius": {
+              "line": 299,
+              "col": 18,
+              "endCol": 20,
+              "raw": "18"
+            },
+            "backgroundColor": {
+              "line": 300,
+              "col": 21,
+              "endCol": 45,
+              "raw": "'rgba(255,255,255,0.15)'"
+            },
+            "alignItems": {
+              "line": 301,
+              "col": 16,
+              "endCol": 24,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 302,
+              "col": 20,
+              "endCol": 28,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:195": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 195
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:200": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 200
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.signOutText",
+          "file": "app/(main)/more.tsx",
+          "defLine": 376,
+          "properties": {
+            "fontSize": {
+              "line": 377,
+              "col": 14,
+              "endCol": 16,
+              "raw": "15"
+            }
+          }
+        }
+      ]
+    },
+    "MoreScreen@app/(main)/more.tsx:204": {
+      "element": {
+        "file": "app/(main)/more.tsx",
+        "line": 204
+      },
+      "styles": [
+        {
+          "origin": "stylesheet",
+          "ref": "styles.version",
+          "file": "app/(main)/more.tsx",
+          "defLine": 381,
+          "properties": {
+            "fontSize": {
+              "line": 382,
+              "col": 14,
+              "endCol": 16,
+              "raw": "11"
+            },
+            "textAlign": {
+              "line": 385,
+              "col": 15,
+              "endCol": 23,
+              "raw": "'center'"
             }
           }
         }
@@ -10367,406 +10767,6 @@
               "col": 12,
               "endCol": 15,
               "raw": "-30"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:70": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 70
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.container",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 127,
-          "properties": {
-            "flex": {
-              "line": 128,
-              "col": 10,
-              "endCol": 11,
-              "raw": "1"
-            },
-            "alignItems": {
-              "line": 129,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 130,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "paddingHorizontal": {
-              "line": 131,
-              "col": 23,
-              "endCol": 25,
-              "raw": "40"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:71": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 71
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.header",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 133,
-          "properties": {
-            "alignItems": {
-              "line": 134,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "marginBottom": {
-              "line": 135,
-              "col": 18,
-              "endCol": 20,
-              "raw": "40"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:72": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 72
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.title",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 137,
-          "properties": {
-            "fontSize": {
-              "line": 138,
-              "col": 14,
-              "endCol": 16,
-              "raw": "24"
-            },
-            "textAlign": {
-              "line": 141,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:73": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 73
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.subtitle",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 143,
-          "properties": {
-            "fontSize": {
-              "line": 144,
-              "col": 14,
-              "endCol": 16,
-              "raw": "14"
-            },
-            "marginTop": {
-              "line": 147,
-              "col": 15,
-              "endCol": 16,
-              "raw": "8"
-            },
-            "textAlign": {
-              "line": 148,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:76": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 76
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.dotsContainer",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 150,
-          "properties": {
-            "flexDirection": {
-              "line": 151,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "gap": {
-              "line": 152,
-              "col": 9,
-              "endCol": 11,
-              "raw": "16"
-            },
-            "marginBottom": {
-              "line": 153,
-              "col": 18,
-              "endCol": 20,
-              "raw": "20"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:78": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 78
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.dot",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 155,
-          "properties": {
-            "width": {
-              "line": 156,
-              "col": 11,
-              "endCol": 13,
-              "raw": "16"
-            },
-            "height": {
-              "line": 157,
-              "col": 12,
-              "endCol": 14,
-              "raw": "16"
-            },
-            "borderRadius": {
-              "line": 158,
-              "col": 18,
-              "endCol": 19,
-              "raw": "8"
-            },
-            "borderWidth": {
-              "line": 159,
-              "col": 17,
-              "endCol": 18,
-              "raw": "2"
-            },
-            "backgroundColor": {
-              "line": 161,
-              "col": 21,
-              "endCol": 34,
-              "raw": "'transparent'"
-            }
-          }
-        },
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:85": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 85
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.error",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 166,
-          "properties": {
-            "fontSize": {
-              "line": 167,
-              "col": 14,
-              "endCol": 16,
-              "raw": "13"
-            },
-            "marginBottom": {
-              "line": 170,
-              "col": 18,
-              "endCol": 20,
-              "raw": "12"
-            },
-            "textAlign": {
-              "line": 171,
-              "col": 15,
-              "endCol": 23,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:87": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 87
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.pad",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 173,
-          "properties": {
-            "flexDirection": {
-              "line": 174,
-              "col": 19,
-              "endCol": 24,
-              "raw": "'row'"
-            },
-            "flexWrap": {
-              "line": 175,
-              "col": 14,
-              "endCol": 20,
-              "raw": "'wrap'"
-            },
-            "width": {
-              "line": 176,
-              "col": 11,
-              "endCol": 14,
-              "raw": "260"
-            },
-            "marginTop": {
-              "line": 177,
-              "col": 15,
-              "endCol": 17,
-              "raw": "20"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:90": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 90
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.key",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 179,
-          "properties": {
-            "height": {
-              "line": 181,
-              "col": 12,
-              "endCol": 14,
-              "raw": "68"
-            },
-            "alignItems": {
-              "line": 182,
-              "col": 16,
-              "endCol": 24,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 183,
-              "col": 20,
-              "endCol": 28,
-              "raw": "'center'"
-            },
-            "borderRadius": {
-              "line": 184,
-              "col": 18,
-              "endCol": 20,
-              "raw": "34"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:94": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 94
-      },
-      "styles": [
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:103": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 103
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.keyTextSmall",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 194,
-          "properties": {
-            "fontSize": {
-              "line": 195,
-              "col": 14,
-              "endCol": 16,
-              "raw": "22"
-            }
-          }
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:108": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 108
-      },
-      "styles": [
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "PasscodePad@components/passcode-pad.tsx:117": {
-      "element": {
-        "file": "components/passcode-pad.tsx",
-        "line": 117
-      },
-      "styles": [
-        {
-          "origin": "stylesheet",
-          "ref": "styles.keyText",
-          "file": "components/passcode-pad.tsx",
-          "defLine": 189,
-          "properties": {
-            "fontSize": {
-              "line": 190,
-              "col": 14,
-              "endCol": 16,
-              "raw": "28"
             }
           }
         }
