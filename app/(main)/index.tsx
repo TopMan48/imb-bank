@@ -72,6 +72,7 @@ export default function HomeScreen() {
   const accounts = useAppStore((s) => s.accounts);
   const transactions = useAppStore((s) => s.transactions);
   const setAuthenticated = useAppStore((s) => s.setAuthenticated);
+  const profile = useAppStore((s) => s.profile);
   const [balanceVisible, setBalanceVisible] = useState(true);
 
   const primaryAccount = accounts.find((a) => a.type === 'everyday') ?? accounts[0];
@@ -93,7 +94,7 @@ export default function HomeScreen() {
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>Good morning,</Text>
-          <Text style={styles.userName}>Alex Johnson</Text>
+          <Text style={styles.userName}>{profile.firstName} {profile.lastName}</Text>
         </View>
         <View style={styles.headerRight}>
           <Pressable style={styles.headerBtn}>

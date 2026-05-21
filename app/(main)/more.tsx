@@ -4,8 +4,8 @@ import {
   Text,
   ScrollView,
   Pressable,
-  StyleSheet,
   Alert,
+  StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -20,6 +20,7 @@ type MenuItemData = {
   subtitle?: string;
   onPress: () => void;
   destructive?: boolean;
+  badge?: string;
 };
 
 function MenuItem({ item }: { item: MenuItemData }) {
@@ -43,6 +44,11 @@ function MenuItem({ item }: { item: MenuItemData }) {
           <Text style={styles.menuSubtitle}>{item.subtitle}</Text>
         )}
       </View>
+      {item.badge && (
+        <View style={{ backgroundColor: Colors.primary, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2, marginRight: 4 }}>
+          <Text style={{ fontSize: 11, fontFamily: Fonts.semiBold, color: Colors.white }}>{item.badge}</Text>
+        </View>
+      )}
       {!item.destructive && (
         <Ionicons name="chevron-forward" size={16} color={Colors.textSecondary} />
       )}
@@ -69,6 +75,10 @@ function MenuSection({ title, items }: { title: string; items: MenuItemData[] })
 export default function MoreScreen() {
   const insets = useSafeAreaInsets();
   const setAuthenticated = useAppStore((s) => s.setAuthenticated);
+  const profile = useAppStore((s) => s.profile);
+  const payToAgreements = useAppStore((s) => s.payToAgreements);
+
+  const activePayTo = payToAgreements.filter((a) => a.status === 'active').length;
 
   const handleSignOut = () => {
     Alert.alert(
@@ -92,20 +102,26 @@ export default function MoreScreen() {
     {
       icon: 'person-outline',
       label: 'Personal Details',
-      subtitle: 'Alex Johnson · alex.johnson@email.com',
-      onPress: () => {},
+      subtitle: `${profile.firstName} ${profile.lastName} · ${profile.email}`,
+      onPress: () => router.push('/settings/profile'),
     },
     {
       icon: 'shield-checkmark-outline',
       label: 'Security',
       subtitle: 'Passcode, biometrics, 2FA',
-      onPress: () => {},
+      onPress: () => router.push('/settings/security'),
     },
     {
       icon: 'notifications-outline',
       label: 'Notifications',
       subtitle: 'Push alerts, SMS, email',
-      onPress: () => {},
+      onPress: () => router.push('/settings/notifications'),
+    },
+    {
+      icon: 'eye-outline',
+      label: 'Privacy',
+      subtitle: 'Data sharing & CDR settings',
+      onPress: () => router.push('/settings/privacy'),
     },
   ];
 
@@ -113,23 +129,39 @@ export default function MoreScreen() {
     {
       icon: 'swap-horizontal-outline',
       label: 'Transaction History',
-      onPress: () => {},
+      subtitle: 'All accounts, filterable',
+      onPress: () => router.push('/settings/transaction-history'),
     },
     {
       icon: 'document-text-outline',
       label: 'Statements',
       subtitle: 'Download or view statements',
-      onPress: () => {},
+      onPress: () => router.push('/settings/statements'),
     },
     {
-      icon: 'receipt-outline',
+      icon: 'calendar-outline',
       label: 'Scheduled Payments',
-      onPress: () => {},
+      subtitle: 'Recurring & future payments',
+      onPress: () => router.push('/settings/scheduled-payments'),
     },
     {
       icon: 'people-outline',
       label: 'Manage Payees',
-      onPress: () => {},
+      subtitle: 'Edit, add or remove payees',
+      onPress: () => router.push('/settings/manage-payees'),
+    },
+    {
+      icon: 'link-outline',
+      label: 'PayTo Agreements',
+      subtitle: `${activePayTo} active agreement${activePayTo !== 1 ? 's' : ''}`,
+      onPress: () => router.push('/settings/payto-agreements'),
+      badge: activePayTo > 0 ? String(activePayTo) : undefined,
+    },
+    {
+      icon: 'card-outline',
+      label: 'Report Card',
+      subtitle: 'Lost, stolen or damaged',
+      onPress: () => router.push('/settings/report-card'),
     },
   ];
 
@@ -137,23 +169,30 @@ export default function MoreScreen() {
     {
       icon: 'help-circle-outline',
       label: 'Help Centre',
-      onPress: () => {},
+      subtitle: 'FAQs & quick support',
+      onPress: () => router.push('/settings/help'),
     },
     {
       icon: 'call-outline',
       label: 'Contact Us',
-      subtitle: '133 462 · Mon-Fri 8am-8pm',
-      onPress: () => {},
+      subtitle: '133 462 · Mon–Fri 8am–8pm',
+      onPress: () => router.push('/settings/contact'),
     },
     {
       icon: 'warning-outline',
       label: 'Report a Scam',
-      onPress: () => {},
+      subtitle: 'Lodge a scam report',
+      onPress: () => router.push('/settings/report-scam'),
     },
     {
-      icon: 'card-outline',
-      label: 'Report Missing Card',
-      onPress: () => {},
+      icon: 'information-circle-outline',
+      label: 'About IMB Bank',
+      onPress: () => router.push('/settings/about'),
+    },
+    {
+      icon: 'document-outline',
+      label: 'Terms & Conditions',
+      onPress: () => router.push('/settings/terms'),
     },
   ];
 
@@ -165,27 +204,33 @@ export default function MoreScreen() {
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
         {/* Profile Card */}
-        <View style={styles.profileCard}>
+        <Pressable
+          style={({ pressed }) => [styles.profileCard, pressed && { opacity: 0.95 }]}
+          onPress={() => router.push('/settings/profile')}
+        >
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>AJ</Text>
+              <Text style={styles.avatarText}>{profile.firstName.charAt(0)}{profile.lastName.charAt(0)}</Text>
             </View>
             <View style={styles.avatarBadge}>
               <Ionicons name="checkmark" size={10} color={Colors.white} />
             </View>
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>Alex Johnson</Text>
-            <Text style={styles.profileSub}>Member since 2019</Text>
+            <Text style={styles.profileName}>{profile.firstName} {profile.lastName}</Text>
+            <Text style={styles.profileSub}>Member since {profile.memberSince}</Text>
             <View style={styles.membershipBadge}>
               <Ionicons name="star" size={10} color={Colors.accent} />
               <Text style={styles.membershipText}>IMB Member</Text>
             </View>
           </View>
-          <Pressable style={styles.editBtn}>
+          <Pressable
+            style={styles.editBtn}
+            onPress={() => router.push('/settings/profile')}
+          >
             <Ionicons name="pencil" size={16} color={Colors.primary} />
           </Pressable>
-        </View>
+        </Pressable>
 
         <MenuSection title="Account" items={accountMenuItems} />
         <MenuSection title="Banking" items={bankingMenuItems} />

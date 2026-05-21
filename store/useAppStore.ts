@@ -1,14 +1,52 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { Preferences, Account, Transaction, Card, Payee } from './types';
+import type {
+  Preferences,
+  Account,
+  Transaction,
+  Card,
+  Payee,
+  NotificationPreferences,
+  UserProfile,
+  PayToAgreement,
+  ScheduledPayment,
+} from './types';
+
+const DEFAULT_NOTIFICATIONS: NotificationPreferences = {
+  pushEnabled: true,
+  smsEnabled: true,
+  emailEnabled: true,
+  transactionAlerts: true,
+  lowBalanceAlerts: true,
+  lowBalanceThreshold: 200,
+  paymentReminders: true,
+  promotionalOffers: false,
+  securityAlerts: true,
+  statementReady: true,
+};
+
+const DEFAULT_PROFILE: UserProfile = {
+  firstName: 'Alex',
+  lastName: 'Johnson',
+  email: 'alex.johnson@email.com',
+  phone: '0412 345 678',
+  address: '42 Coastal Drive, Wollongong NSW 2500',
+  dateOfBirth: '15/06/1988',
+  memberNumber: 'IMB-2019-00847',
+  memberSince: '2019',
+};
 
 interface PreferencesSlice {
   preferences: Preferences;
+  notifications: NotificationPreferences;
+  profile: UserProfile;
   setPasscode: (code: string) => void;
   verifyPasscode: (code: string) => boolean;
   setAuthenticated: (value: boolean) => void;
   dismissBanner: (bannerId: string) => void;
+  updateNotifications: (prefs: Partial<NotificationPreferences>) => void;
+  updateProfile: (profile: Partial<UserProfile>) => void;
 }
 
 interface DataSlice {
@@ -16,15 +54,42 @@ interface DataSlice {
   transactions: Transaction[];
   cards: Card[];
   payees: Payee[];
+  payToAgreements: PayToAgreement[];
+  scheduledPayments: ScheduledPayment[];
+
+  // Card actions
   toggleCardLock: (cardId: string) => void;
+  reportCard: (cardId: string, reason: string) => void;
+
+  // Transaction actions
+  addTransaction: (tx: Omit<Transaction, 'id'>) => void;
+  updateAccountBalance: (accountId: string, delta: number) => void;
+
+  // Payee actions
+  addPayee: (payee: Omit<Payee, 'id'>) => void;
+  updatePayee: (id: string, updates: Partial<Payee>) => void;
+  deletePayee: (id: string) => void;
+
+  // PayTo actions
+  addPayToAgreement: (agreement: Omit<PayToAgreement, 'id'>) => void;
+  updatePayToAgreement: (id: string, updates: Partial<PayToAgreement>) => void;
+
+  // Scheduled payment actions
+  addScheduledPayment: (payment: Omit<ScheduledPayment, 'id'>) => void;
+  updateScheduledPayment: (id: string, updates: Partial<ScheduledPayment>) => void;
+  deleteScheduledPayment: (id: string) => void;
 }
 
 export type AppStore = PreferencesSlice & DataSlice;
+
+const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 export const useAppStore = create<AppStore>()(
   persist(
     (set, get) => ({
       preferences: {},
+      notifications: DEFAULT_NOTIFICATIONS,
+      profile: DEFAULT_PROFILE,
 
       accounts: [
         {
@@ -65,11 +130,11 @@ export const useAppStore = create<AppStore>()(
         { id: 't4', accountId: '1', description: 'Netflix', merchant: 'Netflix', amount: -22.99, date: '2026-05-16', type: 'debit', category: 'entertainment' },
         { id: 't5', accountId: '1', description: 'Shell Petrol', merchant: 'Shell', amount: -85.20, date: '2026-05-16', type: 'debit', category: 'transport' },
         { id: 't6', accountId: '1', description: 'Ausgrid Electricity', merchant: 'Ausgrid', amount: -124.00, date: '2026-05-15', type: 'debit', category: 'utilities' },
-        { id: 't7', accountId: '1', description: 'Transfer to Smart Saver', amount: -500.00, date: '2026-05-14', type: 'debit', category: 'transfer' },
+        { id: 't7', accountId: '1', description: 'Transfer to Smart Saver', amount: -500.00, date: '2026-05-14', type: 'debit', category: 'transfer', paymentMethod: 'internal' },
         { id: 't8', accountId: '1', description: 'Chemist Warehouse', merchant: 'Chemist Warehouse', amount: -32.80, date: '2026-05-13', type: 'debit', category: 'health' },
         { id: 't9', accountId: '1', description: 'JB Hi-Fi', merchant: 'JB Hi-Fi', amount: -349.00, date: '2026-05-12', type: 'debit', category: 'shopping' },
         { id: 't10', accountId: '1', description: 'Uber Eats', merchant: 'Uber Eats', amount: -28.90, date: '2026-05-11', type: 'debit', category: 'food' },
-        { id: 't11', accountId: '2', description: 'Transfer from Everyday', amount: 500.00, date: '2026-05-14', type: 'credit', category: 'transfer' },
+        { id: 't11', accountId: '2', description: 'Transfer from Everyday', amount: 500.00, date: '2026-05-14', type: 'credit', category: 'transfer', paymentMethod: 'internal' },
         { id: 't12', accountId: '2', description: 'Interest Payment', amount: 78.50, date: '2026-05-01', type: 'credit', category: 'income' },
         { id: 't13', accountId: '3', description: 'Home Loan Repayment', amount: -1850.00, date: '2026-05-01', type: 'debit', category: 'transfer' },
         { id: 't14', accountId: '3', description: 'Home Loan Repayment', amount: -1850.00, date: '2026-04-01', type: 'debit', category: 'transfer' },
@@ -86,6 +151,7 @@ export const useAppStore = create<AppStore>()(
           isLocked: false,
           isContactless: true,
           colour: '#004B5A',
+          status: 'active',
         },
         {
           id: 'c2',
@@ -97,6 +163,7 @@ export const useAppStore = create<AppStore>()(
           isLocked: false,
           isContactless: true,
           colour: '#1a6b7a',
+          status: 'active',
         },
       ],
 
@@ -108,48 +175,205 @@ export const useAppStore = create<AppStore>()(
         { id: 'p5', name: 'Mum', bsb: '055-000', accountNumber: '1111 2222', avatarColour: '#4CAF50' },
       ],
 
-      setPasscode: (code: string) =>
+      payToAgreements: [
+        {
+          id: 'pt1',
+          merchantName: 'Spotify Australia',
+          description: 'Premium subscription',
+          amount: 11.99,
+          frequency: 'monthly',
+          status: 'active',
+          startDate: '2025-01-15',
+          nextPaymentDate: '2026-06-15',
+          lastPaymentDate: '2026-05-15',
+          accountId: '1',
+          reference: 'SPT-2025-00847',
+          payId: 'billing@spotify.com.au',
+        },
+        {
+          id: 'pt2',
+          merchantName: 'NRMA Insurance',
+          description: 'Home & contents insurance',
+          amount: 245.00,
+          frequency: 'quarterly',
+          status: 'active',
+          startDate: '2025-03-01',
+          nextPaymentDate: '2026-06-01',
+          lastPaymentDate: '2026-03-01',
+          accountId: '1',
+          reference: 'NRMA-HOME-2025',
+          payId: 'payments@nrma.com.au',
+        },
+        {
+          id: 'pt3',
+          merchantName: 'Gold\'s Gym Wollongong',
+          description: 'Monthly membership',
+          amount: 79.90,
+          frequency: 'monthly',
+          status: 'paused',
+          startDate: '2024-09-01',
+          nextPaymentDate: undefined,
+          lastPaymentDate: '2026-04-01',
+          accountId: '2',
+          reference: 'GYM-ALEX-001',
+          payId: '0281234567',
+        },
+      ],
+
+      scheduledPayments: [
+        {
+          id: 'sp1',
+          payeeId: 'p4',
+          payeeName: 'Body Corp',
+          amount: 450.00,
+          frequency: 'monthly',
+          nextDate: '2026-06-01',
+          accountId: '1',
+          description: 'Monthly body corp levy',
+          status: 'active',
+        },
+        {
+          id: 'sp2',
+          payeeId: 'p5',
+          payeeName: 'Mum',
+          amount: 200.00,
+          frequency: 'fortnightly',
+          nextDate: '2026-05-28',
+          accountId: '1',
+          description: 'Weekly transfer',
+          status: 'active',
+        },
+      ],
+
+      // ─── Preferences actions ───────────────────────────────────────────────
+
+      setPasscode: (code) =>
         set((state) => ({
-          preferences: {
-            ...state.preferences,
-            hasSetupPasscode: true,
-            passcode: code,
-          },
+          preferences: { ...state.preferences, hasSetupPasscode: true, passcode: code },
         })),
 
-      verifyPasscode: (code: string) => {
-        return get().preferences.passcode === code;
-      },
+      verifyPasscode: (code) => get().preferences.passcode === code,
 
-      setAuthenticated: (value: boolean) =>
+      setAuthenticated: (value) =>
         set((state) => ({
           preferences: { ...state.preferences, isAuthenticated: value },
         })),
 
-      dismissBanner: (bannerId: string) =>
+      dismissBanner: (bannerId) =>
         set((state) => ({
           preferences: {
             ...state.preferences,
-            dismissedBanners: [
-              ...(state.preferences.dismissedBanners || []),
-              bannerId,
-            ],
+            dismissedBanners: [...(state.preferences.dismissedBanners || []), bannerId],
           },
         })),
 
-      toggleCardLock: (cardId: string) =>
+      updateNotifications: (prefs) =>
+        set((state) => ({
+          notifications: { ...state.notifications, ...prefs },
+        })),
+
+      updateProfile: (updates) =>
+        set((state) => ({
+          profile: { ...state.profile, ...updates },
+        })),
+
+      // ─── Card actions ──────────────────────────────────────────────────────
+
+      toggleCardLock: (cardId) =>
         set((state) => ({
           cards: state.cards.map((c) =>
             c.id === cardId ? { ...c, isLocked: !c.isLocked } : c
           ),
         })),
+
+      reportCard: (cardId, reason) =>
+        set((state) => ({
+          cards: state.cards.map((c) =>
+            c.id === cardId
+              ? { ...c, status: reason as Card['status'], isLocked: true, reportedAt: new Date().toISOString(), reportReason: reason }
+              : c
+          ),
+        })),
+
+      // ─── Transaction actions ───────────────────────────────────────────────
+
+      addTransaction: (tx) =>
+        set((state) => ({
+          transactions: [{ ...tx, id: generateId() }, ...state.transactions],
+        })),
+
+      updateAccountBalance: (accountId, delta) =>
+        set((state) => ({
+          accounts: state.accounts.map((a) =>
+            a.id === accountId
+              ? { ...a, balance: a.balance + delta, availableBalance: a.availableBalance + delta }
+              : a
+          ),
+        })),
+
+      // ─── Payee actions ─────────────────────────────────────────────────────
+
+      addPayee: (payee) =>
+        set((state) => ({
+          payees: [...state.payees, { ...payee, id: generateId() }],
+        })),
+
+      updatePayee: (id, updates) =>
+        set((state) => ({
+          payees: state.payees.map((p) => (p.id === id ? { ...p, ...updates } : p)),
+        })),
+
+      deletePayee: (id) =>
+        set((state) => ({
+          payees: state.payees.filter((p) => p.id !== id),
+        })),
+
+      // ─── PayTo actions ─────────────────────────────────────────────────────
+
+      addPayToAgreement: (agreement) =>
+        set((state) => ({
+          payToAgreements: [...state.payToAgreements, { ...agreement, id: generateId() }],
+        })),
+
+      updatePayToAgreement: (id, updates) =>
+        set((state) => ({
+          payToAgreements: state.payToAgreements.map((a) =>
+            a.id === id ? { ...a, ...updates } : a
+          ),
+        })),
+
+      // ─── Scheduled payment actions ──────────────────────────────────────────
+
+      addScheduledPayment: (payment) =>
+        set((state) => ({
+          scheduledPayments: [...state.scheduledPayments, { ...payment, id: generateId() }],
+        })),
+
+      updateScheduledPayment: (id, updates) =>
+        set((state) => ({
+          scheduledPayments: state.scheduledPayments.map((p) =>
+            p.id === id ? { ...p, ...updates } : p
+          ),
+        })),
+
+      deleteScheduledPayment: (id) =>
+        set((state) => ({
+          scheduledPayments: state.scheduledPayments.filter((p) => p.id !== id),
+        })),
     }),
     {
-      name: 'imb-bank-storage',
+      name: 'imb-bank-storage-v2',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         preferences: state.preferences,
         cards: state.cards,
+        payees: state.payees,
+        accounts: state.accounts,
+        transactions: state.transactions,
+        payToAgreements: state.payToAgreements,
+        scheduledPayments: state.scheduledPayments,
+        notifications: state.notifications,
+        profile: state.profile,
       }),
     }
   )
