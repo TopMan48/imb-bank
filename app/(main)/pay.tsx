@@ -18,7 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppStore } from '@/store/useAppStore';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
-import { lookupPayId, type PayIdType } from '@/utils/payid-registry';
+import { lookupPayId, type PayIdType, type PayIdRecord } from '@/utils/payid-registry';
 import type { Transaction } from '@/store/types';
 
 type PayMode = 'pay-anyone' | 'payid' | 'bpay' | 'internal' | 'international' | 'payto';
@@ -61,7 +61,7 @@ interface ConfirmData {
 
 export default function PayScreen() {
   const insets = useSafeAreaInsets();
-  const { accounts, payees, payToAgreements, addTransaction, updateAccountBalance } = useAppStore();
+  const { accounts, payees, payToAgreements, addTransaction, updateAccountBalance, profile } = useAppStore();
 
   const [mode, setMode] = useState<PayMode>('pay-anyone');
   const [selectedFromAccount, setSelectedFromAccount] = useState(accounts[0]?.id ?? '');
@@ -111,17 +111,47 @@ export default function PayScreen() {
 
   // ─── PayID Lookup ─────────────────────────────────────────────────────────
 
+  /**
+   * Build dynamic registry entries from the current user's profile so that
+   * looking up their own registered email/phone always resolves correctly,
+   * regardless of whether the static registry has been updated.
+   */
+  const buildUserPayIdEntries = (): PayIdRecord[] => {
+    const entries: PayIdRecord[] = [];
+    const fullName = `${profile.firstName} ${profile.lastName}`.trim();
+    if (profile.email) {
+      entries.push({
+        payId: profile.email.toLowerCase(),
+        type: 'email',
+        registeredName: fullName,
+        financialInstitution: 'IMB Bank',
+      });
+    }
+    if (profile.phone) {
+      // Strip formatting so "0412 345 678" → "0412345678"
+      const cleanPhone = profile.phone.replace(/\s+/g, '').replace(/-/g, '');
+      entries.push({
+        payId: cleanPhone,
+        type: 'mobile',
+        registeredName: fullName,
+        financialInstitution: 'IMB Bank',
+      });
+    }
+    return entries;
+  };
+
   const handlePayIdLookup = async () => {
     if (!payIdValue.trim()) return;
     setIsLookingUp(true);
     setPayIdLookupResult(null);
     setPayIdLookupError(null);
     try {
-      const result = await lookupPayId(payIdValue.trim());
+      // Pass the current user's own PayIDs so their own registered details resolve correctly
+      const result = await lookupPayId(payIdValue.trim(), buildUserPayIdEntries());
       if (result) {
         setPayIdLookupResult({ name: result.registeredName, institution: result.financialInstitution });
       } else {
-        setPayIdLookupError('PayID not registered. Please check and try again.');
+        setPayIdLookupError('PayID not found. Please check and try again.');
       }
     } finally {
       setIsLookingUp(false);
