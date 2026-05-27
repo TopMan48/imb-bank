@@ -151,6 +151,18 @@ export default function MoreScreen() {
       onPress: () => router.push('/settings/manage-payees'),
     },
     {
+      icon: 'at-outline',
+      label: 'PayID Management',
+      subtitle: 'Register & manage your PayIDs',
+      onPress: () => router.push('/settings/payid-management'),
+    },
+    {
+      icon: 'receipt-outline',
+      label: 'Payment Requests',
+      subtitle: 'Request payments via PayID',
+      onPress: () => router.push('/settings/payment-requests'),
+    },
+    {
       icon: 'link-outline',
       label: 'PayTo Agreements',
       subtitle: `${activePayTo} active agreement${activePayTo !== 1 ? 's' : ''}`,
@@ -162,6 +174,15 @@ export default function MoreScreen() {
       label: 'Report Card',
       subtitle: 'Lost, stolen or damaged',
       onPress: () => router.push('/settings/report-card'),
+    },
+  ];
+
+  const developerMenuItems: MenuItemData[] = [
+    {
+      icon: 'code-slash-outline',
+      label: 'API Status',
+      subtitle: 'Payment API connections & health',
+      onPress: () => router.push('/settings/api-status'),
     },
   ];
 
@@ -234,6 +255,7 @@ export default function MoreScreen() {
 
         <MenuSection title="Account" items={accountMenuItems} />
         <MenuSection title="Banking" items={bankingMenuItems} />
+        <MenuSection title="Developer" items={developerMenuItems} />
         <MenuSection title="Support" items={supportMenuItems} />
 
         {/* Sign Out */}

@@ -26,6 +26,9 @@ export default function SettingsLayout() {
       <Stack.Screen name="edit-payee" options={{ title: 'Edit Payee', presentation: 'modal' }} />
       <Stack.Screen name="report-card" options={{ title: 'Report Card', presentation: 'modal' }} />
       <Stack.Screen name="payto-agreements" options={{ title: 'PayTo Agreements' }} />
+      <Stack.Screen name="payid-management" options={{ title: 'PayID Management' }} />
+      <Stack.Screen name="payment-requests" options={{ title: 'Payment Requests' }} />
+      <Stack.Screen name="api-status" options={{ title: 'API Status' }} />
       <Stack.Screen name="help" options={{ title: 'Help Centre' }} />
       <Stack.Screen name="contact" options={{ title: 'Contact Us' }} />
       <Stack.Screen name="about" options={{ title: 'About IMB Bank' }} />

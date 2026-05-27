@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -20,6 +20,8 @@ import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 import { lookupPayId, type PayIdType, type PayIdRecord } from '@/utils/payid-registry';
 import type { Transaction } from '@/store/types';
+import { paymentGateway, isDemoMode, webhookHandler } from '@/services';
+import type { NppPaymentStatus, WebhookEvent } from '@/services';
 
 type PayMode = 'pay-anyone' | 'payid' | 'bpay' | 'internal' | 'international' | 'payto';
 
@@ -105,9 +107,25 @@ export default function PayScreen() {
   const [confirmData, setConfirmData] = useState<ConfirmData | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<NppPaymentStatus | null>(null);
+  const [paymentTransactionId, setPaymentTransactionId] = useState<string | null>(null);
+  const demoMode = isDemoMode();
 
   const fromAccount = accounts.find((a) => a.id === selectedFromAccount);
   const activePayToAgreements = payToAgreements.filter((a) => a.status !== 'cancelled');
+
+  // Subscribe to webhook events for real-time payment status updates
+  useEffect(() => {
+    const unsubscribe = webhookHandler.subscribe(
+      ['payment.completed', 'payment.failed'],
+      (event: WebhookEvent) => {
+        if (paymentTransactionId && event.data.paymentId === paymentTransactionId) {
+          setPaymentStatus(event.type === 'payment.completed' ? 'completed' : 'failed');
+        }
+      }
+    );
+    return unsubscribe;
+  }, [paymentTransactionId]);
 
   // ─── PayID Lookup ─────────────────────────────────────────────────────────
 
@@ -146,10 +164,24 @@ export default function PayScreen() {
     setPayIdLookupResult(null);
     setPayIdLookupError(null);
     try {
-      // Pass the current user's own PayIDs so their own registered details resolve correctly
-      const result = await lookupPayId(payIdValue.trim(), buildUserPayIdEntries());
-      if (result) {
-        setPayIdLookupResult({ name: result.registeredName, institution: result.financialInstitution });
+      // Use payment gateway for resolution (routes through Monoova API or demo)
+      const gatewayResult = await paymentGateway.resolvePayId(payIdValue.trim());
+      if (gatewayResult) {
+        setPayIdLookupResult({ name: gatewayResult.registeredName, institution: gatewayResult.financialInstitution });
+      } else {
+        // Fallback to local registry (includes user's own PayIDs)
+        const localResult = await lookupPayId(payIdValue.trim(), buildUserPayIdEntries());
+        if (localResult) {
+          setPayIdLookupResult({ name: localResult.registeredName, institution: localResult.financialInstitution });
+        } else {
+          setPayIdLookupError('PayID not found. Please check and try again.');
+        }
+      }
+    } catch {
+      // On API error, fall back to local registry
+      const localResult = await lookupPayId(payIdValue.trim(), buildUserPayIdEntries());
+      if (localResult) {
+        setPayIdLookupResult({ name: localResult.registeredName, institution: localResult.financialInstitution });
       } else {
         setPayIdLookupError('PayID not found. Please check and try again.');
       }
@@ -244,47 +276,99 @@ export default function PayScreen() {
   const handleConfirm = async () => {
     if (!confirmData) return;
     setIsProcessing(true);
-    await new Promise((r) => setTimeout(r, 1200));
+    setPaymentStatus('processing');
 
-    // Deduct from source account
-    const debitDelta = -confirmData.amount;
-    updateAccountBalance(selectedFromAccount, debitDelta);
+    try {
+      // Route payment through the payment gateway
+      let gatewayResult;
+      if (mode === 'payid' && confirmData.payId) {
+        gatewayResult = await paymentGateway.sendPayment({
+          method: 'payid',
+          amount: confirmData.amount,
+          fromAccountBsb: fromAccount?.bsb ?? '',
+          fromAccountNumber: fromAccount?.accountNumber ?? '',
+          fromAccountName: fromAccount?.name ?? '',
+          toPayId: confirmData.payId,
+          recipientName: confirmData.toName,
+          description: confirmData.description,
+        });
+      } else if (mode === 'pay-anyone' || mode === 'bpay') {
+        const payee = selectedPayeeId ? payees.find((p) => p.id === selectedPayeeId) : null;
+        gatewayResult = await paymentGateway.sendPayment({
+          method: 'bsb',
+          amount: confirmData.amount,
+          fromAccountBsb: fromAccount?.bsb ?? '',
+          fromAccountNumber: fromAccount?.accountNumber ?? '',
+          fromAccountName: fromAccount?.name ?? '',
+          toBsb: payee?.bsb ?? manualBSB,
+          toAccountNumber: payee?.accountNumber ?? manualAccountNumber,
+          toAccountName: confirmData.toName,
+          recipientName: confirmData.toName,
+          description: confirmData.description,
+        });
+      } else if (mode === 'international') {
+        gatewayResult = await paymentGateway.sendPayment({
+          method: 'international',
+          amount: confirmData.amount,
+          fromAccountBsb: fromAccount?.bsb ?? '',
+          fromAccountNumber: fromAccount?.accountNumber ?? '',
+          fromAccountName: fromAccount?.name ?? '',
+          recipientName: confirmData.toName,
+          description: confirmData.description,
+        });
+      }
 
-    // Credit destination for internal transfer
-    if (mode === 'internal' && selectedToAccountId) {
-      updateAccountBalance(selectedToAccountId, confirmData.amount);
-    }
+      if (gatewayResult) {
+        setPaymentTransactionId(gatewayResult.transactionId);
+        setPaymentStatus(gatewayResult.status);
+        confirmData.reference = gatewayResult.reference || confirmData.reference;
+      }
 
-    // Add debit transaction
-    addTransaction({
-      accountId: selectedFromAccount,
-      description: confirmData.description || confirmData.toName,
-      amount: debitDelta,
-      date: new Date().toISOString().slice(0, 10),
-      type: 'debit',
-      category: mode === 'internal' ? 'transfer' : mode === 'bpay' ? 'utilities' : 'other',
-      paymentMethod: confirmData.paymentMethod,
-      reference: confirmData.reference,
-      recipientName: confirmData.toName,
-    });
+      // Deduct from source account
+      const debitDelta = -confirmData.amount;
+      updateAccountBalance(selectedFromAccount, debitDelta);
 
-    // Add credit transaction for internal transfers
-    if (mode === 'internal' && selectedToAccountId) {
+      // Credit destination for internal transfer
+      if (mode === 'internal' && selectedToAccountId) {
+        updateAccountBalance(selectedToAccountId, confirmData.amount);
+      }
+
+      // Add debit transaction
       addTransaction({
-        accountId: selectedToAccountId,
-        description: `Transfer from ${fromAccount?.name ?? 'account'}`,
-        amount: confirmData.amount,
+        accountId: selectedFromAccount,
+        description: confirmData.description || confirmData.toName,
+        amount: debitDelta,
         date: new Date().toISOString().slice(0, 10),
-        type: 'credit',
-        category: 'transfer',
-        paymentMethod: 'internal',
+        type: 'debit',
+        category: mode === 'internal' ? 'transfer' : mode === 'bpay' ? 'utilities' : 'other',
+        paymentMethod: confirmData.paymentMethod,
         reference: confirmData.reference,
+        recipientName: confirmData.toName,
       });
-    }
 
-    setIsProcessing(false);
-    setShowConfirm(false);
-    setPaymentSuccess(true);
+      // Add credit transaction for internal transfers
+      if (mode === 'internal' && selectedToAccountId) {
+        addTransaction({
+          accountId: selectedToAccountId,
+          description: `Transfer from ${fromAccount?.name ?? 'account'}`,
+          amount: confirmData.amount,
+          date: new Date().toISOString().slice(0, 10),
+          type: 'credit',
+          category: 'transfer',
+          paymentMethod: 'internal',
+          reference: confirmData.reference,
+        });
+      }
+
+      setIsProcessing(false);
+      setShowConfirm(false);
+      setPaymentSuccess(true);
+    } catch (error) {
+      setIsProcessing(false);
+      setPaymentStatus('failed');
+      const message = error instanceof Error ? error.message : 'Payment failed';
+      Alert.alert('Payment Failed', message);
+    }
   };
 
   const handleReset = () => {
@@ -307,6 +391,8 @@ export default function PayScreen() {
     setIntlIban('');
     setSelectedPayToId(null);
     setConfirmData(null);
+    setPaymentStatus(null);
+    setPaymentTransactionId(null);
   };
 
   // ─── Success screen ───────────────────────────────────────────────────────
@@ -325,6 +411,27 @@ export default function PayScreen() {
             <Text style={{ fontSize: 15, fontFamily: Fonts.regular, color: Colors.textSecondary }}>
               ${confirmData.amount.toFixed(2)} to {confirmData.toName}
             </Text>
+            {/* Real-time payment status */}
+            {paymentStatus && paymentStatus !== 'completed' && (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FFF8E1', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, borderCurve: 'continuous' }}>
+                <ActivityIndicator size="small" color="#FF9800" />
+                <Text style={{ fontSize: 12, fontFamily: Fonts.medium, color: '#F57C00' }}>
+                  {paymentStatus === 'processing' ? 'Processing via NPP...' : `Status: ${paymentStatus}`}
+                </Text>
+              </View>
+            )}
+            {paymentStatus === 'completed' && (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#E8F5E9', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, borderCurve: 'continuous' }}>
+                <Ionicons name="flash" size={14} color={Colors.success} />
+                <Text style={{ fontSize: 12, fontFamily: Fonts.medium, color: Colors.success }}>Delivered instantly via Osko®</Text>
+              </View>
+            )}
+            {demoMode && (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                <View style={{ width: 5, height: 5, borderRadius: 2.5, backgroundColor: '#FF9800' }} />
+                <Text style={{ fontSize: 10, fontFamily: Fonts.regular, color: Colors.textSecondary }}>Demo Mode</Text>
+              </View>
+            )}
           </View>
 
           <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 4px 20px rgba(0,75,90,0.1)' }}>
@@ -362,6 +469,12 @@ export default function PayScreen() {
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Pay & Transfer</Text>
+          {demoMode && (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 }}>
+              <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#FF9800' }} />
+              <Text style={{ fontSize: 11, fontFamily: Fonts.medium, color: '#F57C00' }}>Demo Mode</Text>
+            </View>
+          )}
         </View>
 
         {/* Mode selector */}
