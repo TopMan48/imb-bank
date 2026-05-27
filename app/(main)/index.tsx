@@ -148,6 +148,8 @@ export default function HomeScreen() {
               key={action.label}
               style={({ pressed }) => [styles.quickAction, pressed && { opacity: 0.7 }]}
               onPress={action.onPress}
+              accessibilityRole="button"
+              accessibilityLabel={action.label}
             >
               <View style={styles.quickActionIcon}>
                 <Ionicons name={action.icon} size={22} color={Colors.primary} />
@@ -222,7 +224,10 @@ export default function HomeScreen() {
             <Text style={styles.promoTitle}>Get up to</Text>
             <Text style={styles.promoHighlight}>$3,000 cashback</Text>
             <Text style={styles.promoDesc}>On new purchase or refinance home loans</Text>
-            <Pressable style={styles.promoBtn}>
+            <Pressable
+              style={styles.promoBtn}
+              onPress={() => router.push('/settings/about')}
+            >
               <Text style={styles.promoBtnText}>Find out more</Text>
               <Ionicons name="arrow-forward" size={14} color={Colors.primary} />
             </Pressable>

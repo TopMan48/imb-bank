@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppStore } from '@/store/useAppStore';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
-import { lookupPayId, type PayIdType, type PayIdRecord } from '@/utils/payid-registry';
+import {
+  lookupPayId,
+  type PayIdType,
+  type PayIdRecord,
+  isValidEmail,
+  isValidMobile,
+  isValidABN,
+} from '@/utils/payid-registry';
+import { lookupBsb, formatBsb, isValidBsbFormat } from '@/utils/bsb-lookup';
 import type { Transaction } from '@/store/types';
 import { paymentGateway, isDemoMode, webhookHandler } from '@/services';
 import type { NppPaymentStatus, WebhookEvent } from '@/services';
@@ -36,15 +44,21 @@ const MODES: { key: PayMode; label: string; icon: keyof typeof Ionicons.glyphMap
 
 const QUICK_AMOUNTS = ['50', '100', '200', '500'];
 
-const PAYID_TYPES: { key: PayIdType; label: string; placeholder: string; keyboardType: 'default' | 'email-address' | 'phone-pad' | 'numeric' }[] = [
-  { key: 'email', label: 'Email', placeholder: 'email@example.com', keyboardType: 'email-address' },
-  { key: 'mobile', label: 'Mobile', placeholder: '0412 345 678', keyboardType: 'phone-pad' },
-  { key: 'abn', label: 'ABN', placeholder: '12 345 678 901', keyboardType: 'numeric' },
-  { key: 'organisation-id', label: 'Org ID', placeholder: 'ORG001234', keyboardType: 'default' },
+const PAYID_TYPES: {
+  key: PayIdType;
+  label: string;
+  placeholder: string;
+  keyboardType: 'default' | 'email-address' | 'phone-pad' | 'numeric';
+  hint: string;
+}[] = [
+  { key: 'email', label: 'Email', placeholder: 'user@example.com', keyboardType: 'email-address', hint: 'e.g. sarah.johnson@gmail.com' },
+  { key: 'mobile', label: 'Mobile', placeholder: '04XX XXX XXX', keyboardType: 'phone-pad', hint: 'e.g. 0412 345 678' },
+  { key: 'abn', label: 'ABN', placeholder: 'XX XXX XXX XXX', keyboardType: 'numeric', hint: 'e.g. 51 824 753 556' },
+  { key: 'organisation-id', label: 'Org ID', placeholder: 'ORG001234', keyboardType: 'default', hint: 'e.g. ORG001234' },
 ];
 
-const COUNTRIES = ['Australia', 'United States', 'United Kingdom', 'New Zealand', 'Singapore', 'Canada', 'Germany', 'France', 'Japan', 'China'];
-const CURRENCIES = ['USD', 'GBP', 'EUR', 'NZD', 'SGD', 'CAD', 'JPY', 'CNY', 'HKD'];
+const COUNTRIES = ['United States', 'United Kingdom', 'New Zealand', 'Singapore', 'Canada', 'Germany', 'France', 'Japan', 'China', 'India'];
+const CURRENCIES = ['USD', 'GBP', 'EUR', 'NZD', 'SGD', 'CAD', 'JPY', 'CNY', 'HKD', 'INR'];
 
 interface ConfirmData {
   mode: PayMode;
@@ -59,7 +73,99 @@ interface ConfirmData {
   crn?: string;
   currency?: string;
   country?: string;
+  bsb?: string;
+  accountNumber?: string;
 }
+
+// ─── BSB Field with live lookup ──────────────────────────────────────────────
+
+function BsbField({
+  value,
+  onChange,
+  onBlur,
+  error,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  onBlur?: () => void;
+  error?: string | null;
+}) {
+  const bankInfo = value.replace(/\D/g, '').length >= 3 ? lookupBsb(value) : null;
+  const isValid = isValidBsbFormat(value);
+
+  return (
+    <View style={{ gap: 6 }}>
+      <View style={{ padding: 14, gap: 4 }}>
+        <Text style={fieldStyles.label}>BSB *</Text>
+        <TextInput
+          style={fieldStyles.input}
+          value={value}
+          onChangeText={(v) => onChange(formatBsb(v))}
+          onBlur={onBlur}
+          placeholder="XXX-XXX"
+          placeholderTextColor={Colors.textSecondary}
+          keyboardType="numeric"
+          maxLength={7}
+        />
+      </View>
+      {/* Live bank info */}
+      {bankInfo && (
+        <View style={fieldStyles.bankInfoRow}>
+          <View style={[fieldStyles.bankDot, { backgroundColor: bankInfo.color }]} />
+          <Text style={fieldStyles.bankName}>{bankInfo.name}</Text>
+          {isValid && <Ionicons name="checkmark-circle" size={14} color={Colors.success} />}
+        </View>
+      )}
+      {!bankInfo && value.replace(/\D/g, '').length >= 3 && (
+        <View style={fieldStyles.bankInfoRow}>
+          <Ionicons name="help-circle-outline" size={14} color={Colors.textSecondary} />
+          <Text style={[fieldStyles.bankName, { color: Colors.textSecondary }]}>Unknown bank</Text>
+        </View>
+      )}
+      {error && <Text style={fieldStyles.error}>{error}</Text>}
+    </View>
+  );
+}
+
+const fieldStyles = StyleSheet.create({
+  label: {
+    fontSize: 11,
+    fontFamily: Fonts.semiBold,
+    color: Colors.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  input: {
+    fontSize: 15,
+    fontFamily: Fonts.regular,
+    color: Colors.textPrimary,
+  },
+  bankInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 14,
+    paddingBottom: 10,
+  },
+  bankDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  bankName: {
+    fontSize: 12,
+    fontFamily: Fonts.medium,
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+  error: {
+    fontSize: 12,
+    fontFamily: Fonts.regular,
+    color: Colors.error,
+    paddingHorizontal: 14,
+    paddingBottom: 8,
+  },
+});
 
 export default function PayScreen() {
   const insets = useSafeAreaInsets();
@@ -74,12 +180,15 @@ export default function PayScreen() {
   const [manualAccountNumber, setManualAccountNumber] = useState('');
   const [manualAccountName, setManualAccountName] = useState('');
   const [showManualEntry, setShowManualEntry] = useState(false);
+  const [bsbError, setBsbError] = useState<string | null>(null);
+  const [accountNumberError, setAccountNumberError] = useState<string | null>(null);
 
   // PayID fields
   const [payIdType, setPayIdType] = useState<PayIdType>('email');
   const [payIdValue, setPayIdValue] = useState('');
   const [payIdLookupResult, setPayIdLookupResult] = useState<{ name: string; institution: string } | null>(null);
   const [payIdLookupError, setPayIdLookupError] = useState<string | null>(null);
+  const [payIdValidationError, setPayIdValidationError] = useState<string | null>(null);
   const [isLookingUp, setIsLookingUp] = useState(false);
 
   // BPAY fields
@@ -102,6 +211,7 @@ export default function PayScreen() {
 
   // Shared
   const [amount, setAmount] = useState('');
+  const [amountError, setAmountError] = useState<string | null>(null);
   const [description, setDescription] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmData, setConfirmData] = useState<ConfirmData | null>(null);
@@ -127,13 +237,26 @@ export default function PayScreen() {
     return unsubscribe;
   }, [paymentTransactionId]);
 
+  // ─── PayID Validation per type ────────────────────────────────────────────
+
+  const validatePayIdValue = useCallback((value: string, type: PayIdType): string | null => {
+    if (!value.trim()) return null;
+    switch (type) {
+      case 'email':
+        return isValidEmail(value) ? null : 'Enter a valid email address (e.g. user@example.com)';
+      case 'mobile':
+        return isValidMobile(value.replace(/\s/g, '')) ? null : 'Enter a valid Australian mobile (04XX XXX XXX)';
+      case 'abn':
+        return isValidABN(value.replace(/\s/g, '')) ? null : 'Enter a valid 11-digit ABN';
+      case 'organisation-id':
+        return /^ORG\w+$/i.test(value.trim()) ? null : 'Enter a valid Organisation ID (e.g. ORG001234)';
+      default:
+        return null;
+    }
+  }, []);
+
   // ─── PayID Lookup ─────────────────────────────────────────────────────────
 
-  /**
-   * Build dynamic registry entries from the current user's profile so that
-   * looking up their own registered email/phone always resolves correctly,
-   * regardless of whether the static registry has been updated.
-   */
   const buildUserPayIdEntries = (): PayIdRecord[] => {
     const entries: PayIdRecord[] = [];
     const fullName = `${profile.firstName} ${profile.lastName}`.trim();
@@ -146,7 +269,6 @@ export default function PayScreen() {
       });
     }
     if (profile.phone) {
-      // Strip formatting so "0412 345 678" → "0412345678"
       const cleanPhone = profile.phone.replace(/\s+/g, '').replace(/-/g, '');
       entries.push({
         payId: cleanPhone,
@@ -159,35 +281,91 @@ export default function PayScreen() {
   };
 
   const handlePayIdLookup = async () => {
-    if (!payIdValue.trim()) return;
+    const trimmed = payIdValue.trim();
+    if (!trimmed) {
+      setPayIdValidationError('Please enter a PayID value.');
+      return;
+    }
+    // Validate format first
+    const formatError = validatePayIdValue(trimmed, payIdType);
+    if (formatError) {
+      setPayIdValidationError(formatError);
+      return;
+    }
+    setPayIdValidationError(null);
     setIsLookingUp(true);
     setPayIdLookupResult(null);
     setPayIdLookupError(null);
     try {
-      // Use payment gateway for resolution (routes through Monoova API or demo)
-      const gatewayResult = await paymentGateway.resolvePayId(payIdValue.trim());
+      // Try payment gateway first (routes through Monoova or demo)
+      const gatewayResult = await paymentGateway.resolvePayId(trimmed);
       if (gatewayResult) {
         setPayIdLookupResult({ name: gatewayResult.registeredName, institution: gatewayResult.financialInstitution });
-      } else {
-        // Fallback to local registry (includes user's own PayIDs)
-        const localResult = await lookupPayId(payIdValue.trim(), buildUserPayIdEntries());
-        if (localResult) {
-          setPayIdLookupResult({ name: localResult.registeredName, institution: localResult.financialInstitution });
-        } else {
-          setPayIdLookupError('PayID not found. Please check and try again.');
-        }
+        return;
       }
-    } catch {
-      // On API error, fall back to local registry
-      const localResult = await lookupPayId(payIdValue.trim(), buildUserPayIdEntries());
+      // Fall back to local registry
+      const localResult = await lookupPayId(trimmed, buildUserPayIdEntries());
       if (localResult) {
         setPayIdLookupResult({ name: localResult.registeredName, institution: localResult.financialInstitution });
       } else {
-        setPayIdLookupError('PayID not found. Please check and try again.');
+        setPayIdLookupError('PayID not found — please check and try again.');
+      }
+    } catch {
+      // On API error, fall back to local registry
+      const localResult = await lookupPayId(trimmed, buildUserPayIdEntries());
+      if (localResult) {
+        setPayIdLookupResult({ name: localResult.registeredName, institution: localResult.financialInstitution });
+      } else {
+        setPayIdLookupError('PayID not found — please check and try again.');
       }
     } finally {
       setIsLookingUp(false);
     }
+  };
+
+  // ─── BSB inline validation ────────────────────────────────────────────────
+
+  const handleBsbChange = (v: string) => {
+    const formatted = formatBsb(v);
+    setManualBSB(formatted);
+    const digits = formatted.replace(/\D/g, '');
+    if (digits.length === 6) {
+      setBsbError(null);
+    } else if (digits.length > 0) {
+      setBsbError(null); // don't show error while typing
+    }
+  };
+
+  const handleBsbBlur = () => {
+    const digits = manualBSB.replace(/\D/g, '');
+    if (digits.length > 0 && digits.length < 6) {
+      setBsbError('BSB must be exactly 6 digits (e.g. 641-800)');
+    } else {
+      setBsbError(null);
+    }
+  };
+
+  const handleAccountNumberBlur = () => {
+    const digits = manualAccountNumber.replace(/\D/g, '');
+    if (digits.length > 0 && (digits.length < 6 || digits.length > 10)) {
+      setAccountNumberError('Account number must be 6–10 digits');
+    } else {
+      setAccountNumberError(null);
+    }
+  };
+
+  // ─── Amount validation ────────────────────────────────────────────────────
+
+  const handleAmountChange = (v: string) => {
+    // Only allow valid decimal input
+    const clean = v.replace(/[^0-9.]/g, '');
+    const parts = clean.split('.');
+    const formatted = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : clean;
+    // Limit to 2 decimal places
+    const dotIdx = formatted.indexOf('.');
+    if (dotIdx !== -1 && formatted.length - dotIdx - 1 > 2) return;
+    setAmount(formatted);
+    setAmountError(null);
   };
 
   // ─── Validation ──────────────────────────────────────────────────────────
@@ -195,31 +373,41 @@ export default function PayScreen() {
   const validatePayment = (): string | null => {
     const amt = parseFloat(amount);
     if (!amount || isNaN(amt) || amt <= 0) return 'Please enter a valid amount.';
-    if (fromAccount && amt > fromAccount.availableBalance) return 'Insufficient funds.';
+    if (!/^\d+(\.\d{1,2})?$/.test(amount)) return 'Amount can have at most 2 decimal places.';
+    if (fromAccount && amt > fromAccount.availableBalance) return `Insufficient funds. Available: $${fromAccount.availableBalance.toFixed(2)}`;
 
     switch (mode) {
       case 'pay-anyone':
-        if (!showManualEntry && !selectedPayeeId) return 'Please select a payee or enter details manually.';
+        if (!showManualEntry && !selectedPayeeId) return 'Please select a payee or tap "New Payee" to enter details.';
         if (showManualEntry) {
-          if (!manualBSB || !/^\d{3}-?\d{3}$/.test(manualBSB.replace(/\s/g, ''))) return 'Enter a valid BSB (e.g. 641-800).';
-          if (!manualAccountNumber.trim()) return 'Enter the account number.';
-          if (!manualAccountName.trim()) return 'Enter the account name.';
+          const bsbDigits = manualBSB.replace(/\D/g, '');
+          if (!bsbDigits || bsbDigits.length !== 6) return 'Enter a valid 6-digit BSB (e.g. 641-800).';
+          const acctDigits = manualAccountNumber.replace(/\D/g, '');
+          if (!acctDigits || acctDigits.length < 6 || acctDigits.length > 10) return 'Enter a valid account number (6–10 digits).';
+          if (!manualAccountName.trim()) return 'Enter the account holder name.';
         }
         break;
       case 'payid':
-        if (!payIdValue.trim()) return 'Enter a PayID.';
-        if (!payIdLookupResult) return 'Please look up the PayID first.';
+        if (!payIdValue.trim()) return 'Enter a PayID value.';
+        {
+          const formatErr = validatePayIdValue(payIdValue.trim(), payIdType);
+          if (formatErr) return formatErr;
+        }
+        if (!payIdLookupResult) return 'Please look up the PayID before proceeding.';
         break;
       case 'bpay':
         if (!billerCode.trim()) return 'Enter the biller code.';
+        if (!/^\d+$/.test(billerCode)) return 'Biller code must be numbers only.';
         if (!crn.trim()) return 'Enter the customer reference number.';
         break;
       case 'internal':
         if (!selectedToAccountId) return 'Select a destination account.';
+        if (selectedToAccountId === selectedFromAccount) return 'Source and destination accounts must be different.';
         break;
       case 'international':
         if (!intlRecipientName.trim()) return 'Enter the recipient name.';
         if (!intlSwift.trim()) return 'Enter the SWIFT/BIC code.';
+        if (!/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i.test(intlSwift)) return 'Enter a valid SWIFT/BIC code (6–11 characters).';
         if (!intlIban.trim()) return 'Enter the IBAN or account number.';
         break;
       case 'payto':
@@ -245,12 +433,12 @@ export default function PayScreen() {
       case 'pay-anyone': {
         if (selectedPayeeId && !showManualEntry) {
           const payee = payees.find((p) => p.id === selectedPayeeId)!;
-          return { ...base, toName: payee.name, paymentMethod: 'bsb' };
+          return { ...base, toName: payee.name, paymentMethod: 'bsb', bsb: payee.bsb, accountNumber: payee.accountNumber };
         }
-        return { ...base, toName: manualAccountName, paymentMethod: 'bsb' };
+        return { ...base, toName: manualAccountName, paymentMethod: 'bsb', bsb: manualBSB, accountNumber: manualAccountNumber };
       }
       case 'payid':
-        return { ...base, toName: payIdLookupResult!.name, paymentMethod: 'payid', payId: payIdValue };
+        return { ...base, toName: payIdLookupResult!.name, paymentMethod: 'payid', payId: payIdValue.trim() };
       case 'bpay':
         return { ...base, toName: `Biller ${billerCode}`, paymentMethod: 'bpay', billerCode, crn };
       case 'internal': {
@@ -268,7 +456,10 @@ export default function PayScreen() {
 
   const handlePay = () => {
     const error = validatePayment();
-    if (error) { Alert.alert('Cannot Process', error); return; }
+    if (error) {
+      Alert.alert('Cannot Process', error);
+      return;
+    }
     setConfirmData(buildConfirmData());
     setShowConfirm(true);
   };
@@ -279,7 +470,6 @@ export default function PayScreen() {
     setPaymentStatus('processing');
 
     try {
-      // Route payment through the payment gateway
       let gatewayResult;
       if (mode === 'payid' && confirmData.payId) {
         gatewayResult = await paymentGateway.sendPayment({
@@ -292,8 +482,8 @@ export default function PayScreen() {
           recipientName: confirmData.toName,
           description: confirmData.description,
         });
-      } else if (mode === 'pay-anyone' || mode === 'bpay') {
-        const payee = selectedPayeeId ? payees.find((p) => p.id === selectedPayeeId) : null;
+      } else if (mode === 'pay-anyone') {
+        const payee = selectedPayeeId && !showManualEntry ? payees.find((p) => p.id === selectedPayeeId) : null;
         gatewayResult = await paymentGateway.sendPayment({
           method: 'bsb',
           amount: confirmData.amount,
@@ -325,8 +515,7 @@ export default function PayScreen() {
       }
 
       // Deduct from source account
-      const debitDelta = -confirmData.amount;
-      updateAccountBalance(selectedFromAccount, debitDelta);
+      updateAccountBalance(selectedFromAccount, -confirmData.amount);
 
       // Credit destination for internal transfer
       if (mode === 'internal' && selectedToAccountId) {
@@ -337,7 +526,7 @@ export default function PayScreen() {
       addTransaction({
         accountId: selectedFromAccount,
         description: confirmData.description || confirmData.toName,
-        amount: debitDelta,
+        amount: -confirmData.amount,
         date: new Date().toISOString().slice(0, 10),
         type: 'debit',
         category: mode === 'internal' ? 'transfer' : mode === 'bpay' ? 'utilities' : 'other',
@@ -366,7 +555,7 @@ export default function PayScreen() {
     } catch (error) {
       setIsProcessing(false);
       setPaymentStatus('failed');
-      const message = error instanceof Error ? error.message : 'Payment failed';
+      const message = error instanceof Error ? error.message : 'Payment failed. Please try again.';
       Alert.alert('Payment Failed', message);
     }
   };
@@ -374,15 +563,19 @@ export default function PayScreen() {
   const handleReset = () => {
     setPaymentSuccess(false);
     setAmount('');
+    setAmountError(null);
     setDescription('');
     setSelectedPayeeId(null);
     setManualBSB('');
     setManualAccountNumber('');
     setManualAccountName('');
     setShowManualEntry(false);
+    setBsbError(null);
+    setAccountNumberError(null);
     setPayIdValue('');
     setPayIdLookupResult(null);
     setPayIdLookupError(null);
+    setPayIdValidationError(null);
     setBillerCode('');
     setCrn('');
     setSelectedToAccountId(null);
@@ -395,25 +588,31 @@ export default function PayScreen() {
     setPaymentTransactionId(null);
   };
 
+  const handleModeChange = (newMode: PayMode) => {
+    setMode(newMode);
+    handleReset();
+  };
+
   // ─── Success screen ───────────────────────────────────────────────────────
 
   if (paymentSuccess && confirmData) {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
-        <ScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center', padding: 28, gap: 16 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 28, gap: 20 }}>
           <View style={{ alignItems: 'center', gap: 16 }}>
             <View style={{ width: 84, height: 84, borderRadius: 42, backgroundColor: '#E8F5E9', alignItems: 'center', justifyContent: 'center' }}>
               <Ionicons name="checkmark-circle" size={52} color={Colors.success} />
             </View>
             <Text style={{ fontSize: 26, fontFamily: Fonts.bold, color: Colors.textPrimary }}>
-              {mode === 'internal' ? 'Transfer Complete' : 'Payment Sent!'}
+              {mode === 'internal' ? 'Transfer Complete!' : 'Payment Sent!'}
             </Text>
-            <Text style={{ fontSize: 15, fontFamily: Fonts.regular, color: Colors.textSecondary }}>
-              ${confirmData.amount.toFixed(2)} to {confirmData.toName}
+            <Text style={{ fontSize: 15, fontFamily: Fonts.regular, color: Colors.textSecondary, textAlign: 'center' }}>
+              ${confirmData.amount.toFixed(2)} sent to {confirmData.toName}
             </Text>
+
             {/* Real-time payment status */}
             {paymentStatus && paymentStatus !== 'completed' && (
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FFF8E1', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, borderCurve: 'continuous' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#FFF8E1', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, borderCurve: 'continuous' }}>
                 <ActivityIndicator size="small" color="#FF9800" />
                 <Text style={{ fontSize: 12, fontFamily: Fonts.medium, color: '#F57C00' }}>
                   {paymentStatus === 'processing' ? 'Processing via NPP...' : `Status: ${paymentStatus}`}
@@ -421,7 +620,7 @@ export default function PayScreen() {
               </View>
             )}
             {paymentStatus === 'completed' && (
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#E8F5E9', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, borderCurve: 'continuous' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: '#E8F5E9', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, borderCurve: 'continuous' }}>
                 <Ionicons name="flash" size={14} color={Colors.success} />
                 <Text style={{ fontSize: 12, fontFamily: Fonts.medium, color: Colors.success }}>Delivered instantly via Osko®</Text>
               </View>
@@ -429,28 +628,38 @@ export default function PayScreen() {
             {demoMode && (
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
                 <View style={{ width: 5, height: 5, borderRadius: 2.5, backgroundColor: '#FF9800' }} />
-                <Text style={{ fontSize: 10, fontFamily: Fonts.regular, color: Colors.textSecondary }}>Demo Mode</Text>
+                <Text style={{ fontSize: 10, fontFamily: Fonts.regular, color: Colors.textSecondary }}>Demo Mode — no real payment sent</Text>
               </View>
             )}
           </View>
 
+          {/* Receipt card */}
           <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 4px 20px rgba(0,75,90,0.1)' }}>
-            {[
+            {([
               { label: 'From', value: confirmData.fromAccountName },
               { label: 'To', value: confirmData.toName },
-              { label: 'Amount', value: `$${confirmData.amount.toFixed(2)}${confirmData.currency ? ` → ${confirmData.currency}` : ''}` },
+              { label: 'Amount', value: `$${confirmData.amount.toFixed(2)}${confirmData.currency ? ` → ${confirmData.currency}` : ' AUD'}` },
               confirmData.payId ? { label: 'PayID', value: confirmData.payId } : null,
+              confirmData.bsb ? { label: 'BSB', value: confirmData.bsb } : null,
+              confirmData.accountNumber ? { label: 'Account', value: confirmData.accountNumber } : null,
               confirmData.billerCode ? { label: 'Biller Code', value: confirmData.billerCode } : null,
               confirmData.crn ? { label: 'Reference', value: confirmData.crn } : null,
               confirmData.description ? { label: 'Description', value: confirmData.description } : null,
               { label: 'Date', value: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) },
-              { label: 'Receipt', value: confirmData.reference },
-            ].filter(Boolean).map((row, idx, arr) => (
-              <View key={row!.label} style={[styles.confirmRow, idx === arr.length - 1 && { borderBottomWidth: 0 }]}>
-                <Text style={styles.confirmLabel}>{row!.label}</Text>
-                <Text style={[styles.confirmValue, row!.label === 'Receipt' && { fontFamily: Fonts.regular, fontSize: 12, color: Colors.textSecondary }]} selectable>{row!.value}</Text>
-              </View>
-            ))}
+              { label: 'Receipt No.', value: confirmData.reference },
+            ] as ({ label: string; value: string } | null)[])
+              .filter(Boolean)
+              .map((row, idx, arr) => (
+                <View key={row!.label} style={[styles.confirmRow, idx === arr.length - 1 && { borderBottomWidth: 0 }]}>
+                  <Text style={styles.confirmLabel}>{row!.label}</Text>
+                  <Text
+                    style={[styles.confirmValue, row!.label === 'Receipt No.' && { fontFamily: Fonts.regular, fontSize: 12, color: Colors.textSecondary }]}
+                    selectable
+                  >
+                    {row!.value}
+                  </Text>
+                </View>
+              ))}
           </View>
 
           <Pressable
@@ -464,20 +673,23 @@ export default function PayScreen() {
     );
   }
 
+  // ─── Main form ────────────────────────────────────────────────────────────
+
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={[styles.container, { paddingTop: insets.top }]}>
+        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Pay & Transfer</Text>
           {demoMode && (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 }}>
               <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#FF9800' }} />
               <Text style={{ fontSize: 11, fontFamily: Fonts.medium, color: '#F57C00' }}>Demo Mode</Text>
             </View>
           )}
         </View>
 
-        {/* Mode selector */}
+        {/* Mode selector chips */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -488,7 +700,8 @@ export default function PayScreen() {
             <Pressable
               key={m.key}
               style={[styles.modeChip, mode === m.key && styles.modeChipActive]}
-              onPress={() => { setMode(m.key); handleReset(); }}
+              onPress={() => handleModeChange(m.key)}
+              hitSlop={4}
             >
               <Ionicons name={m.icon} size={14} color={mode === m.key ? Colors.white : Colors.textSecondary} />
               <Text style={[styles.modeChipText, mode === m.key && styles.modeChipTextActive]}>{m.label}</Text>
@@ -501,7 +714,7 @@ export default function PayScreen() {
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={styles.content}
         >
-          {/* From Account */}
+          {/* ── From Account ──────────────────────────────────────────────── */}
           <View style={styles.field}>
             <Text style={styles.fieldLabel}>From Account</Text>
             <ScrollView
@@ -520,7 +733,7 @@ export default function PayScreen() {
                     {account.name}
                   </Text>
                   <Text style={[styles.accountChipBalance, selectedFromAccount === account.id && styles.accountChipBalanceActive]}>
-                    ${account.balance.toLocaleString('en-AU', { minimumFractionDigits: 2 })}
+                    ${account.availableBalance.toLocaleString('en-AU', { minimumFractionDigits: 2 })}
                   </Text>
                 </Pressable>
               ))}
@@ -549,23 +762,33 @@ export default function PayScreen() {
               </View>
 
               {!showManualEntry ? (
-                <View style={styles.payeeList}>
-                  {payees.map((payee) => (
-                    <Pressable
-                      key={payee.id}
-                      style={[styles.payeeRow, selectedPayeeId === payee.id && styles.payeeRowActive]}
-                      onPress={() => setSelectedPayeeId(payee.id === selectedPayeeId ? null : payee.id)}
-                    >
-                      <View style={[styles.avatar, { backgroundColor: payee.avatarColour }]}>
-                        <Text style={styles.avatarText}>{payee.name.charAt(0)}</Text>
-                      </View>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.payeeName}>{payee.name}</Text>
-                        <Text style={styles.payeeDetails}>{payee.bsb} · {payee.accountNumber}</Text>
-                      </View>
-                      {selectedPayeeId === payee.id && <Ionicons name="checkmark-circle" size={20} color={Colors.primary} />}
-                    </Pressable>
-                  ))}
+                <View style={styles.listCard}>
+                  {payees.length === 0 ? (
+                    <View style={{ padding: 24, alignItems: 'center', gap: 8 }}>
+                      <Ionicons name="people-outline" size={32} color={Colors.textSecondary} />
+                      <Text style={{ fontSize: 14, fontFamily: Fonts.medium, color: Colors.textSecondary }}>No saved payees yet</Text>
+                    </View>
+                  ) : (
+                    payees.map((payee) => (
+                      <Pressable
+                        key={payee.id}
+                        style={[styles.payeeRow, selectedPayeeId === payee.id && styles.payeeRowActive]}
+                        onPress={() => setSelectedPayeeId(payee.id === selectedPayeeId ? null : payee.id)}
+                      >
+                        <View style={[styles.avatar, { backgroundColor: payee.avatarColour }]}>
+                          <Text style={styles.avatarText}>{payee.name.charAt(0)}</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.payeeName}>{payee.name}</Text>
+                          <Text style={styles.payeeDetails}>{payee.bsb} · {payee.accountNumber}</Text>
+                        </View>
+                        {selectedPayeeId === payee.id
+                          ? <Ionicons name="checkmark-circle" size={20} color={Colors.primary} />
+                          : <Ionicons name="chevron-forward" size={16} color={Colors.textSecondary} />
+                        }
+                      </Pressable>
+                    ))
+                  )}
                   <Pressable
                     style={styles.addPayeeBtn}
                     onPress={() => router.push('/settings/add-payee')}
@@ -576,11 +799,27 @@ export default function PayScreen() {
                 </View>
               ) : (
                 <View style={styles.manualCard}>
-                  <InputRow label="BSB *" value={manualBSB} onChangeText={(v) => setManualBSB(formatBSB(v))} placeholder="641-800" keyboardType="numeric" maxLength={7} />
+                  <BsbField value={manualBSB} onChange={handleBsbChange} onBlur={handleBsbBlur} error={bsbError} />
                   <View style={styles.cardDivider} />
-                  <InputRow label="Account Number *" value={manualAccountNumber} onChangeText={setManualAccountNumber} placeholder="1234 5678" keyboardType="numeric" />
+                  <View>
+                    <InputRow
+                      label="Account Number *"
+                      value={manualAccountNumber}
+                      onChangeText={(v) => { setManualAccountNumber(v.replace(/\D/g, '')); setAccountNumberError(null); }}
+                      onBlur={handleAccountNumberBlur}
+                      placeholder="6–10 digit account number"
+                      keyboardType="numeric"
+                      maxLength={10}
+                    />
+                    {accountNumberError && <Text style={fieldStyles.error}>{accountNumberError}</Text>}
+                  </View>
                   <View style={styles.cardDivider} />
-                  <InputRow label="Account Name *" value={manualAccountName} onChangeText={setManualAccountName} placeholder="e.g. John Smith" />
+                  <InputRow
+                    label="Account Name *"
+                    value={manualAccountName}
+                    onChangeText={setManualAccountName}
+                    placeholder="e.g. John Smith"
+                  />
                 </View>
               )}
             </View>
@@ -600,6 +839,7 @@ export default function PayScreen() {
                       setPayIdValue('');
                       setPayIdLookupResult(null);
                       setPayIdLookupError(null);
+                      setPayIdValidationError(null);
                     }}
                   >
                     <Text style={[styles.toggleBtnText, payIdType === pt.key && styles.toggleBtnTextActive]}>{pt.label}</Text>
@@ -611,6 +851,9 @@ export default function PayScreen() {
                 <Text style={styles.fieldLabel}>
                   {PAYID_TYPES.find((p) => p.key === payIdType)?.label ?? 'PayID'}
                 </Text>
+                <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.textSecondary, marginBottom: 4 }}>
+                  {PAYID_TYPES.find((p) => p.key === payIdType)?.hint}
+                </Text>
                 <View style={{ flexDirection: 'row', gap: 8 }}>
                   <View style={[styles.manualCard, { flex: 1 }]}>
                     <TextInput
@@ -620,15 +863,19 @@ export default function PayScreen() {
                         setPayIdValue(v);
                         setPayIdLookupResult(null);
                         setPayIdLookupError(null);
+                        setPayIdValidationError(null);
                       }}
                       placeholder={PAYID_TYPES.find((p) => p.key === payIdType)?.placeholder ?? ''}
                       placeholderTextColor={Colors.textSecondary}
                       keyboardType={PAYID_TYPES.find((p) => p.key === payIdType)?.keyboardType}
                       autoCapitalize="none"
+                      autoCorrect={false}
+                      returnKeyType="search"
+                      onSubmitEditing={handlePayIdLookup}
                     />
                   </View>
                   <Pressable
-                    style={[styles.lookupBtn, isLookingUp && { opacity: 0.6 }]}
+                    style={[styles.lookupBtn, (isLookingUp || !payIdValue.trim()) && { opacity: 0.55 }]}
                     onPress={handlePayIdLookup}
                     disabled={isLookingUp || !payIdValue.trim()}
                   >
@@ -639,21 +886,29 @@ export default function PayScreen() {
                   </Pressable>
                 </View>
 
+                {/* Inline validation error */}
+                {payIdValidationError && (
+                  <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.error, marginTop: 4 }}>{payIdValidationError}</Text>
+                )}
+
                 {/* Lookup result */}
                 {payIdLookupResult && (
-                  <View style={styles.payIdResult}>
-                    <Ionicons name="checkmark-circle" size={20} color={Colors.success} />
+                  <View style={styles.payIdResultSuccess}>
+                    <Ionicons name="checkmark-circle" size={22} color={Colors.success} />
                     <View style={{ flex: 1 }}>
-                      <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.success }}>PayID Found</Text>
-                      <Text style={{ fontSize: 15, fontFamily: Fonts.bold, color: Colors.textPrimary }}>{payIdLookupResult.name}</Text>
-                      <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.textSecondary }}>{payIdLookupResult.institution}</Text>
+                      <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.success }}>PayID Found ✓</Text>
+                      <Text style={{ fontSize: 16, fontFamily: Fonts.bold, color: Colors.textPrimary, marginTop: 2 }}>{payIdLookupResult.name}</Text>
+                      <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.textSecondary, marginTop: 1 }}>{payIdLookupResult.institution}</Text>
                     </View>
                   </View>
                 )}
                 {payIdLookupError && (
-                  <View style={[styles.payIdResult, { backgroundColor: '#FFEBEE' }]}>
-                    <Ionicons name="close-circle" size={20} color={Colors.error} />
-                    <Text style={{ flex: 1, fontSize: 14, fontFamily: Fonts.medium, color: Colors.error }}>{payIdLookupError}</Text>
+                  <View style={styles.payIdResultError}>
+                    <Ionicons name="close-circle" size={22} color={Colors.error} />
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ fontSize: 14, fontFamily: Fonts.semiBold, color: Colors.error }}>PayID Not Found</Text>
+                      <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.error, marginTop: 2 }}>{payIdLookupError}</Text>
+                    </View>
                   </View>
                 )}
               </View>
@@ -664,11 +919,14 @@ export default function PayScreen() {
           {mode === 'bpay' && (
             <View style={styles.field}>
               <Text style={styles.fieldLabel}>Biller Details</Text>
-              <View style={{ backgroundColor: Colors.infoBg, borderRadius: 10, padding: 12, flexDirection: 'row', gap: 8 }}>
-                <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.info }}>Find the biller code and reference number on your bill</Text>
+              <View style={{ backgroundColor: '#E3F2FD', borderRadius: 10, padding: 12, flexDirection: 'row', gap: 8, alignItems: 'flex-start' }}>
+                <Ionicons name="information-circle-outline" size={16} color={Colors.info} />
+                <Text style={{ flex: 1, fontSize: 12, fontFamily: Fonts.regular, color: Colors.info }}>
+                  Find the biller code and reference number on your bill or invoice.
+                </Text>
               </View>
               <View style={styles.manualCard}>
-                <InputRow label="Biller Code" value={billerCode} onChangeText={setBillerCode} placeholder="e.g. 12345" keyboardType="numeric" />
+                <InputRow label="Biller Code" value={billerCode} onChangeText={(v) => setBillerCode(v.replace(/\D/g, ''))} placeholder="e.g. 12345" keyboardType="numeric" />
                 <View style={styles.cardDivider} />
                 <InputRow label="Customer Reference Number" value={crn} onChangeText={setCrn} placeholder="e.g. 9876543210" keyboardType="numeric" />
               </View>
@@ -679,21 +937,26 @@ export default function PayScreen() {
           {mode === 'internal' && (
             <View style={styles.field}>
               <Text style={styles.fieldLabel}>To Account</Text>
-              <View style={styles.payeeList}>
+              <View style={styles.listCard}>
                 {accounts.filter((a) => a.id !== selectedFromAccount).map((account) => (
                   <Pressable
                     key={account.id}
                     style={[styles.payeeRow, selectedToAccountId === account.id && styles.payeeRowActive]}
                     onPress={() => setSelectedToAccountId(account.id === selectedToAccountId ? null : account.id)}
                   >
-                    <View style={[styles.accountIconSmall, { backgroundColor: account.type === 'savings' ? '#E8F5E9' : '#E3F2FD' }]}>
+                    <View style={[styles.accountIconSmall, { backgroundColor: account.type === 'savings' ? '#E8F5E9' : account.type === 'loan' ? '#FFF3E0' : '#E3F2FD' }]}>
                       <Ionicons name={account.type === 'savings' ? 'leaf-outline' : account.type === 'loan' ? 'home-outline' : 'card-outline'} size={16} color={Colors.primary} />
                     </View>
                     <View style={{ flex: 1 }}>
                       <Text style={styles.payeeName}>{account.name}</Text>
                       <Text style={styles.payeeDetails}>{account.bsb} · {account.accountNumber}</Text>
                     </View>
-                    {selectedToAccountId === account.id && <Ionicons name="checkmark-circle" size={20} color={Colors.primary} />}
+                    <View style={{ alignItems: 'flex-end', gap: 2 }}>
+                      <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.textPrimary, fontVariant: ['tabular-nums'] }}>
+                        ${account.balance.toLocaleString('en-AU', { minimumFractionDigits: 2 })}
+                      </Text>
+                      {selectedToAccountId === account.id && <Ionicons name="checkmark-circle" size={18} color={Colors.primary} />}
+                    </View>
                   </Pressable>
                 ))}
               </View>
@@ -704,53 +967,47 @@ export default function PayScreen() {
           {mode === 'international' && (
             <View style={styles.field}>
               <Text style={styles.fieldLabel}>Recipient Details</Text>
-              <View style={{ backgroundColor: '#FFF3E0', borderRadius: 10, padding: 12, flexDirection: 'row', gap: 8 }}>
-                <Ionicons name="information-circle-outline" size={16} color={Colors.warning} />
-                <Text style={{ flex: 1, fontSize: 12, fontFamily: Fonts.regular, color: Colors.textPrimary }}>
-                  International transfers may take 1–3 business days. Exchange rates apply.
+              <View style={{ backgroundColor: '#FFF3E0', borderRadius: 10, padding: 12, flexDirection: 'row', gap: 8, alignItems: 'flex-start' }}>
+                <Ionicons name="warning-outline" size={16} color={Colors.warning} />
+                <Text style={{ flex: 1, fontSize: 12, fontFamily: Fonts.regular, color: Colors.textPrimary, lineHeight: 17 }}>
+                  International transfers may take 1–3 business days. Exchange rates and fees apply.
                 </Text>
               </View>
               <View style={styles.manualCard}>
-                <InputRow label="Recipient Name" value={intlRecipientName} onChangeText={setIntlRecipientName} placeholder="Full legal name" />
+                <InputRow label="Recipient Name *" value={intlRecipientName} onChangeText={setIntlRecipientName} placeholder="Full legal name" />
                 <View style={styles.cardDivider} />
                 <InputRow label="Bank Name" value={intlBankName} onChangeText={setIntlBankName} placeholder="e.g. Chase Bank" />
                 <View style={styles.cardDivider} />
-                <InputRow label="SWIFT / BIC Code" value={intlSwift} onChangeText={setIntlSwift} placeholder="e.g. CHASUS33" autoCapitalize="characters" />
+                <InputRow label="SWIFT / BIC Code *" value={intlSwift} onChangeText={(v) => setIntlSwift(v.toUpperCase())} placeholder="e.g. CHASUS33" autoCapitalize="characters" />
                 <View style={styles.cardDivider} />
-                <InputRow label="IBAN / Account Number" value={intlIban} onChangeText={setIntlIban} placeholder="e.g. GB29 NWBK 6016..." />
+                <InputRow label="IBAN / Account Number *" value={intlIban} onChangeText={setIntlIban} placeholder="e.g. GB29 NWBK 6016..." />
               </View>
 
-              <View style={{ flexDirection: 'row', gap: 10 }}>
-                <View style={{ flex: 1 }}>
-                  <Text style={[styles.fieldLabel, { marginBottom: 8 }]}>Country</Text>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ gap: 6 }}>
-                    {COUNTRIES.map((c) => (
-                      <Pressable
-                        key={c}
-                        style={[styles.toggleBtn, intlCountry === c && styles.toggleBtnActive]}
-                        onPress={() => setIntlCountry(c)}
-                      >
-                        <Text style={[styles.toggleBtnText, intlCountry === c && styles.toggleBtnTextActive]}>{c}</Text>
-                      </Pressable>
-                    ))}
-                  </ScrollView>
-                </View>
-              </View>
+              <Text style={[styles.fieldLabel, { marginTop: 4 }]}>Country</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ gap: 6 }}>
+                {COUNTRIES.map((c) => (
+                  <Pressable
+                    key={c}
+                    style={[styles.toggleBtn, intlCountry === c && styles.toggleBtnActive]}
+                    onPress={() => setIntlCountry(c)}
+                  >
+                    <Text style={[styles.toggleBtnText, intlCountry === c && styles.toggleBtnTextActive]}>{c}</Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
 
-              <View>
-                <Text style={[styles.fieldLabel, { marginBottom: 8 }]}>Currency</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ gap: 6 }}>
-                  {CURRENCIES.map((c) => (
-                    <Pressable
-                      key={c}
-                      style={[styles.toggleBtn, intlCurrency === c && styles.toggleBtnActive]}
-                      onPress={() => setIntlCurrency(c)}
-                    >
-                      <Text style={[styles.toggleBtnText, intlCurrency === c && styles.toggleBtnTextActive]}>{c}</Text>
-                    </Pressable>
-                  ))}
-                </ScrollView>
-              </View>
+              <Text style={[styles.fieldLabel, { marginTop: 4 }]}>Currency</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ gap: 6 }}>
+                {CURRENCIES.map((c) => (
+                  <Pressable
+                    key={c}
+                    style={[styles.toggleBtn, intlCurrency === c && styles.toggleBtnActive]}
+                    onPress={() => setIntlCurrency(c)}
+                  >
+                    <Text style={[styles.toggleBtnText, intlCurrency === c && styles.toggleBtnTextActive]}>{c}</Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
             </View>
           )}
 
@@ -759,20 +1016,20 @@ export default function PayScreen() {
             <View style={styles.field}>
               <Text style={styles.fieldLabel}>PayTo Agreement</Text>
               {activePayToAgreements.length === 0 ? (
-                <View style={[styles.payeeList, { padding: 20, alignItems: 'center', gap: 10 }]}>
-                  <Ionicons name="link-outline" size={32} color={Colors.textSecondary} />
+                <View style={[styles.listCard, { padding: 24, alignItems: 'center', gap: 12 }]}>
+                  <Ionicons name="link-outline" size={36} color={Colors.textSecondary} />
                   <Text style={{ fontSize: 14, fontFamily: Fonts.medium, color: Colors.textSecondary, textAlign: 'center' }}>
-                    No active PayTo agreements.
+                    No active PayTo agreements.{'\n'}Set up recurring payments below.
                   </Text>
                   <Pressable
-                    style={{ backgroundColor: Colors.primary, borderRadius: 10, paddingHorizontal: 16, paddingVertical: 10 }}
+                    style={{ backgroundColor: Colors.primary, borderRadius: 10, paddingHorizontal: 20, paddingVertical: 10 }}
                     onPress={() => router.push('/settings/payto-agreements')}
                   >
                     <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.white }}>Manage Agreements</Text>
                   </Pressable>
                 </View>
               ) : (
-                <View style={styles.payeeList}>
+                <View style={styles.listCard}>
                   {activePayToAgreements.map((agreement) => (
                     <Pressable
                       key={agreement.id}
@@ -804,7 +1061,7 @@ export default function PayScreen() {
           {/* ── Amount ───────────────────────────────────────────────────── */}
           <View style={styles.field}>
             <Text style={styles.fieldLabel}>Amount</Text>
-            <View style={styles.amountInput}>
+            <View style={[styles.amountInput, amountError ? { borderWidth: 1.5, borderColor: Colors.error } : {}]}>
               <Text style={styles.dollarSign}>$</Text>
               <TextInput
                 style={styles.amountText}
@@ -812,7 +1069,7 @@ export default function PayScreen() {
                 placeholderTextColor={Colors.textSecondary}
                 keyboardType="decimal-pad"
                 value={amount}
-                onChangeText={setAmount}
+                onChangeText={handleAmountChange}
               />
               {mode === 'international' && (
                 <View style={{ backgroundColor: Colors.background, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6, marginLeft: 4 }}>
@@ -820,12 +1077,18 @@ export default function PayScreen() {
                 </View>
               )}
             </View>
+            {amountError && <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.error }}>{amountError}</Text>}
+            {fromAccount && (
+              <Text style={{ fontSize: 11, fontFamily: Fonts.regular, color: Colors.textSecondary }}>
+                Available: ${fromAccount.availableBalance.toLocaleString('en-AU', { minimumFractionDigits: 2 })}
+              </Text>
+            )}
             <View style={styles.quickAmounts}>
               {QUICK_AMOUNTS.map((qa) => (
                 <Pressable
                   key={qa}
                   style={({ pressed }) => [styles.quickAmountBtn, pressed && { opacity: 0.7 }]}
-                  onPress={() => setAmount(qa)}
+                  onPress={() => { setAmount(qa); setAmountError(null); }}
                 >
                   <Text style={styles.quickAmountText}>${qa}</Text>
                 </Pressable>
@@ -839,7 +1102,7 @@ export default function PayScreen() {
             <View style={styles.descInput}>
               <TextInput
                 style={styles.descText}
-                placeholder="e.g. Rent, Dinner, etc."
+                placeholder="e.g. Rent payment, Dinner, etc."
                 placeholderTextColor={Colors.textSecondary}
                 value={description}
                 onChangeText={setDescription}
@@ -855,52 +1118,81 @@ export default function PayScreen() {
           >
             <Ionicons name="send" size={18} color={Colors.primary} />
             <Text style={styles.payBtnText}>
-              {mode === 'internal' ? 'Transfer' : mode === 'bpay' ? 'Pay BPAY' : mode === 'international' ? 'Send Internationally' : mode === 'payto' ? 'Pay via PayTo' : mode === 'payid' ? 'Send via PayID' : 'Pay Now'}
-              {amount ? ` $${parseFloat(amount || '0').toFixed(2)}` : ''}
+              {mode === 'internal'
+                ? 'Transfer'
+                : mode === 'bpay'
+                ? 'Pay via BPAY'
+                : mode === 'international'
+                ? 'Send Internationally'
+                : mode === 'payto'
+                ? 'Pay via PayTo'
+                : mode === 'payid'
+                ? 'Send via PayID'
+                : 'Pay Now'}
+              {amount && parseFloat(amount) > 0 ? ` • $${parseFloat(amount).toFixed(2)}` : ''}
             </Text>
           </Pressable>
         </ScrollView>
 
         {/* ── Confirm Modal ──────────────────────────────────────────────── */}
-        <Modal visible={showConfirm} animationType="slide" presentationStyle="formSheet" transparent={false} onRequestClose={() => setShowConfirm(false)}>
+        <Modal
+          visible={showConfirm}
+          animationType="slide"
+          presentationStyle="formSheet"
+          transparent={false}
+          onRequestClose={() => !isProcessing && setShowConfirm(false)}
+        >
           <View style={{ flex: 1, backgroundColor: Colors.background }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+            {/* Modal header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingTop: 24, backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
               <Text style={{ flex: 1, fontSize: 18, fontFamily: Fonts.bold, color: Colors.textPrimary }}>Confirm Payment</Text>
-              <Pressable onPress={() => setShowConfirm(false)}>
-                <Ionicons name="close" size={24} color={Colors.textSecondary} />
+              <Pressable
+                onPress={() => !isProcessing && setShowConfirm(false)}
+                style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' }}
+                disabled={isProcessing}
+              >
+                <Ionicons name="close" size={20} color={Colors.textSecondary} />
               </Pressable>
             </View>
-            <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
+
+            <ScrollView contentContainerStyle={{ padding: 20, gap: 16, paddingBottom: 40 }}>
               {confirmData && (
                 <>
+                  {/* Payment summary */}
                   <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 4px 20px rgba(0,75,90,0.1)' }}>
-                    {[
+                    {([
                       { label: 'From', value: confirmData.fromAccountName },
                       { label: 'To', value: confirmData.toName },
                       confirmData.payId ? { label: 'PayID', value: confirmData.payId } : null,
+                      confirmData.bsb ? { label: 'BSB', value: confirmData.bsb } : null,
+                      confirmData.accountNumber ? { label: 'Account', value: confirmData.accountNumber } : null,
                       confirmData.billerCode ? { label: 'Biller Code', value: confirmData.billerCode } : null,
                       confirmData.crn ? { label: 'CRN', value: confirmData.crn } : null,
                       confirmData.currency ? { label: 'Currency', value: `AUD → ${confirmData.currency}` } : null,
                       { label: 'Amount', value: `$${confirmData.amount.toFixed(2)} AUD` },
                       confirmData.description ? { label: 'Description', value: confirmData.description } : null,
-                    ].filter(Boolean).map((row, idx, arr) => (
-                      <View key={row!.label} style={[styles.confirmRow, idx === arr.length - 1 && { borderBottomWidth: 0 }]}>
-                        <Text style={styles.confirmLabel}>{row!.label}</Text>
-                        <Text style={styles.confirmValue}>{row!.value}</Text>
-                      </View>
-                    ))}
+                    ] as ({ label: string; value: string } | null)[])
+                      .filter(Boolean)
+                      .map((row, idx, arr) => (
+                        <View key={row!.label} style={[styles.confirmRow, idx === arr.length - 1 && { borderBottomWidth: 0 }]}>
+                          <Text style={styles.confirmLabel}>{row!.label}</Text>
+                          <Text style={styles.confirmValue}>{row!.value}</Text>
+                        </View>
+                      ))}
                   </View>
 
-                  <View style={{ backgroundColor: '#FFF3E0', borderRadius: 12, padding: 14, flexDirection: 'row', gap: 10 }}>
+                  {/* Warning */}
+                  <View style={{ backgroundColor: '#FFF3E0', borderRadius: 12, padding: 14, flexDirection: 'row', gap: 10, alignItems: 'flex-start' }}>
                     <Ionicons name="warning-outline" size={18} color={Colors.warning} />
                     <Text style={{ flex: 1, fontSize: 13, fontFamily: Fonts.regular, color: Colors.textPrimary, lineHeight: 18 }}>
                       Please verify recipient details carefully. Payments to wrong accounts cannot always be recovered.
                     </Text>
                   </View>
 
+                  {/* Confirm button */}
                   <Pressable
                     style={({ pressed }) => [{
-                      backgroundColor: Colors.primary,
+                      backgroundColor: isProcessing ? Colors.primary : Colors.primary,
                       borderRadius: 14,
                       paddingVertical: 16,
                       alignItems: 'center',
@@ -915,11 +1207,22 @@ export default function PayScreen() {
                   >
                     {isProcessing
                       ? <ActivityIndicator color={Colors.white} />
-                      : <>
+                      : (
+                        <>
                           <Ionicons name="lock-closed" size={18} color={Colors.white} />
                           <Text style={{ fontSize: 16, fontFamily: Fonts.bold, color: Colors.white }}>Confirm & Send</Text>
                         </>
+                      )
                     }
+                  </Pressable>
+
+                  {/* Cancel */}
+                  <Pressable
+                    style={({ pressed }) => [{ paddingVertical: 14, alignItems: 'center', opacity: pressed ? 0.6 : 1 }]}
+                    onPress={() => setShowConfirm(false)}
+                    disabled={isProcessing}
+                  >
+                    <Text style={{ fontSize: 14, fontFamily: Fonts.medium, color: Colors.textSecondary }}>Cancel</Text>
                   </Pressable>
                 </>
               )}
@@ -931,10 +1234,13 @@ export default function PayScreen() {
   );
 }
 
+// ─── InputRow helper ─────────────────────────────────────────────────────────
+
 function InputRow({
   label,
   value,
   onChangeText,
+  onBlur,
   placeholder,
   keyboardType,
   maxLength,
@@ -943,10 +1249,11 @@ function InputRow({
   label: string;
   value: string;
   onChangeText: (v: string) => void;
+  onBlur?: () => void;
   placeholder?: string;
   keyboardType?: 'default' | 'numeric' | 'email-address' | 'phone-pad' | 'decimal-pad';
   maxLength?: number;
-  autoCapitalize?: 'none' | 'characters' | 'words';
+  autoCapitalize?: 'none' | 'characters' | 'words' | 'sentences';
 }) {
   return (
     <View style={{ padding: 14, gap: 4 }}>
@@ -954,6 +1261,7 @@ function InputRow({
       <TextInput
         value={value}
         onChangeText={onChangeText}
+        onBlur={onBlur}
         placeholder={placeholder}
         placeholderTextColor={Colors.textSecondary}
         keyboardType={keyboardType}
@@ -965,11 +1273,7 @@ function InputRow({
   );
 }
 
-function formatBSB(bsb: string) {
-  const digits = bsb.replace(/\D/g, '').slice(0, 6);
-  if (digits.length > 3) return digits.slice(0, 3) + '-' + digits.slice(3);
-  return digits;
-}
+// ─── Styles ──────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   container: {
@@ -998,6 +1302,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderWidth: 1.5,
     borderColor: Colors.border,
+    minHeight: 44,
   },
   modeChipActive: {
     backgroundColor: Colors.primary,
@@ -1055,11 +1360,13 @@ const styles = StyleSheet.create({
   accountChipBalanceActive: { color: Colors.primary },
   toggleBtn: {
     paddingHorizontal: 14,
-    paddingVertical: 8,
+    paddingVertical: 9,
     borderRadius: 20,
     backgroundColor: Colors.white,
     borderWidth: 1.5,
     borderColor: Colors.border,
+    minHeight: 44,
+    justifyContent: 'center',
   },
   toggleBtnActive: {
     backgroundColor: Colors.primary,
@@ -1074,7 +1381,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontFamily: Fonts.semiBold,
   },
-  payeeList: {
+  listCard: {
     backgroundColor: Colors.white,
     borderRadius: 16,
     overflow: 'hidden',
@@ -1088,6 +1395,7 @@ const styles = StyleSheet.create({
     gap: 12,
     borderBottomWidth: 1,
     borderBottomColor: Colors.borderLight,
+    minHeight: 64,
   },
   payeeRowActive: { backgroundColor: '#F0F8FA' },
   avatar: {
@@ -1118,6 +1426,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     padding: 14,
+    minHeight: 52,
   },
   addPayeeText: {
     fontSize: 14,
@@ -1144,6 +1453,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.regular,
     color: Colors.textPrimary,
+    minHeight: 50,
   },
   cardDivider: {
     height: 1,
@@ -1158,21 +1468,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderCurve: 'continuous',
-    minWidth: 80,
+    minWidth: 90,
+    minHeight: 50,
   },
   lookupBtnText: {
     fontSize: 13,
     fontFamily: Fonts.semiBold,
     color: Colors.white,
   },
-  payIdResult: {
+  payIdResultSuccess: {
     backgroundColor: '#E8F5E9',
     borderRadius: 12,
     padding: 14,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 10,
+    gap: 12,
     borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: '#A5D6A7',
+  },
+  payIdResultError: {
+    backgroundColor: '#FFEBEE',
+    borderRadius: 12,
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: '#FFCDD2',
   },
   amountInput: {
     flexDirection: 'row',
@@ -1208,6 +1532,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderCurve: 'continuous',
     boxShadow: '0 2px 6px rgba(0, 75, 90, 0.06)',
+    minHeight: 44,
+    justifyContent: 'center',
   },
   quickAmountText: {
     fontSize: 14,
@@ -1236,6 +1562,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     borderCurve: 'continuous',
     marginTop: 4,
+    minHeight: 56,
   },
   payBtnText: {
     fontSize: 16,
@@ -1248,17 +1575,20 @@ const styles = StyleSheet.create({
     padding: 14,
     borderBottomWidth: 1,
     borderBottomColor: Colors.borderLight,
+    gap: 12,
+    alignItems: 'flex-start',
   },
   confirmLabel: {
     fontSize: 14,
     fontFamily: Fonts.regular,
     color: Colors.textSecondary,
+    flexShrink: 0,
   },
   confirmValue: {
     fontSize: 14,
     fontFamily: Fonts.semiBold,
     color: Colors.textPrimary,
-    maxWidth: '60%',
+    flex: 1,
     textAlign: 'right',
   },
 });

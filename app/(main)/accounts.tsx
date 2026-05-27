@@ -6,8 +6,10 @@ import {
   Pressable,
   StyleSheet,
   Modal,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppStore } from '@/store/useAppStore';
 import { Colors } from '@/constants/Colors';
@@ -94,16 +96,23 @@ function AccountDetailModal({
 
           {/* Quick Actions */}
           <View style={styles.detailActions}>
-            {(['Transfer', 'Pay', 'BPAY'] as const).map((label) => (
-              <Pressable key={label} style={({ pressed }) => [styles.detailAction, pressed && { opacity: 0.7 }]}>
+            {([
+              { label: 'Transfer', icon: 'swap-horizontal-outline' as const, mode: 'internal' },
+              { label: 'Pay', icon: 'send-outline' as const, mode: 'pay-anyone' },
+              { label: 'BPAY', icon: 'barcode-outline' as const, mode: 'bpay' },
+            ]).map((action) => (
+              <Pressable
+                key={action.label}
+                style={({ pressed }) => [styles.detailAction, pressed && { opacity: 0.7 }]}
+                onPress={() => {
+                  onClose();
+                  router.push('/(main)/pay');
+                }}
+              >
                 <View style={styles.detailActionIcon}>
-                  <Ionicons
-                    name={label === 'Transfer' ? 'swap-horizontal-outline' : label === 'Pay' ? 'send-outline' : 'barcode-outline'}
-                    size={20}
-                    color={Colors.primary}
-                  />
+                  <Ionicons name={action.icon} size={20} color={Colors.primary} />
                 </View>
-                <Text style={styles.detailActionLabel}>{label}</Text>
+                <Text style={styles.detailActionLabel}>{action.label}</Text>
               </Pressable>
             ))}
           </View>
@@ -235,7 +244,10 @@ export default function AccountsScreen() {
         ))}
 
         {/* Open Account CTA */}
-        <Pressable style={({ pressed }) => [styles.openAccountBtn, pressed && { opacity: 0.8 }]}>
+        <Pressable
+          style={({ pressed }) => [styles.openAccountBtn, pressed && { opacity: 0.8 }]}
+          onPress={() => Alert.alert('Open New Account', 'To open a new account, please visit your nearest IMB Bank branch or call us on 133 462.')}
+        >
           <Ionicons name="add-circle-outline" size={20} color={Colors.primary} />
           <Text style={styles.openAccountText}>Open a new account</Text>
           <Ionicons name="chevron-forward" size={16} color={Colors.primary} />

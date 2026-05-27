@@ -6,8 +6,10 @@ import {
   Pressable,
   StyleSheet,
   Switch,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppStore } from '@/store/useAppStore';
 import { Colors } from '@/constants/Colors';
@@ -133,12 +135,28 @@ function CardItem({ card }: { card: Card }) {
       {/* Quick Actions */}
       <View style={styles.cardActions}>
         {[
-          { icon: 'pin-outline' as const, label: 'PIN' },
-          { icon: 'shield-outline' as const, label: 'Manage' },
-          { icon: 'receipt-outline' as const, label: 'Transactions' },
-          { icon: 'help-circle-outline' as const, label: 'Report' },
+          {
+            icon: 'pin-outline' as const,
+            label: 'PIN',
+            onPress: () => Alert.alert('Change PIN', 'To change your card PIN, please visit an IMB Bank ATM or call us on 133 462.'),
+          },
+          {
+            icon: 'shield-outline' as const,
+            label: 'Manage',
+            onPress: () => router.push('/settings/security'),
+          },
+          {
+            icon: 'receipt-outline' as const,
+            label: 'Transactions',
+            onPress: () => router.push('/settings/transaction-history'),
+          },
+          {
+            icon: 'help-circle-outline' as const,
+            label: 'Report',
+            onPress: () => router.push('/settings/report-card'),
+          },
         ].map((action) => (
-          <Pressable key={action.label} style={({ pressed }) => [styles.cardAction, pressed && { opacity: 0.7 }]}>
+          <Pressable key={action.label} style={({ pressed }) => [styles.cardAction, pressed && { opacity: 0.7 }]} onPress={action.onPress}>
             <View style={styles.cardActionIcon}>
               <Ionicons name={action.icon} size={18} color={Colors.primary} />
             </View>
@@ -166,7 +184,10 @@ export default function CardsScreen() {
         ))}
 
         {/* Apply for new card */}
-        <Pressable style={({ pressed }) => [styles.newCardBtn, pressed && { opacity: 0.8 }]}>
+        <Pressable
+          style={({ pressed }) => [styles.newCardBtn, pressed && { opacity: 0.8 }]}
+          onPress={() => Alert.alert('Apply for a New Card', 'To apply for a new card, please visit your nearest IMB Bank branch or call us on 133 462.\n\nAlternatively, log in to IMB Internet Banking to apply online.')}
+        >
           <View style={styles.newCardIcon}>
             <Ionicons name="add" size={22} color={Colors.primary} />
           </View>

@@ -12,25 +12,58 @@ export interface PayIdRecord {
   financialInstitution: string;
 }
 
-// Pre-registered PayIDs in the mock NPP registry.
-// The app user (Alex Johnson) is registered here so lookups for their own PayIDs succeed.
+/**
+ * Pre-registered PayIDs in the mock NPP registry.
+ * The app user (Alex Johnson) is registered here so lookups for their own PayIDs succeed.
+ *
+ * TO TEST: Use any of the values in the payId column below.
+ */
 const REGISTRY: PayIdRecord[] = [
-  // App user — auto-registered on account setup
+  // ── App user (Alex Johnson at IMB Bank) ─────────────────────────────────────
   { payId: 'alex.johnson@email.com', type: 'email', registeredName: 'Alex Johnson', financialInstitution: 'IMB Bank' },
   { payId: '0401234567', type: 'mobile', registeredName: 'Alex Johnson', financialInstitution: 'IMB Bank' },
-  // Other registered users
+
+  // ── Family & friends ────────────────────────────────────────────────────────
+  { payId: 'mum@imb.com.au', type: 'email', registeredName: 'Margaret Johnson', financialInstitution: 'IMB Bank' },
+  { payId: '0411111111', type: 'mobile', registeredName: 'Margaret Johnson', financialInstitution: 'IMB Bank' },
   { payId: 'sarah.johnson@gmail.com', type: 'email', registeredName: 'Sarah Johnson', financialInstitution: 'CommBank' },
+  { payId: '0412345678', type: 'mobile', registeredName: 'Sarah Johnson', financialInstitution: 'CommBank' },
   { payId: 'tom.williams@outlook.com', type: 'email', registeredName: 'Tom Williams', financialInstitution: 'Westpac' },
+  { payId: '0423456789', type: 'mobile', registeredName: 'Tom Williams', financialInstitution: 'Westpac' },
+  { payId: 'james.chen@icloud.com', type: 'email', registeredName: 'James Chen', financialInstitution: 'NAB' },
+  { payId: '0434567890', type: 'mobile', registeredName: 'James Chen', financialInstitution: 'NAB' },
+  { payId: 'emily.nguyen@hotmail.com', type: 'email', registeredName: 'Emily Nguyen', financialInstitution: 'ANZ' },
+  { payId: '0445678901', type: 'mobile', registeredName: 'Emily Nguyen', financialInstitution: 'ANZ' },
+  { payId: 'michael.brown@me.com', type: 'email', registeredName: 'Michael Brown', financialInstitution: 'Westpac' },
+  { payId: '0456789012', type: 'mobile', registeredName: 'Michael Brown', financialInstitution: 'Westpac' },
+  { payId: 'jessica.smith@yahoo.com', type: 'email', registeredName: 'Jessica Smith', financialInstitution: 'CommBank' },
+  { payId: '0467890123', type: 'mobile', registeredName: 'Jessica Smith', financialInstitution: 'CommBank' },
+  { payId: 'david.wilson@gmail.com', type: 'email', registeredName: 'David Wilson', financialInstitution: 'ING' },
+  { payId: '0478901234', type: 'mobile', registeredName: 'David Wilson', financialInstitution: 'ING' },
+
+  // ── Services / merchants ─────────────────────────────────────────────────────
   { payId: 'billing@spotify.com.au', type: 'email', registeredName: 'Spotify Australia Pty Ltd', financialInstitution: 'NAB' },
   { payId: 'payments@nrma.com.au', type: 'email', registeredName: 'NRMA Insurance', financialInstitution: 'ANZ' },
-  { payId: 'mum@imb.com.au', type: 'email', registeredName: 'Margaret Johnson', financialInstitution: 'IMB Bank' },
-  { payId: '0412345678', type: 'mobile', registeredName: 'Sarah Johnson', financialInstitution: 'CommBank' },
-  { payId: '0423456789', type: 'mobile', registeredName: 'Tom Williams', financialInstitution: 'Westpac' },
+  { payId: 'gym@goldswollongong.com.au', type: 'email', registeredName: "Gold's Gym Wollongong", financialInstitution: 'NAB' },
   { payId: '0281234567', type: 'mobile', registeredName: "Gold's Gym Wollongong", financialInstitution: 'NAB' },
+  { payId: 'rentals@realestate.com.au', type: 'email', registeredName: 'REA Group Ltd', financialInstitution: 'CommBank' },
+  { payId: 'pay@ausgrid.com.au', type: 'email', registeredName: 'Ausgrid', financialInstitution: 'ANZ' },
+  { payId: 'accounts@bodycorp.com.au', type: 'email', registeredName: 'Body Corp Manager', financialInstitution: 'Westpac' },
+
+  // ── ABN-registered businesses ────────────────────────────────────────────────
   { payId: '51824753556', type: 'abn', registeredName: 'Woolworths Group Ltd', financialInstitution: 'CommBank' },
   { payId: '43004028077', type: 'abn', registeredName: 'Telstra Corporation Ltd', financialInstitution: 'NAB' },
+  { payId: '33007457141', type: 'abn', registeredName: 'Wesfarmers Ltd (Bunnings)', financialInstitution: 'ANZ' },
+  { payId: '21005557956', type: 'abn', registeredName: 'BHP Group Ltd', financialInstitution: 'ANZ' },
+  { payId: '12004044937', type: 'abn', registeredName: 'Coles Group Ltd', financialInstitution: 'CommBank' },
+  { payId: '99125035734', type: 'abn', registeredName: 'Officeworks Pty Ltd', financialInstitution: 'NAB' },
+
+  // ── Organisation IDs ─────────────────────────────────────────────────────────
   { payId: 'ORG001234', type: 'organisation-id', registeredName: 'Wollongong City Council', financialInstitution: 'Westpac' },
   { payId: 'ORG005678', type: 'organisation-id', registeredName: 'NSW Health', financialInstitution: 'Commonwealth' },
+  { payId: 'ORG009012', type: 'organisation-id', registeredName: 'Australian Taxation Office', financialInstitution: 'Reserve Bank of Australia' },
+  { payId: 'ORG003456', type: 'organisation-id', registeredName: 'Transport for NSW', financialInstitution: 'Commonwealth' },
+  { payId: 'ORG007890', type: 'organisation-id', registeredName: 'Services Australia (Centrelink)', financialInstitution: 'Reserve Bank of Australia' },
 ];
 
 /**
@@ -46,7 +79,7 @@ function normalise(s: string): string {
 /**
  * Look up a PayID against the registry.
  *
- * @param payId         The PayID string entered by the user.
+ * @param payId         The PayID string entered by the user (any format).
  * @param extraEntries  Optional additional records to check (e.g. the current user's
  *                      own registered PayIDs from their profile). Checked AFTER the
  *                      static registry so static entries take priority for deduplication.
@@ -55,15 +88,27 @@ export async function lookupPayId(
   payId: string,
   extraEntries: PayIdRecord[] = []
 ): Promise<PayIdRecord | null> {
-  // Simulate NPP network latency
-  await new Promise((r) => setTimeout(r, 800));
+  // Simulate NPP network latency (400–800ms)
+  await new Promise((r) => setTimeout(r, 400 + Math.random() * 400));
   const norm = normalise(payId);
   // Search static registry first, then any caller-supplied dynamic entries
   const allEntries = [...REGISTRY, ...extraEntries];
   return allEntries.find((r) => normalise(r.payId) === norm) ?? null;
 }
 
-/** Format mobile number to standard Australian format */
+/**
+ * Synchronous registry check (no latency simulation). Used for form validation.
+ */
+export function lookupPayIdSync(
+  payId: string,
+  extraEntries: PayIdRecord[] = []
+): PayIdRecord | null {
+  const norm = normalise(payId);
+  const allEntries = [...REGISTRY, ...extraEntries];
+  return allEntries.find((r) => normalise(r.payId) === norm) ?? null;
+}
+
+/** Format mobile number to standard Australian 04XX XXX XXX format */
 export function formatMobile(mobile: string): string {
   const digits = mobile.replace(/\D/g, '');
   if (digits.startsWith('61') && digits.length === 11) {
@@ -72,16 +117,42 @@ export function formatMobile(mobile: string): string {
   return digits;
 }
 
-/** Validate ABN (11 digits) */
+/**
+ * Validate ABN using the official Australian ABN algorithm.
+ * - Must be exactly 11 digits
+ * - Weighted checksum must equal 0 mod 89
+ */
 export function isValidABN(abn: string): boolean {
   const digits = abn.replace(/\s+/g, '');
-  return /^\d{11}$/.test(digits);
+  if (!/^\d{11}$/.test(digits)) return false;
+  const weights = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+  const d = digits.split('').map(Number);
+  d[0] -= 1; // subtract 1 from first digit per ABN algorithm
+  const sum = d.reduce((acc, val, idx) => acc + val * weights[idx], 0);
+  return sum % 89 === 0;
 }
 
-/** Validate Australian mobile number */
+/** Validate Australian mobile number (04XX, 05XX, or +61 variants) */
 export function isValidMobile(mobile: string): boolean {
   const digits = mobile.replace(/\D/g, '');
-  return /^(04|61[^0])\d{8,9}$/.test(digits) || /^04\d{8}$/.test(digits);
+  // Accept 04xxxxxxxx (10 digits) or 614xxxxxxxx (11 digits with country code)
+  return /^04\d{8}$/.test(digits) || /^614\d{8}$/.test(digits);
+}
+
+/** Validate email address format */
+export function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+/** Detect PayID type from the value entered */
+export function detectPayIdType(value: string): PayIdType | null {
+  const v = value.trim();
+  if (!v) return null;
+  if (isValidEmail(v)) return 'email';
+  if (isValidMobile(v.replace(/\s/g, ''))) return 'mobile';
+  if (/^\d{11}$/.test(v.replace(/\s/g, ''))) return 'abn';
+  if (/^ORG\d+$/i.test(v)) return 'organisation-id';
+  return null;
 }
 
 /** Get a human-readable label for a PayID type */
