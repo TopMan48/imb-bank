@@ -123,6 +123,18 @@ export default function MoreScreen() {
       subtitle: 'Data sharing & CDR settings',
       onPress: () => router.push('/settings/privacy'),
     },
+    {
+      icon: 'accessibility-outline',
+      label: 'Accessibility',
+      subtitle: 'Font size, contrast, motion',
+      onPress: () => router.push('/settings/accessibility'),
+    },
+    {
+      icon: 'gift-outline',
+      label: 'Referral Program',
+      subtitle: 'Earn $50 for every friend you refer',
+      onPress: () => router.push('/settings/referral'),
+    },
   ];
 
   const bankingMenuItems: MenuItemData[] = [
@@ -180,8 +192,8 @@ export default function MoreScreen() {
   const developerMenuItems: MenuItemData[] = [
     {
       icon: 'code-slash-outline',
-      label: 'API Status',
-      subtitle: 'Payment API connections & health',
+      label: 'API Configuration',
+      subtitle: 'Monoova, Zai, PayVantage · connection status',
       onPress: () => router.push('/settings/api-status'),
     },
   ];

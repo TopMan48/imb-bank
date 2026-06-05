@@ -16,10 +16,50 @@ export interface NotificationPreferences {
   transactionAlerts: boolean;
   lowBalanceAlerts: boolean;
   lowBalanceThreshold: number;
+  largeTransactionAlerts: boolean;
+  largeTransactionThreshold: number;
+  unusualActivityAlerts: boolean;
+  interestRateAlerts: boolean;
   paymentReminders: boolean;
   promotionalOffers: boolean;
   securityAlerts: boolean;
   statementReady: boolean;
+  eStatementsEnabled: boolean;
+  paymentDueReminder: boolean;
+}
+
+export interface TrustedDevice {
+  id: string;
+  name: string;
+  addedAt: string;
+  lastUsed: string;
+  type: 'mobile' | 'tablet' | 'desktop';
+}
+
+export interface SecuritySettings {
+  twoFAEnabled: boolean;
+  biometricsEnabled: boolean;
+  loginAlertsEnabled: boolean;
+  sessionTimeoutMinutes: number;
+  trustedDevices: TrustedDevice[];
+  fraudReports: FraudReport[];
+}
+
+export interface FraudReport {
+  id: string;
+  transactionId?: string;
+  description: string;
+  amount?: number;
+  reportedAt: string;
+  status: 'pending' | 'investigating' | 'resolved';
+  reference: string;
+}
+
+export interface AccessibilitySettings {
+  fontSize: 'small' | 'medium' | 'large' | 'xlarge';
+  highContrast: boolean;
+  reduceMotion: boolean;
+  largerTouchTargets: boolean;
 }
 
 export interface UserProfile {

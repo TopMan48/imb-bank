@@ -12,6 +12,9 @@ import type {
   PayToAgreement,
   ScheduledPayment,
   LoginActivity,
+  SecuritySettings,
+  AccessibilitySettings,
+  FraudReport,
 } from './types';
 
 const DEFAULT_NOTIFICATIONS: NotificationPreferences = {
@@ -21,10 +24,47 @@ const DEFAULT_NOTIFICATIONS: NotificationPreferences = {
   transactionAlerts: true,
   lowBalanceAlerts: true,
   lowBalanceThreshold: 200,
+  largeTransactionAlerts: true,
+  largeTransactionThreshold: 500,
+  unusualActivityAlerts: true,
+  interestRateAlerts: true,
   paymentReminders: true,
   promotionalOffers: false,
   securityAlerts: true,
   statementReady: true,
+  eStatementsEnabled: true,
+  paymentDueReminder: true,
+};
+
+const DEFAULT_SECURITY: SecuritySettings = {
+  twoFAEnabled: true,
+  biometricsEnabled: false,
+  loginAlertsEnabled: true,
+  sessionTimeoutMinutes: 5,
+  trustedDevices: [
+    {
+      id: 'td1',
+      name: 'iPhone 16 Pro Max',
+      addedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      lastUsed: new Date(Date.now() - 1 * 60 * 1000).toISOString(),
+      type: 'mobile',
+    },
+    {
+      id: 'td2',
+      name: 'MacBook Pro (Safari)',
+      addedAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+      lastUsed: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      type: 'desktop',
+    },
+  ],
+  fraudReports: [],
+};
+
+const DEFAULT_ACCESSIBILITY: AccessibilitySettings = {
+  fontSize: 'medium',
+  highContrast: false,
+  reduceMotion: false,
+  largerTouchTargets: false,
 };
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -87,6 +127,8 @@ interface PreferencesSlice {
   notifications: NotificationPreferences;
   profile: UserProfile;
   loginActivity: LoginActivity[];
+  security: SecuritySettings;
+  accessibility: AccessibilitySettings;
   setPasscode: (code: string) => void;
   verifyPasscode: (code: string) => boolean;
   setAuthenticated: (value: boolean) => void;
@@ -95,6 +137,10 @@ interface PreferencesSlice {
   updateProfile: (profile: Partial<UserProfile>) => void;
   addLoginActivity: (activity: Omit<LoginActivity, 'id'>) => void;
   clearLoginActivity: () => void;
+  updateSecurity: (updates: Partial<SecuritySettings>) => void;
+  removeTrustedDevice: (deviceId: string) => void;
+  addFraudReport: (report: Omit<FraudReport, 'id'>) => void;
+  updateAccessibility: (updates: Partial<AccessibilitySettings>) => void;
 }
 
 interface DataSlice {
@@ -140,6 +186,8 @@ export const useAppStore = create<AppStore>()(
       notifications: DEFAULT_NOTIFICATIONS,
       profile: DEFAULT_PROFILE,
       loginActivity: SEED_LOGIN_ACTIVITY,
+      security: DEFAULT_SECURITY,
+      accessibility: DEFAULT_ACCESSIBILITY,
 
       accounts: [
         {
@@ -339,6 +387,32 @@ export const useAppStore = create<AppStore>()(
       clearLoginActivity: () =>
         set({ loginActivity: [] }),
 
+      updateSecurity: (updates) =>
+        set((state) => ({
+          security: { ...state.security, ...updates },
+        })),
+
+      removeTrustedDevice: (deviceId) =>
+        set((state) => ({
+          security: {
+            ...state.security,
+            trustedDevices: state.security.trustedDevices.filter((d) => d.id !== deviceId),
+          },
+        })),
+
+      addFraudReport: (report) =>
+        set((state) => ({
+          security: {
+            ...state.security,
+            fraudReports: [{ ...report, id: generateId() }, ...state.security.fraudReports],
+          },
+        })),
+
+      updateAccessibility: (updates) =>
+        set((state) => ({
+          accessibility: { ...state.accessibility, ...updates },
+        })),
+
       // ─── Card actions ──────────────────────────────────────────────────────
 
       toggleCardLock: (cardId) =>
@@ -431,8 +505,19 @@ export const useAppStore = create<AppStore>()(
         })),
     }),
     {
-      name: 'imb-bank-storage-v3',
+      name: 'imb-bank-storage-v4',
       storage: createJSONStorage(() => AsyncStorage),
+      // Merge loaded state with defaults to handle schema migrations
+      merge: (persistedState: unknown, currentState) => {
+        const ps = persistedState as Partial<typeof currentState>;
+        return {
+          ...currentState,
+          ...ps,
+          notifications: { ...DEFAULT_NOTIFICATIONS, ...(ps.notifications ?? {}) },
+          security: { ...DEFAULT_SECURITY, ...(ps.security ?? {}) },
+          accessibility: { ...DEFAULT_ACCESSIBILITY, ...(ps.accessibility ?? {}) },
+        };
+      },
       partialize: (state) => ({
         preferences: state.preferences,
         cards: state.cards,
@@ -444,6 +529,8 @@ export const useAppStore = create<AppStore>()(
         notifications: state.notifications,
         profile: state.profile,
         loginActivity: state.loginActivity,
+        security: state.security,
+        accessibility: state.accessibility,
       }),
     }
   )

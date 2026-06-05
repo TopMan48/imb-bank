@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
+import { View, Text, ScrollView, Pressable, Alert, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppStore } from '@/store/useAppStore';
 import { Colors } from '@/constants/Colors';
@@ -18,7 +18,7 @@ const MOCK_STATEMENTS = [
 ];
 
 export default function StatementsScreen() {
-  const { accounts } = useAppStore();
+  const { accounts, notifications, updateNotifications } = useAppStore();
 
   const accountStatements = accounts
     .filter((a) => a.type !== 'loan')
@@ -30,10 +30,62 @@ export default function StatementsScreen() {
   return (
     <ScrollView contentContainerStyle={{ padding: 20, gap: 24, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
 
+      {/* eStatements preference */}
+      <View style={{ gap: 10 }}>
+        <Text style={{ fontSize: 12, fontFamily: Fonts.semiBold, color: Colors.textSecondary, textTransform: 'uppercase', letterSpacing: 0.5, paddingHorizontal: 4 }}>
+          Statement Preferences
+        </Text>
+        <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 2px 10px rgba(0,75,90,0.06)' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+            <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: '#E8F5E9', alignItems: 'center', justifyContent: 'center', borderCurve: 'continuous' }}>
+              <Ionicons name="leaf-outline" size={20} color={Colors.success} />
+            </View>
+            <View style={{ flex: 1, gap: 2 }}>
+              <Text style={{ fontSize: 15, fontFamily: Fonts.semiBold, color: Colors.textPrimary }}>eStatements (Paperless)</Text>
+              <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.textSecondary }}>
+                Receive statements via email instead of post
+              </Text>
+            </View>
+            <Switch
+              value={notifications.eStatementsEnabled}
+              onValueChange={(v) => updateNotifications({ eStatementsEnabled: v })}
+              trackColor={{ false: Colors.border, true: Colors.primary }}
+              thumbColor={Colors.white}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12 }}>
+            <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: Colors.infoBg, alignItems: 'center', justifyContent: 'center', borderCurve: 'continuous' }}>
+              <Ionicons name="notifications-outline" size={20} color={Colors.info} />
+            </View>
+            <View style={{ flex: 1, gap: 2 }}>
+              <Text style={{ fontSize: 15, fontFamily: Fonts.semiBold, color: Colors.textPrimary }}>Statement Ready Alerts</Text>
+              <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.textSecondary }}>
+                Notify me when statement is available
+              </Text>
+            </View>
+            <Switch
+              value={notifications.statementReady}
+              onValueChange={(v) => updateNotifications({ statementReady: v })}
+              trackColor={{ false: Colors.border, true: Colors.primary }}
+              thumbColor={Colors.white}
+            />
+          </View>
+        </View>
+
+        {notifications.eStatementsEnabled && (
+          <View style={{ backgroundColor: '#E8F5E9', borderRadius: 12, padding: 12, flexDirection: 'row', gap: 10, borderCurve: 'continuous' }}>
+            <Ionicons name="checkmark-circle" size={18} color={Colors.success} />
+            <Text style={{ flex: 1, fontSize: 13, fontFamily: Fonts.regular, color: Colors.textPrimary, lineHeight: 18 }}>
+              eStatements are active. You will receive an email notification when each statement is ready to view.
+            </Text>
+          </View>
+        )}
+      </View>
+
       <View style={{ backgroundColor: Colors.infoBg, borderRadius: 12, padding: 14, flexDirection: 'row', gap: 10, borderCurve: 'continuous' }}>
         <Ionicons name="information-circle-outline" size={20} color={Colors.info} />
         <Text style={{ flex: 1, fontSize: 13, fontFamily: Fonts.regular, color: Colors.textPrimary, lineHeight: 18 }}>
-          Statements are generated monthly and available for download as PDF.
+          Statements are generated monthly and available for download as PDF. Archives kept for 7 years.
         </Text>
       </View>
 
@@ -44,11 +96,15 @@ export default function StatementsScreen() {
           </Text>
           <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 2px 10px rgba(0,75,90,0.06)' }}>
             {statements.length === 0 ? (
-              <View style={{ padding: 20, alignItems: 'center' }}>
+              <View style={{ padding: 20, alignItems: 'center', gap: 8 }}>
+                <Ionicons name="document-text-outline" size={32} color={Colors.textSecondary} />
                 <Text style={{ fontSize: 14, fontFamily: Fonts.regular, color: Colors.textSecondary }}>No statements available</Text>
               </View>
             ) : statements.map((stmt, idx) => (
-              <View key={stmt.id} style={{ flexDirection: 'row', alignItems: 'center', padding: 14, gap: 12, borderBottomWidth: idx < statements.length - 1 ? 1 : 0, borderBottomColor: Colors.borderLight }}>
+              <View
+                key={stmt.id}
+                style={{ flexDirection: 'row', alignItems: 'center', padding: 14, gap: 12, borderBottomWidth: idx < statements.length - 1 ? 1 : 0, borderBottomColor: Colors.borderLight, minHeight: 60 }}
+              >
                 <View style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: '#FFF3E0', alignItems: 'center', justifyContent: 'center', borderCurve: 'continuous' }}>
                   <Ionicons name="document-text" size={20} color={Colors.warning} />
                 </View>
@@ -63,15 +119,16 @@ export default function StatementsScreen() {
                     gap: 4,
                     backgroundColor: Colors.background,
                     borderRadius: 8,
-                    paddingHorizontal: 10,
-                    paddingVertical: 7,
+                    paddingHorizontal: 12,
+                    paddingVertical: 8,
                     opacity: pressed ? 0.7 : 1,
                     borderCurve: 'continuous',
+                    minHeight: 36,
                   }]}
-                  onPress={() => Alert.alert('Download', `Downloading ${stmt.period} statement for ${account.name}...`)}
+                  onPress={() => Alert.alert('Download Statement', `Preparing ${stmt.period} statement for ${account.name}...\n\nThe PDF will open in your document viewer.`)}
                 >
                   <Ionicons name="download-outline" size={16} color={Colors.primary} />
-                  <Text style={{ fontSize: 12, fontFamily: Fonts.semiBold, color: Colors.primary }}>PDF</Text>
+                  <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.primary }}>PDF</Text>
                 </Pressable>
               </View>
             ))}
