@@ -1,695 +1,7 @@
 {
   "version": 1,
-  "generatedAt": 1780625577284,
+  "generatedAt": 1780625784949,
   "entries": {
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:43": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 43
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "borderRadius": {
-              "line": 43,
-              "col": 68,
-              "endCol": 70,
-              "raw": "16"
-            },
-            "padding": {
-              "line": 43,
-              "col": 81,
-              "endCol": 83,
-              "raw": "32"
-            },
-            "alignItems": {
-              "line": 43,
-              "col": 97,
-              "endCol": 105,
-              "raw": "'center'"
-            },
-            "gap": {
-              "line": 43,
-              "col": 112,
-              "endCol": 114,
-              "raw": "12"
-            },
-            "borderCurve": {
-              "line": 43,
-              "col": 129,
-              "endCol": 141,
-              "raw": "'continuous'"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:45": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 45
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 45,
-              "col": 35,
-              "endCol": 37,
-              "raw": "16"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:46": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 46
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 46,
-              "col": 35,
-              "endCol": 37,
-              "raw": "14"
-            },
-            "textAlign": {
-              "line": 46,
-              "col": 106,
-              "endCol": 114,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:51": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 51
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "borderRadius": {
-              "line": 51,
-              "col": 85,
-              "endCol": 87,
-              "raw": "16"
-            },
-            "overflow": {
-              "line": 51,
-              "col": 99,
-              "endCol": 107,
-              "raw": "'hidden'"
-            },
-            "borderCurve": {
-              "line": 51,
-              "col": 122,
-              "endCol": 134,
-              "raw": "'continuous'"
-            },
-            "boxShadow": {
-              "line": 51,
-              "col": 147,
-              "endCol": 178,
-              "raw": "'0 2px 10px rgba(0,75,90,0.06)'"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:52": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 52
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "padding": {
-              "line": 52,
-              "col": 34,
-              "endCol": 36,
-              "raw": "16"
-            },
-            "gap": {
-              "line": 52,
-              "col": 43,
-              "endCol": 45,
-              "raw": "10"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:53": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 53
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "flexDirection": {
-              "line": 53,
-              "col": 42,
-              "endCol": 47,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 53,
-              "col": 61,
-              "endCol": 73,
-              "raw": "'flex-start'"
-            },
-            "gap": {
-              "line": 53,
-              "col": 80,
-              "endCol": 82,
-              "raw": "12"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:54": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 54
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "width": {
-              "line": 54,
-              "col": 36,
-              "endCol": 38,
-              "raw": "44"
-            },
-            "height": {
-              "line": 54,
-              "col": 48,
-              "endCol": 50,
-              "raw": "44"
-            },
-            "borderRadius": {
-              "line": 54,
-              "col": 66,
-              "endCol": 68,
-              "raw": "22"
-            },
-            "alignItems": {
-              "line": 54,
-              "col": 118,
-              "endCol": 126,
-              "raw": "'center'"
-            },
-            "justifyContent": {
-              "line": 54,
-              "col": 144,
-              "endCol": 152,
-              "raw": "'center'"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:57": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 57
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "flex": {
-              "line": 57,
-              "col": 35,
-              "endCol": 36,
-              "raw": "1"
-            },
-            "gap": {
-              "line": 57,
-              "col": 43,
-              "endCol": 44,
-              "raw": "3"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:58": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 58
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "flexDirection": {
-              "line": 58,
-              "col": 46,
-              "endCol": 51,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 58,
-              "col": 65,
-              "endCol": 73,
-              "raw": "'center'"
-            },
-            "gap": {
-              "line": 58,
-              "col": 80,
-              "endCol": 81,
-              "raw": "8"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:59": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 59
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 59,
-              "col": 43,
-              "endCol": 45,
-              "raw": "16"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:60": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 60
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "borderRadius": {
-              "line": 62,
-              "col": 34,
-              "endCol": 35,
-              "raw": "8"
-            },
-            "paddingHorizontal": {
-              "line": 63,
-              "col": 39,
-              "endCol": 40,
-              "raw": "8"
-            },
-            "paddingVertical": {
-              "line": 64,
-              "col": 37,
-              "endCol": 38,
-              "raw": "2"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:66": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 66
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 66,
-              "col": 45,
-              "endCol": 47,
-              "raw": "11"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:72": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 72
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 72,
-              "col": 43,
-              "endCol": 45,
-              "raw": "12"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:75": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 75
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 75,
-              "col": 39,
-              "endCol": 41,
-              "raw": "18"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:80": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 80
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "flexDirection": {
-              "line": 80,
-              "col": 42,
-              "endCol": 47,
-              "raw": "'row'"
-            },
-            "gap": {
-              "line": 80,
-              "col": 54,
-              "endCol": 55,
-              "raw": "8"
-            },
-            "flexWrap": {
-              "line": 80,
-              "col": 67,
-              "endCol": 73,
-              "raw": "'wrap'"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:86": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 86
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "flexDirection": {
-              "line": 86,
-              "col": 63,
-              "endCol": 68,
-              "raw": "'row'"
-            },
-            "alignItems": {
-              "line": 86,
-              "col": 82,
-              "endCol": 90,
-              "raw": "'center'"
-            },
-            "gap": {
-              "line": 86,
-              "col": 97,
-              "endCol": 98,
-              "raw": "4"
-            },
-            "borderRadius": {
-              "line": 86,
-              "col": 150,
-              "endCol": 151,
-              "raw": "8"
-            },
-            "paddingHorizontal": {
-              "line": 86,
-              "col": 172,
-              "endCol": 173,
-              "raw": "8"
-            },
-            "paddingVertical": {
-              "line": 86,
-              "col": 192,
-              "endCol": 193,
-              "raw": "4"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:88": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 88
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 88,
-              "col": 43,
-              "endCol": 45,
-              "raw": "11"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:94": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 94
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "flexDirection": {
-              "line": 94,
-              "col": 40,
-              "endCol": 45,
-              "raw": "'row'"
-            },
-            "borderTopWidth": {
-              "line": 94,
-              "col": 63,
-              "endCol": 64,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:95": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 95
-      },
-      "styles": [
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:99": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 99
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 99,
-              "col": 39,
-              "endCol": 41,
-              "raw": "13"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:103": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 103
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "width": {
-              "line": 103,
-              "col": 34,
-              "endCol": 35,
-              "raw": "1"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:104": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 104
-      },
-      "styles": [
-        {
-          "origin": "dynamic",
-          "resolvable": false
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:108": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 108
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "fontSize": {
-              "line": 108,
-              "col": 39,
-              "endCol": 41,
-              "raw": "13"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:114": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 114
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "borderRadius": {
-              "line": 114,
-              "col": 67,
-              "endCol": 69,
-              "raw": "12"
-            },
-            "padding": {
-              "line": 114,
-              "col": 80,
-              "endCol": 82,
-              "raw": "14"
-            },
-            "flexDirection": {
-              "line": 114,
-              "col": 99,
-              "endCol": 104,
-              "raw": "'row'"
-            },
-            "gap": {
-              "line": 114,
-              "col": 111,
-              "endCol": 113,
-              "raw": "10"
-            },
-            "borderCurve": {
-              "line": 114,
-              "col": 128,
-              "endCol": 140,
-              "raw": "'continuous'"
-            }
-          }
-        }
-      ]
-    },
-    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:116": {
-      "element": {
-        "file": "app/settings/scheduled-payments.tsx",
-        "line": 116
-      },
-      "styles": [
-        {
-          "origin": "inline",
-          "file": "app/settings/scheduled-payments.tsx",
-          "properties": {
-            "flex": {
-              "line": 116,
-              "col": 29,
-              "endCol": 30,
-              "raw": "1"
-            },
-            "fontSize": {
-              "line": 116,
-              "col": 42,
-              "endCol": 44,
-              "raw": "13"
-            },
-            "lineHeight": {
-              "line": 116,
-              "col": 112,
-              "endCol": 114,
-              "raw": "18"
-            }
-          }
-        }
-      ]
-    },
     "StatementsScreen@app/settings/statements.tsx:33": {
       "element": {
         "file": "app/settings/statements.tsx",
@@ -17513,6 +16825,2082 @@
               "col": 12,
               "endCol": 15,
               "raw": "-30"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:88": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 88
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 88,
+              "col": 43,
+              "endCol": 44,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:89": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 89
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 89,
+              "col": 29,
+              "endCol": 30,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:91": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 91
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 91,
+              "col": 40,
+              "endCol": 45,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 91,
+              "col": 59,
+              "endCol": 67,
+              "raw": "'center'"
+            },
+            "padding": {
+              "line": 91,
+              "col": 78,
+              "endCol": 80,
+              "raw": "20"
+            },
+            "paddingTop": {
+              "line": 91,
+              "col": 94,
+              "endCol": 96,
+              "raw": "24"
+            },
+            "borderBottomWidth": {
+              "line": 91,
+              "col": 148,
+              "endCol": 149,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:92": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 92
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 92,
+              "col": 33,
+              "endCol": 34,
+              "raw": "1"
+            },
+            "fontSize": {
+              "line": 92,
+              "col": 46,
+              "endCol": 48,
+              "raw": "18"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:93": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 93
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "width": {
+              "line": 93,
+              "col": 61,
+              "endCol": 63,
+              "raw": "36"
+            },
+            "height": {
+              "line": 93,
+              "col": 73,
+              "endCol": 75,
+              "raw": "36"
+            },
+            "borderRadius": {
+              "line": 93,
+              "col": 91,
+              "endCol": 93,
+              "raw": "18"
+            },
+            "alignItems": {
+              "line": 93,
+              "col": 143,
+              "endCol": 151,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 93,
+              "col": 169,
+              "endCol": 177,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:100": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 100
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "gap": {
+              "line": 100,
+              "col": 32,
+              "endCol": 33,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:101": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 101
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 101,
+              "col": 39,
+              "endCol": 41,
+              "raw": "12"
+            },
+            "textTransform": {
+              "line": 101,
+              "col": 115,
+              "endCol": 126,
+              "raw": "'uppercase'"
+            },
+            "letterSpacing": {
+              "line": 101,
+              "col": 143,
+              "endCol": 146,
+              "raw": "0.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:103": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 103
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 103,
+              "col": 76,
+              "endCol": 78,
+              "raw": "14"
+            },
+            "padding": {
+              "line": 103,
+              "col": 89,
+              "endCol": 91,
+              "raw": "20"
+            },
+            "alignItems": {
+              "line": 103,
+              "col": 105,
+              "endCol": 113,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 103,
+              "col": 120,
+              "endCol": 122,
+              "raw": "10"
+            },
+            "borderCurve": {
+              "line": 103,
+              "col": 137,
+              "endCol": 149,
+              "raw": "'continuous'"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:105": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 105
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 105,
+              "col": 43,
+              "endCol": 45,
+              "raw": "14"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:106": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 106
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 107,
+              "col": 76,
+              "endCol": 78,
+              "raw": "10"
+            },
+            "paddingHorizontal": {
+              "line": 107,
+              "col": 99,
+              "endCol": 101,
+              "raw": "18"
+            },
+            "paddingVertical": {
+              "line": 107,
+              "col": 120,
+              "endCol": 122,
+              "raw": "10"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:110": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 110
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 110,
+              "col": 45,
+              "endCol": 47,
+              "raw": "13"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:114": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 114
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 114,
+              "col": 76,
+              "endCol": 78,
+              "raw": "14"
+            },
+            "overflow": {
+              "line": 114,
+              "col": 90,
+              "endCol": 98,
+              "raw": "'hidden'"
+            },
+            "borderCurve": {
+              "line": 114,
+              "col": 113,
+              "endCol": 125,
+              "raw": "'continuous'"
+            },
+            "boxShadow": {
+              "line": 114,
+              "col": 138,
+              "endCol": 169,
+              "raw": "'0 2px 10px rgba(0,75,90,0.06)'"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:116": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 116
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:130": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 130
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "width": {
+              "line": 130,
+              "col": 44,
+              "endCol": 46,
+              "raw": "38"
+            },
+            "height": {
+              "line": 130,
+              "col": 56,
+              "endCol": 58,
+              "raw": "38"
+            },
+            "borderRadius": {
+              "line": 130,
+              "col": 74,
+              "endCol": 76,
+              "raw": "19"
+            },
+            "alignItems": {
+              "line": 130,
+              "col": 127,
+              "endCol": 135,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 130,
+              "col": 153,
+              "endCol": 161,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:131": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 131
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 131,
+              "col": 49,
+              "endCol": 51,
+              "raw": "15"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:133": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 133
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 133,
+              "col": 43,
+              "endCol": 44,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:134": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 134
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 134,
+              "col": 49,
+              "endCol": 51,
+              "raw": "14"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:135": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 135
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 135,
+              "col": 49,
+              "endCol": 51,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:142": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 142
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 142,
+              "col": 55,
+              "endCol": 57,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:146": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 146
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "gap": {
+              "line": 146,
+              "col": 32,
+              "endCol": 33,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:147": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 147
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 147,
+              "col": 39,
+              "endCol": 41,
+              "raw": "12"
+            },
+            "textTransform": {
+              "line": 147,
+              "col": 115,
+              "endCol": 126,
+              "raw": "'uppercase'"
+            },
+            "letterSpacing": {
+              "line": 147,
+              "col": 143,
+              "endCol": 146,
+              "raw": "0.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:148": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 148
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexGrow": {
+              "line": 148,
+              "col": 95,
+              "endCol": 96,
+              "raw": "0"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:150": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 150
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 154,
+              "col": 36,
+              "endCol": 38,
+              "raw": "12"
+            },
+            "paddingHorizontal": {
+              "line": 155,
+              "col": 41,
+              "endCol": 43,
+              "raw": "14"
+            },
+            "paddingVertical": {
+              "line": 156,
+              "col": 39,
+              "endCol": 41,
+              "raw": "10"
+            },
+            "borderWidth": {
+              "line": 157,
+              "col": 35,
+              "endCol": 38,
+              "raw": "1.5"
+            },
+            "borderCurve": {
+              "line": 159,
+              "col": 35,
+              "endCol": 47,
+              "raw": "'continuous'"
+            },
+            "minWidth": {
+              "line": 160,
+              "col": 32,
+              "endCol": 35,
+              "raw": "130"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:164": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 164
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 164,
+              "col": 45,
+              "endCol": 47,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:165": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 165
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 165,
+              "col": 45,
+              "endCol": 47,
+              "raw": "13"
+            },
+            "marginTop": {
+              "line": 165,
+              "col": 159,
+              "endCol": 160,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:174": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 174
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "gap": {
+              "line": 174,
+              "col": 32,
+              "endCol": 33,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:175": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 175
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 175,
+              "col": 39,
+              "endCol": 41,
+              "raw": "12"
+            },
+            "textTransform": {
+              "line": 175,
+              "col": 115,
+              "endCol": 126,
+              "raw": "'uppercase'"
+            },
+            "letterSpacing": {
+              "line": 175,
+              "col": 143,
+              "endCol": 146,
+              "raw": "0.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:176": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 176
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 176,
+              "col": 44,
+              "endCol": 49,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 176,
+              "col": 63,
+              "endCol": 71,
+              "raw": "'center'"
+            },
+            "borderRadius": {
+              "line": 176,
+              "col": 118,
+              "endCol": 120,
+              "raw": "14"
+            },
+            "padding": {
+              "line": 176,
+              "col": 131,
+              "endCol": 133,
+              "raw": "16"
+            },
+            "gap": {
+              "line": 176,
+              "col": 140,
+              "endCol": 141,
+              "raw": "4"
+            },
+            "borderCurve": {
+              "line": 176,
+              "col": 156,
+              "endCol": 168,
+              "raw": "'continuous'"
+            },
+            "borderWidth": {
+              "line": 176,
+              "col": 183,
+              "endCol": 186,
+              "raw": "1.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:177": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 177
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 177,
+              "col": 41,
+              "endCol": 43,
+              "raw": "24"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:178": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 178
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 184,
+              "col": 33,
+              "endCol": 34,
+              "raw": "1"
+            },
+            "fontSize": {
+              "line": 184,
+              "col": 46,
+              "endCol": 48,
+              "raw": "26"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:187": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 187
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 187,
+              "col": 56,
+              "endCol": 58,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:191": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 191
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "gap": {
+              "line": 191,
+              "col": 32,
+              "endCol": 33,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:192": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 192
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 192,
+              "col": 39,
+              "endCol": 41,
+              "raw": "12"
+            },
+            "textTransform": {
+              "line": 192,
+              "col": 115,
+              "endCol": 126,
+              "raw": "'uppercase'"
+            },
+            "letterSpacing": {
+              "line": 192,
+              "col": 143,
+              "endCol": 146,
+              "raw": "0.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:193": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 193
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 193,
+              "col": 44,
+              "endCol": 49,
+              "raw": "'row'"
+            },
+            "flexWrap": {
+              "line": 193,
+              "col": 61,
+              "endCol": 67,
+              "raw": "'wrap'"
+            },
+            "gap": {
+              "line": 193,
+              "col": 74,
+              "endCol": 75,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:195": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 195
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "paddingHorizontal": {
+              "line": 198,
+              "col": 41,
+              "endCol": 43,
+              "raw": "16"
+            },
+            "paddingVertical": {
+              "line": 199,
+              "col": 39,
+              "endCol": 41,
+              "raw": "10"
+            },
+            "borderRadius": {
+              "line": 200,
+              "col": 36,
+              "endCol": 38,
+              "raw": "20"
+            },
+            "borderWidth": {
+              "line": 202,
+              "col": 35,
+              "endCol": 38,
+              "raw": "1.5"
+            },
+            "minHeight": {
+              "line": 204,
+              "col": 33,
+              "endCol": 35,
+              "raw": "44"
+            },
+            "justifyContent": {
+              "line": 205,
+              "col": 38,
+              "endCol": 46,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:209": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 209
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 209,
+              "col": 45,
+              "endCol": 47,
+              "raw": "13"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:218": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 218
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "gap": {
+              "line": 218,
+              "col": 32,
+              "endCol": 33,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:219": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 219
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 219,
+              "col": 39,
+              "endCol": 41,
+              "raw": "12"
+            },
+            "textTransform": {
+              "line": 219,
+              "col": 115,
+              "endCol": 126,
+              "raw": "'uppercase'"
+            },
+            "letterSpacing": {
+              "line": 219,
+              "col": 143,
+              "endCol": 146,
+              "raw": "0.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:222": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 222
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 222,
+              "col": 74,
+              "endCol": 76,
+              "raw": "14"
+            },
+            "padding": {
+              "line": 222,
+              "col": 87,
+              "endCol": 89,
+              "raw": "14"
+            },
+            "borderCurve": {
+              "line": 222,
+              "col": 104,
+              "endCol": 116,
+              "raw": "'continuous'"
+            },
+            "borderWidth": {
+              "line": 222,
+              "col": 131,
+              "endCol": 134,
+              "raw": "1.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:223": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 223
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 228,
+              "col": 37,
+              "endCol": 39,
+              "raw": "15"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:231": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 231
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 231,
+              "col": 54,
+              "endCol": 56,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:232": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 232
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 232,
+              "col": 39,
+              "endCol": 41,
+              "raw": "11"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:236": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 236
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "gap": {
+              "line": 236,
+              "col": 32,
+              "endCol": 33,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:237": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 237
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 237,
+              "col": 39,
+              "endCol": 41,
+              "raw": "12"
+            },
+            "textTransform": {
+              "line": 237,
+              "col": 115,
+              "endCol": 126,
+              "raw": "'uppercase'"
+            },
+            "letterSpacing": {
+              "line": 237,
+              "col": 143,
+              "endCol": 146,
+              "raw": "0.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:238": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 238
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 238,
+              "col": 74,
+              "endCol": 76,
+              "raw": "14"
+            },
+            "padding": {
+              "line": 238,
+              "col": 87,
+              "endCol": 89,
+              "raw": "14"
+            },
+            "borderCurve": {
+              "line": 238,
+              "col": 104,
+              "endCol": 116,
+              "raw": "'continuous'"
+            },
+            "borderWidth": {
+              "line": 238,
+              "col": 131,
+              "endCol": 134,
+              "raw": "1.5"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:239": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 239
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 244,
+              "col": 37,
+              "endCol": 39,
+              "raw": "15"
+            }
+          }
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:251": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 251
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "AddScheduledPaymentModal@app/settings/scheduled-payments.tsx:266": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 266
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 266,
+              "col": 39,
+              "endCol": 41,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:300": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 300
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 300,
+              "col": 25,
+              "endCol": 26,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:304": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 304
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 304,
+              "col": 70,
+              "endCol": 72,
+              "raw": "16"
+            },
+            "padding": {
+              "line": 304,
+              "col": 83,
+              "endCol": 85,
+              "raw": "32"
+            },
+            "alignItems": {
+              "line": 304,
+              "col": 99,
+              "endCol": 107,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 304,
+              "col": 114,
+              "endCol": 116,
+              "raw": "12"
+            },
+            "borderCurve": {
+              "line": 304,
+              "col": 131,
+              "endCol": 143,
+              "raw": "'continuous'"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:306": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 306
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 306,
+              "col": 37,
+              "endCol": 39,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:307": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 307
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 307,
+              "col": 37,
+              "endCol": 39,
+              "raw": "14"
+            },
+            "textAlign": {
+              "line": 307,
+              "col": 108,
+              "endCol": 116,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:312": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 312
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 312,
+              "col": 87,
+              "endCol": 89,
+              "raw": "16"
+            },
+            "overflow": {
+              "line": 312,
+              "col": 101,
+              "endCol": 109,
+              "raw": "'hidden'"
+            },
+            "borderCurve": {
+              "line": 312,
+              "col": 124,
+              "endCol": 136,
+              "raw": "'continuous'"
+            },
+            "boxShadow": {
+              "line": 312,
+              "col": 149,
+              "endCol": 180,
+              "raw": "'0 2px 10px rgba(0,75,90,0.06)'"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:313": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 313
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "padding": {
+              "line": 313,
+              "col": 36,
+              "endCol": 38,
+              "raw": "16"
+            },
+            "gap": {
+              "line": 313,
+              "col": 45,
+              "endCol": 47,
+              "raw": "10"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:314": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 314
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 314,
+              "col": 44,
+              "endCol": 49,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 314,
+              "col": 63,
+              "endCol": 75,
+              "raw": "'flex-start'"
+            },
+            "gap": {
+              "line": 314,
+              "col": 82,
+              "endCol": 84,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:315": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 315
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "width": {
+              "line": 315,
+              "col": 38,
+              "endCol": 40,
+              "raw": "44"
+            },
+            "height": {
+              "line": 315,
+              "col": 50,
+              "endCol": 52,
+              "raw": "44"
+            },
+            "borderRadius": {
+              "line": 315,
+              "col": 68,
+              "endCol": 70,
+              "raw": "22"
+            },
+            "alignItems": {
+              "line": 315,
+              "col": 120,
+              "endCol": 128,
+              "raw": "'center'"
+            },
+            "justifyContent": {
+              "line": 315,
+              "col": 146,
+              "endCol": 154,
+              "raw": "'center'"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:318": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 318
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 318,
+              "col": 37,
+              "endCol": 38,
+              "raw": "1"
+            },
+            "gap": {
+              "line": 318,
+              "col": 45,
+              "endCol": 46,
+              "raw": "3"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:319": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 319
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 319,
+              "col": 48,
+              "endCol": 53,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 319,
+              "col": 67,
+              "endCol": 75,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 319,
+              "col": 82,
+              "endCol": 83,
+              "raw": "8"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:320": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 320
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 320,
+              "col": 45,
+              "endCol": 47,
+              "raw": "16"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:321": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 321
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 323,
+              "col": 36,
+              "endCol": 37,
+              "raw": "8"
+            },
+            "paddingHorizontal": {
+              "line": 324,
+              "col": 41,
+              "endCol": 42,
+              "raw": "8"
+            },
+            "paddingVertical": {
+              "line": 325,
+              "col": 39,
+              "endCol": 40,
+              "raw": "2"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:327": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 327
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 327,
+              "col": 47,
+              "endCol": 49,
+              "raw": "11"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:333": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 333
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 333,
+              "col": 45,
+              "endCol": 47,
+              "raw": "12"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:336": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 336
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 336,
+              "col": 41,
+              "endCol": 43,
+              "raw": "18"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:341": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 341
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 341,
+              "col": 44,
+              "endCol": 49,
+              "raw": "'row'"
+            },
+            "gap": {
+              "line": 341,
+              "col": 56,
+              "endCol": 57,
+              "raw": "8"
+            },
+            "flexWrap": {
+              "line": 341,
+              "col": 69,
+              "endCol": 75,
+              "raw": "'wrap'"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:347": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 347
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 347,
+              "col": 65,
+              "endCol": 70,
+              "raw": "'row'"
+            },
+            "alignItems": {
+              "line": 347,
+              "col": 84,
+              "endCol": 92,
+              "raw": "'center'"
+            },
+            "gap": {
+              "line": 347,
+              "col": 99,
+              "endCol": 100,
+              "raw": "4"
+            },
+            "borderRadius": {
+              "line": 347,
+              "col": 152,
+              "endCol": 153,
+              "raw": "8"
+            },
+            "paddingHorizontal": {
+              "line": 347,
+              "col": 174,
+              "endCol": 175,
+              "raw": "8"
+            },
+            "paddingVertical": {
+              "line": 347,
+              "col": 194,
+              "endCol": 195,
+              "raw": "4"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:349": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 349
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 349,
+              "col": 45,
+              "endCol": 47,
+              "raw": "11"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:355": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 355
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flexDirection": {
+              "line": 355,
+              "col": 42,
+              "endCol": 47,
+              "raw": "'row'"
+            },
+            "borderTopWidth": {
+              "line": 355,
+              "col": 65,
+              "endCol": 66,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:356": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 356
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:360": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 360
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 360,
+              "col": 41,
+              "endCol": 43,
+              "raw": "13"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:364": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 364
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "width": {
+              "line": 364,
+              "col": 36,
+              "endCol": 37,
+              "raw": "1"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:365": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 365
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:369": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 369
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 369,
+              "col": 41,
+              "endCol": 43,
+              "raw": "13"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:375": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 375
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "borderRadius": {
+              "line": 375,
+              "col": 69,
+              "endCol": 71,
+              "raw": "12"
+            },
+            "padding": {
+              "line": 375,
+              "col": 82,
+              "endCol": 84,
+              "raw": "14"
+            },
+            "flexDirection": {
+              "line": 375,
+              "col": 101,
+              "endCol": 106,
+              "raw": "'row'"
+            },
+            "gap": {
+              "line": 375,
+              "col": 113,
+              "endCol": 115,
+              "raw": "10"
+            },
+            "borderCurve": {
+              "line": 375,
+              "col": 130,
+              "endCol": 142,
+              "raw": "'continuous'"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:377": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 377
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "flex": {
+              "line": 377,
+              "col": 31,
+              "endCol": 32,
+              "raw": "1"
+            },
+            "fontSize": {
+              "line": 377,
+              "col": 44,
+              "endCol": 46,
+              "raw": "13"
+            },
+            "lineHeight": {
+              "line": 377,
+              "col": 114,
+              "endCol": 116,
+              "raw": "18"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:384": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 384
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "position": {
+              "line": 384,
+              "col": 31,
+              "endCol": 41,
+              "raw": "'absolute'"
+            },
+            "bottom": {
+              "line": 384,
+              "col": 51,
+              "endCol": 53,
+              "raw": "24"
+            },
+            "right": {
+              "line": 384,
+              "col": 62,
+              "endCol": 64,
+              "raw": "20"
+            }
+          }
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:385": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 385
+      },
+      "styles": [
+        {
+          "origin": "dynamic",
+          "resolvable": false
+        }
+      ]
+    },
+    "ScheduledPaymentsScreen@app/settings/scheduled-payments.tsx:400": {
+      "element": {
+        "file": "app/settings/scheduled-payments.tsx",
+        "line": 400
+      },
+      "styles": [
+        {
+          "origin": "inline",
+          "file": "app/settings/scheduled-payments.tsx",
+          "properties": {
+            "fontSize": {
+              "line": 400,
+              "col": 35,
+              "endCol": 37,
+              "raw": "15"
             }
           }
         }
