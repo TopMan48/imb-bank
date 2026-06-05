@@ -100,6 +100,52 @@ const webhookEvents: WebhookEvent[] = [];
 
 // ─── PayID Resolution ─────────────────────────────────────────────────────────
 
+// Demo names for smart simulation
+const DEMO_FIRST_NAMES = ['Emma', 'Liam', 'Olivia', 'Noah', 'Charlotte', 'Jack', 'Mia', 'Oliver', 'Ava', 'William', 'Isabella', 'James', 'Sophia', 'Lucas', 'Chloe'];
+const DEMO_LAST_NAMES = ['Smith', 'Jones', 'Williams', 'Taylor', 'Brown', 'Davis', 'Wilson', 'Anderson', 'Thomas', 'Jackson', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Robinson'];
+const DEMO_BANKS = ['CommBank', 'Westpac', 'ANZ', 'NAB', 'ING', 'Bendigo Bank', 'Macquarie Bank', 'Suncorp Bank', 'IMB Bank', 'Bank Australia'];
+
+function generateDemoNameFromMobile(mobile: string): { name: string; bank: string } {
+  const digits = mobile.replace(/\D/g, '');
+  const seed = parseInt(digits.slice(-4), 10) || 0;
+  const firstName = DEMO_FIRST_NAMES[seed % DEMO_FIRST_NAMES.length];
+  const lastName = DEMO_LAST_NAMES[Math.floor(seed / 10) % DEMO_LAST_NAMES.length];
+  const bank = DEMO_BANKS[Math.floor(seed / 100) % DEMO_BANKS.length];
+  return { name: `${firstName} ${lastName}`, bank };
+}
+
+function generateDemoNameFromEmail(email: string): { name: string; bank: string } | null {
+  const [local] = email.split('@');
+  const parts = local.split(/[._-]/).filter((p) => p.length > 1 && !/^\d+$/.test(p));
+  if (parts.length >= 2) {
+    const firstName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+    const lastName = parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase();
+    const seed = email.charCodeAt(0) + email.charCodeAt(email.length - 1);
+    const bank = DEMO_BANKS[seed % DEMO_BANKS.length];
+    return { name: `${firstName} ${lastName}`, bank };
+  }
+  // Fallback: use the local part as a single name
+  const seed = email.charCodeAt(0) + email.length;
+  const bank = DEMO_BANKS[seed % DEMO_BANKS.length];
+  const capitalized = local.charAt(0).toUpperCase() + local.slice(1);
+  return { name: capitalized, bank };
+}
+
+function isValidEmailFormat(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+function isValidMobileFormat(mobile: string): boolean {
+  const cleaned = mobile.replace(/^\+/, '');
+  const digits = cleaned.replace(/\D/g, '');
+  return /^04\d{8}$/.test(digits) || /^614\d{8}$/.test(digits);
+}
+
+function isValidABNFormat(abn: string): boolean {
+  const digits = abn.replace(/\s+/g, '');
+  return /^\d{11}$/.test(digits);
+}
+
 export async function demoResolvePayId(payId: string): Promise<PayIdResolutionResult | null> {
   await randomDelay(600, 1000);
 
@@ -108,17 +154,70 @@ export async function demoResolvePayId(payId: string): Promise<PayIdResolutionRe
     (e) => e.payId.toLowerCase().replace(/\s+/g, '').replace(/-/g, '') === normalized
   );
 
-  if (!entry) return null;
+  if (entry) {
+    return {
+      payId: entry.payId,
+      type: entry.type,
+      registeredName: entry.registeredName,
+      financialInstitution: entry.financialInstitution,
+      accountName: entry.registeredName,
+      status: 'active',
+      resolvedAt: new Date().toISOString(),
+    };
+  }
 
-  return {
-    payId: entry.payId,
-    type: entry.type,
-    registeredName: entry.registeredName,
-    financialInstitution: entry.financialInstitution,
-    accountName: entry.registeredName,
-    status: 'active',
-    resolvedAt: new Date().toISOString(),
-  };
+  // Smart demo simulation: resolve ANY valid-format PayID to a realistic name
+  const mobileDigits = payId.trim().replace(/^\+/, '').replace(/\D/g, '');
+
+  // Australian mobile numbers (04xx or +614xx)
+  if (/^04\d{8}$/.test(mobileDigits) || /^614\d{8}$/.test(mobileDigits)) {
+    const { name, bank } = generateDemoNameFromMobile(mobileDigits);
+    return {
+      payId: payId.trim(),
+      type: 'mobile',
+      registeredName: name,
+      financialInstitution: bank,
+      accountName: name,
+      status: 'active',
+      resolvedAt: new Date().toISOString(),
+    };
+  }
+
+  // Valid email addresses
+  if (isValidEmailFormat(payId.trim())) {
+    const demo = generateDemoNameFromEmail(payId.trim());
+    if (demo) {
+      return {
+        payId: payId.trim(),
+        type: 'email',
+        registeredName: demo.name,
+        financialInstitution: demo.bank,
+        accountName: demo.name,
+        status: 'active',
+        resolvedAt: new Date().toISOString(),
+      };
+    }
+  }
+
+  // ABN numbers (11 digits)
+  if (isValidABNFormat(payId.trim())) {
+    const digits = payId.replace(/\s+/g, '');
+    const seed = parseInt(digits.slice(-4), 10) || 0;
+    const businessNames = ['Australian Business Ltd', 'Pacific Trading Co', 'Southern Solutions Pty Ltd', 'Capital Services Group', 'National Industries Ltd'];
+    const businessName = businessNames[seed % businessNames.length];
+    const bank = DEMO_BANKS[seed % DEMO_BANKS.length];
+    return {
+      payId: payId.trim(),
+      type: 'abn',
+      registeredName: businessName,
+      financialInstitution: bank,
+      accountName: businessName,
+      status: 'active',
+      resolvedAt: new Date().toISOString(),
+    };
+  }
+
+  return null;
 }
 
 // ─── PayID Registration ───────────────────────────────────────────────────────

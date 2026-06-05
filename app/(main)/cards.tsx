@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   Switch,
   Alert,
   Modal,
+  TextInput,
+  Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -17,14 +19,16 @@ import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Typography';
 import type { Card } from '@/store/types';
 
-function CardVisual({ card, flipped }: { card: Card; flipped: boolean }) {
+function CardVisual({ card, flipped, showSensitive }: { card: Card; flipped: boolean; showSensitive: boolean }) {
   if (flipped) {
     return (
       <View style={[styles.cardVisual, { backgroundColor: card.colour }]}>
         <View style={styles.magneticStrip} />
         <View style={styles.cvvRow}>
           <View style={styles.cvvBox}>
-            <Text style={styles.cvvText}>•••</Text>
+            <Text style={styles.cvvText} selectable={showSensitive}>
+              {showSensitive ? card.cvv || '---' : '•••'}
+            </Text>
           </View>
           <Text style={styles.cvvLabel}>CVV</Text>
         </View>
@@ -44,7 +48,12 @@ function CardVisual({ card, flipped }: { card: Card; flipped: boolean }) {
           <Ionicons name="wifi-outline" size={20} color="rgba(255,255,255,0.6)" style={{ transform: [{ rotate: '90deg' }] }} />
         )}
       </View>
-      <Text style={styles.cardNumber}>•••• •••• •••• {card.last4}</Text>
+      <Text style={styles.cardNumber} selectable={showSensitive}>
+        {showSensitive
+          ? (card.fullNumber || `•••• •••• •••• ${card.last4}`)
+          : `•••• •••• •••• ${card.last4}`
+        }
+      </Text>
       <View style={styles.cardBottomRow}>
         <View>
           <Text style={styles.cardLabel}>Card Holder</Text>
@@ -72,6 +81,70 @@ function CardVisual({ card, flipped }: { card: Card; flipped: boolean }) {
           </Text>
         </View>
       )}
+    </View>
+  );
+}
+
+function AnimatedCard({ card, showSensitive }: { card: Card; showSensitive: boolean }) {
+  const flipAnim = useRef(new Animated.Value(0)).current;
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const flipCard = () => {
+    const toValue = isFlipped ? 0 : 1;
+    Animated.spring(flipAnim, {
+      toValue,
+      friction: 8,
+      tension: 60,
+      useNativeDriver: true,
+    }).start();
+    setIsFlipped(!isFlipped);
+  };
+
+  const frontInterpolate = flipAnim.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: ['0deg', '90deg', '180deg'],
+  });
+
+  const backInterpolate = flipAnim.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: ['180deg', '270deg', '360deg'],
+  });
+
+  const frontOpacity = flipAnim.interpolate({
+    inputRange: [0, 0.5, 0.5, 1],
+    outputRange: [1, 1, 0, 0],
+  });
+
+  const backOpacity = flipAnim.interpolate({
+    inputRange: [0, 0.5, 0.5, 1],
+    outputRange: [0, 0, 1, 1],
+  });
+
+  return (
+    <View>
+      <Pressable onPress={flipCard} style={{ marginBottom: 16 }}>
+        <View style={{ position: 'relative' }}>
+          <Animated.View
+            style={[
+              { backfaceVisibility: 'hidden', opacity: frontOpacity },
+              { transform: [{ perspective: 1000 }, { rotateY: frontInterpolate }] },
+            ]}
+          >
+            <CardVisual card={card} flipped={false} showSensitive={showSensitive} />
+          </Animated.View>
+          <Animated.View
+            style={[
+              { backfaceVisibility: 'hidden', position: 'absolute', top: 0, left: 0, right: 0, opacity: backOpacity },
+              { transform: [{ perspective: 1000 }, { rotateY: backInterpolate }] },
+            ]}
+          >
+            <CardVisual card={card} flipped={true} showSensitive={showSensitive} />
+          </Animated.View>
+        </View>
+        <Text style={styles.flipHint}>
+          <Ionicons name="sync-outline" size={12} color={Colors.textSecondary} /> Tap to {isFlipped ? 'flip front' : 'see back'}
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -218,36 +291,238 @@ function CardActivationModal({ card, visible, onClose }: { card: Card; visible: 
   );
 }
 
+function EditCardModal({
+  card,
+  visible,
+  onClose,
+}: {
+  card: Card;
+  visible: boolean;
+  onClose: () => void;
+}) {
+  const updateCard = useAppStore((s) => s.updateCard);
+  const [name, setName] = useState(card.name);
+  const [fullNumber, setFullNumber] = useState(card.fullNumber || '');
+  const [expiry, setExpiry] = useState(card.expiry);
+  const [cvv, setCvv] = useState(card.cvv || '');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (visible) {
+      setName(card.name);
+      setFullNumber(card.fullNumber || '');
+      setExpiry(card.expiry);
+      setCvv(card.cvv || '');
+      setErrors({});
+    }
+  }, [visible, card]);
+
+  const formatCardNumber = (text: string) => {
+    const digits = text.replace(/\D/g, '').slice(0, 16);
+    const parts = digits.match(/.{1,4}/g) || [];
+    return parts.join(' ');
+  };
+
+  const formatExpiry = (text: string) => {
+    const digits = text.replace(/\D/g, '').slice(0, 4);
+    if (digits.length > 2) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+    return digits;
+  };
+
+  const validate = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    if (!name.trim()) newErrors.name = 'Name is required';
+    const numDigits = fullNumber.replace(/\D/g, '');
+    if (numDigits.length !== 16) newErrors.fullNumber = 'Card number must be 16 digits';
+    const expiryDigits = expiry.replace(/\D/g, '');
+    if (expiryDigits.length !== 4) newErrors.expiry = 'Enter MM/YY format';
+    else {
+      const month = parseInt(expiryDigits.slice(0, 2), 10);
+      if (month < 1 || month > 12) newErrors.expiry = 'Invalid month';
+    }
+    if (cvv.length < 3 || cvv.length > 4) newErrors.cvv = 'CVV must be 3-4 digits';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSave = () => {
+    if (!validate()) return;
+    const numDigits = fullNumber.replace(/\D/g, '');
+    const newLast4 = numDigits.slice(-4);
+    updateCard(card.id, {
+      name: name.trim(),
+      fullNumber: formatCardNumber(numDigits),
+      last4: newLast4,
+      expiry,
+      cvv,
+    });
+    Alert.alert('Card Updated', 'Your card details have been saved successfully.');
+    onClose();
+  };
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="formSheet" onRequestClose={onClose}>
+      <View style={{ flex: 1, backgroundColor: Colors.background }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingTop: 24, backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+          <Text style={{ flex: 1, fontSize: 18, fontFamily: Fonts.bold, color: Colors.textPrimary }}>Edit Card Details</Text>
+          <Pressable onPress={onClose} style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' }}>
+            <Ionicons name="close" size={20} color={Colors.textSecondary} />
+          </Pressable>
+        </View>
+        <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
+          <View style={{ backgroundColor: '#E3F2FD', borderRadius: 12, padding: 14, flexDirection: 'row', gap: 10 }}>
+            <Ionicons name="information-circle-outline" size={18} color={Colors.info} />
+            <Text style={{ flex: 1, fontSize: 13, fontFamily: Fonts.regular, color: Colors.info, lineHeight: 18 }}>
+              Update your card details below. Changes will take effect immediately.
+            </Text>
+          </View>
+
+          <View style={{ backgroundColor: Colors.white, borderRadius: 16, borderCurve: 'continuous', boxShadow: '0 2px 10px rgba(0,75,90,0.06)', overflow: 'hidden' }}>
+            {/* Cardholder Name */}
+            <View style={{ padding: 14, gap: 4 }}>
+              <Text style={editStyles.label}>Cardholder Name</Text>
+              <TextInput
+                style={editStyles.input}
+                value={name}
+                onChangeText={setName}
+                placeholder="Full name on card"
+                placeholderTextColor={Colors.textSecondary}
+                autoCapitalize="words"
+              />
+              {errors.name && <Text style={editStyles.error}>{errors.name}</Text>}
+            </View>
+            <View style={editStyles.divider} />
+
+            {/* Card Number */}
+            <View style={{ padding: 14, gap: 4 }}>
+              <Text style={editStyles.label}>Card Number</Text>
+              <TextInput
+                style={editStyles.input}
+                value={fullNumber}
+                onChangeText={(v) => setFullNumber(formatCardNumber(v))}
+                placeholder="XXXX XXXX XXXX XXXX"
+                placeholderTextColor={Colors.textSecondary}
+                keyboardType="numeric"
+                maxLength={19}
+              />
+              {errors.fullNumber && <Text style={editStyles.error}>{errors.fullNumber}</Text>}
+            </View>
+            <View style={editStyles.divider} />
+
+            {/* Expiry + CVV Row */}
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1, padding: 14, gap: 4 }}>
+                <Text style={editStyles.label}>Expiry (MM/YY)</Text>
+                <TextInput
+                  style={editStyles.input}
+                  value={expiry}
+                  onChangeText={(v) => setExpiry(formatExpiry(v))}
+                  placeholder="MM/YY"
+                  placeholderTextColor={Colors.textSecondary}
+                  keyboardType="numeric"
+                  maxLength={5}
+                />
+                {errors.expiry && <Text style={editStyles.error}>{errors.expiry}</Text>}
+              </View>
+              <View style={{ width: 1, backgroundColor: Colors.borderLight }} />
+              <View style={{ flex: 1, padding: 14, gap: 4 }}>
+                <Text style={editStyles.label}>CVV</Text>
+                <TextInput
+                  style={editStyles.input}
+                  value={cvv}
+                  onChangeText={(v) => setCvv(v.replace(/\D/g, '').slice(0, 4))}
+                  placeholder="XXX"
+                  placeholderTextColor={Colors.textSecondary}
+                  keyboardType="numeric"
+                  maxLength={4}
+                  secureTextEntry
+                />
+                {errors.cvv && <Text style={editStyles.error}>{errors.cvv}</Text>}
+              </View>
+            </View>
+          </View>
+
+          <Pressable
+            style={({ pressed }) => [{
+              backgroundColor: Colors.accent,
+              borderRadius: 14,
+              paddingVertical: 16,
+              alignItems: 'center',
+              borderCurve: 'continuous',
+              opacity: pressed ? 0.85 : 1,
+              marginTop: 8,
+            }]}
+            onPress={handleSave}
+          >
+            <Text style={{ fontSize: 16, fontFamily: Fonts.bold, color: Colors.primary }}>Save Changes</Text>
+          </Pressable>
+
+          <Pressable
+            style={({ pressed }) => [{ paddingVertical: 14, alignItems: 'center', opacity: pressed ? 0.6 : 1 }]}
+            onPress={onClose}
+          >
+            <Text style={{ fontSize: 14, fontFamily: Fonts.medium, color: Colors.textSecondary }}>Cancel</Text>
+          </Pressable>
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+}
+
+const editStyles = StyleSheet.create({
+  label: {
+    fontSize: 11,
+    fontFamily: Fonts.semiBold,
+    color: Colors.textSecondary,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  input: {
+    fontSize: 15,
+    fontFamily: Fonts.regular,
+    color: Colors.textPrimary,
+    paddingVertical: 4,
+  },
+  error: {
+    fontSize: 11,
+    fontFamily: Fonts.regular,
+    color: Colors.error,
+    marginTop: 2,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.borderLight,
+    marginHorizontal: 14,
+  },
+});
+
 function CardItem({ card }: { card: Card }) {
-  const [flipped, setFlipped] = useState(false);
   const [showTravel, setShowTravel] = useState(false);
   const [showActivation, setShowActivation] = useState(false);
+  const [showEditCard, setShowEditCard] = useState(false);
+  const [showSensitive, setShowSensitive] = useState(false);
   const toggleCardLock = useAppStore((s) => s.toggleCardLock);
   const accounts = useAppStore((s) => s.accounts);
   const account = accounts.find((a) => a.id === card.accountId);
-
-  const handleReplacement = () => {
-    Alert.alert(
-      'Request Card Replacement',
-      `Your current card ending in ${card.last4} will be cancelled and a new card will be issued.\n\nEstimated delivery: 5–7 business days to your registered address.\n\n42 Coastal Drive, Wollongong NSW 2500`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Request Replacement',
-          onPress: () => Alert.alert('Replacement Requested', 'A new card will be delivered within 5–7 business days. Your current card remains active until the new one arrives.'),
-        },
-      ]
-    );
-  };
 
   const isReported = card.status && card.status !== 'active';
 
   return (
     <View style={styles.cardWrapper}>
-      <Pressable onPress={() => setFlipped((f) => !f)} style={{ marginBottom: 16 }}>
-        <CardVisual card={card} flipped={flipped} />
-        <Text style={styles.flipHint}>
-          <Ionicons name="sync-outline" size={12} color={Colors.textSecondary} /> Tap to {flipped ? 'flip front' : 'see back'}
+      <AnimatedCard card={card} showSensitive={showSensitive} />
+
+      {/* Show/Hide toggle */}
+      <Pressable
+        style={({ pressed }) => [styles.eyeToggle, pressed && { opacity: 0.7 }]}
+        onPress={() => setShowSensitive(!showSensitive)}
+      >
+        <Ionicons
+          name={showSensitive ? 'eye-off-outline' : 'eye-outline'}
+          size={16}
+          color={Colors.primary}
+        />
+        <Text style={styles.eyeToggleText}>
+          {showSensitive ? 'Hide Details' : 'Show Details'}
         </Text>
       </Pressable>
 
@@ -288,7 +563,7 @@ function CardItem({ card }: { card: Card }) {
             onValueChange={() => toggleCardLock(card.id)}
             trackColor={{ false: Colors.borderLight, true: '#FFCDD2' }}
             thumbColor={card.isLocked ? Colors.error : Colors.white}
-            disabled={isReported}
+            disabled={!!isReported}
           />
         </View>
 
@@ -329,7 +604,7 @@ function CardItem({ card }: { card: Card }) {
           {
             icon: 'refresh-outline' as const,
             label: 'Replace',
-            onPress: handleReplacement,
+            onPress: () => setShowEditCard(true),
           },
           {
             icon: 'receipt-outline' as const,
@@ -353,6 +628,7 @@ function CardItem({ card }: { card: Card }) {
 
       <TravelModeModal card={card} visible={showTravel} onClose={() => setShowTravel(false)} />
       <CardActivationModal card={card} visible={showActivation} onClose={() => setShowActivation(false)} />
+      <EditCardModal card={card} visible={showEditCard} onClose={() => setShowEditCard(false)} />
     </View>
   );
 }
@@ -538,6 +814,26 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     textAlign: 'center',
     marginTop: 8,
+  },
+  eyeToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.white,
+    borderRadius: 20,
+    alignSelf: 'center',
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: Colors.borderLight,
+    minHeight: 36,
+  },
+  eyeToggleText: {
+    fontSize: 12,
+    fontFamily: Fonts.medium,
+    color: Colors.primary,
   },
   cardDetails: {
     backgroundColor: Colors.white,

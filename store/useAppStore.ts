@@ -108,6 +108,7 @@ interface DataSlice {
   // Card actions
   toggleCardLock: (cardId: string) => void;
   reportCard: (cardId: string, reason: string) => void;
+  updateCard: (cardId: string, updates: Partial<Card>) => void;
 
   // Transaction actions
   addTransaction: (tx: Omit<Transaction, 'id'>) => void;
@@ -194,6 +195,8 @@ export const useAppStore = create<AppStore>()(
           id: 'c1',
           accountId: '1',
           last4: '4521',
+          fullNumber: '4321 5678 9012 4521',
+          cvv: '847',
           name: 'Alex Johnson',
           type: 'visa',
           expiry: '09/28',
@@ -206,6 +209,8 @@ export const useAppStore = create<AppStore>()(
           id: 'c2',
           accountId: '2',
           last4: '8893',
+          fullNumber: '4756 2341 6789 8893',
+          cvv: '312',
           name: 'Alex Johnson',
           type: 'visa',
           expiry: '03/27',
@@ -349,6 +354,13 @@ export const useAppStore = create<AppStore>()(
             c.id === cardId
               ? { ...c, status: reason as Card['status'], isLocked: true, reportedAt: new Date().toISOString(), reportReason: reason }
               : c
+          ),
+        })),
+
+      updateCard: (cardId, updates) =>
+        set((state) => ({
+          cards: state.cards.map((c) =>
+            c.id === cardId ? { ...c, ...updates } : c
           ),
         })),
 

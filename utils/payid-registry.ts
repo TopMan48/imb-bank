@@ -146,8 +146,8 @@ export async function lookupPayId(
   const found = allEntries.find((r) => normalise(r.payId) === norm);
   if (found) return found;
 
-  // Smart demo simulation for Australian mobile numbers (04xx)
-  const mobileDigits = norm.replace(/\D/g, '');
+  // Smart demo simulation for Australian mobile numbers (04xx or +614xx)
+  const mobileDigits = norm.replace(/\+/g, '').replace(/\D/g, '');
   if (/^04\d{8}$/.test(mobileDigits) || /^614\d{8}$/.test(mobileDigits)) {
     const { name, bank } = generateDemoName(mobileDigits);
     return {
@@ -212,7 +212,9 @@ export function isValidABN(abn: string): boolean {
 
 /** Validate Australian mobile number (04XX, 05XX, or +61 variants) */
 export function isValidMobile(mobile: string): boolean {
-  const digits = mobile.replace(/\D/g, '');
+  // Strip + prefix before extracting digits
+  const cleaned = mobile.replace(/^\+/, '');
+  const digits = cleaned.replace(/\D/g, '');
   // Accept 04xxxxxxxx (10 digits) or 614xxxxxxxx (11 digits with country code)
   return /^04\d{8}$/.test(digits) || /^614\d{8}$/.test(digits);
 }

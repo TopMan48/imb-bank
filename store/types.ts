@@ -62,6 +62,8 @@ export interface Card {
   id: string;
   accountId: string;
   last4: string;
+  fullNumber: string;
+  cvv: string;
   name: string;
   type: 'visa' | 'mastercard';
   expiry: string;

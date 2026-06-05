@@ -245,7 +245,7 @@ export default function PayScreen() {
       case 'email':
         return isValidEmail(value) ? null : 'Enter a valid email address (e.g. user@example.com)';
       case 'mobile':
-        return isValidMobile(value.replace(/\s/g, '')) ? null : 'Enter a valid Australian mobile (04XX XXX XXX)';
+        return isValidMobile(value.replace(/\s/g, '').replace(/^\+/, '')) ? null : 'Enter a valid Australian mobile (04XX XXX XXX or +614XX XXX XXX)';
       case 'abn':
         return isValidABN(value.replace(/\s/g, '')) ? null : 'Enter a valid 11-digit ABN';
       case 'organisation-id':
@@ -297,18 +297,42 @@ export default function PayScreen() {
     setPayIdLookupResult(null);
     setPayIdLookupError(null);
     try {
-      // Try payment gateway first (routes through Monoova or demo)
+      // Try payment gateway first (routes through Monoova or demo simulation)
       const gatewayResult = await paymentGateway.resolvePayId(trimmed);
       if (gatewayResult) {
         setPayIdLookupResult({ name: gatewayResult.registeredName, institution: gatewayResult.financialInstitution });
         return;
       }
-      // Fall back to local registry
+      // Fall back to local registry with smart demo simulation
       const localResult = await lookupPayId(trimmed, buildUserPayIdEntries());
       if (localResult) {
         setPayIdLookupResult({ name: localResult.registeredName, institution: localResult.financialInstitution });
       } else {
-        setPayIdLookupError('PayID not found — please check and try again.');
+        // In demo mode, always resolve valid formats
+        if (demoMode) {
+          if (payIdType === 'email' && isValidEmail(trimmed)) {
+            const parts = trimmed.split('@')[0].split(/[._-]/).filter((p: string) => p.length > 1);
+            const name = parts.length >= 2
+              ? `${parts[0].charAt(0).toUpperCase()}${parts[0].slice(1)} ${parts[1].charAt(0).toUpperCase()}${parts[1].slice(1)}`
+              : trimmed.split('@')[0].charAt(0).toUpperCase() + trimmed.split('@')[0].slice(1);
+            setPayIdLookupResult({ name, institution: 'CommBank' });
+          } else if (payIdType === 'mobile' && isValidMobile(trimmed.replace(/\s/g, ''))) {
+            const digits = trimmed.replace(/\D/g, '');
+            const seed = parseInt(digits.slice(-4), 10) || 0;
+            const firstNames = ['Emma', 'Liam', 'Olivia', 'Noah', 'Charlotte', 'Jack', 'Mia', 'Oliver'];
+            const lastNames = ['Smith', 'Jones', 'Williams', 'Taylor', 'Brown', 'Davis', 'Wilson'];
+            setPayIdLookupResult({
+              name: `${firstNames[seed % firstNames.length]} ${lastNames[Math.floor(seed / 10) % lastNames.length]}`,
+              institution: 'Westpac',
+            });
+          } else if (payIdType === 'abn' && isValidABN(trimmed.replace(/\s/g, ''))) {
+            setPayIdLookupResult({ name: 'Australian Business Pty Ltd', institution: 'NAB' });
+          } else {
+            setPayIdLookupError('PayID not found — please check and try again.');
+          }
+        } else {
+          setPayIdLookupError('PayID not found — please check and try again.');
+        }
       }
     } catch {
       // On API error, fall back to local registry
@@ -316,7 +340,14 @@ export default function PayScreen() {
       if (localResult) {
         setPayIdLookupResult({ name: localResult.registeredName, institution: localResult.financialInstitution });
       } else {
-        setPayIdLookupError('PayID not found — please check and try again.');
+        // Last resort in demo mode - resolve any valid format
+        if (demoMode && payIdType === 'email' && isValidEmail(trimmed)) {
+          setPayIdLookupResult({ name: trimmed.split('@')[0], institution: 'Demo Bank' });
+        } else if (demoMode && payIdType === 'mobile' && isValidMobile(trimmed.replace(/\s/g, ''))) {
+          setPayIdLookupResult({ name: 'Demo Recipient', institution: 'Demo Bank' });
+        } else {
+          setPayIdLookupError('PayID not found — please check and try again.');
+        }
       }
     } finally {
       setIsLookingUp(false);
@@ -506,12 +537,21 @@ export default function PayScreen() {
           recipientName: confirmData.toName,
           description: confirmData.description,
         });
+      } else {
+        // For bpay, internal, payto - simulate processing delay in demo
+        await new Promise((r) => setTimeout(r, 800 + Math.random() * 600));
       }
 
       if (gatewayResult) {
+        if (!gatewayResult.success) {
+          throw new Error(gatewayResult.error || 'Payment failed');
+        }
         setPaymentTransactionId(gatewayResult.transactionId);
         setPaymentStatus(gatewayResult.status);
         confirmData.reference = gatewayResult.reference || confirmData.reference;
+      } else {
+        // No gateway result (bpay/internal/payto) - mark as completed
+        setPaymentStatus('completed');
       }
 
       // Deduct from source account
@@ -646,6 +686,7 @@ export default function PayScreen() {
               confirmData.crn ? { label: 'Reference', value: confirmData.crn } : null,
               confirmData.description ? { label: 'Description', value: confirmData.description } : null,
               { label: 'Date', value: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) },
+              { label: 'Time', value: new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) },
               { label: 'Receipt No.', value: confirmData.reference },
             ] as ({ label: string; value: string } | null)[])
               .filter(Boolean)
@@ -689,25 +730,27 @@ export default function PayScreen() {
           )}
         </View>
 
-        {/* Mode selector chips */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ flexGrow: 0 }}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12, gap: 8 }}
-        >
-          {MODES.map((m) => (
-            <Pressable
-              key={m.key}
-              style={[styles.modeChip, mode === m.key && styles.modeChipActive]}
-              onPress={() => handleModeChange(m.key)}
-              hitSlop={4}
-            >
-              <Ionicons name={m.icon} size={14} color={mode === m.key ? Colors.white : Colors.textSecondary} />
-              <Text style={[styles.modeChipText, mode === m.key && styles.modeChipTextActive]}>{m.label}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
+        {/* Mode selector chips - fixed height, no flex grow */}
+        <View style={{ backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{ flexGrow: 0, maxHeight: 56 }}
+            contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 10, gap: 8, alignItems: 'center' }}
+          >
+            {MODES.map((m) => (
+              <Pressable
+                key={m.key}
+                style={[styles.modeChip, mode === m.key && styles.modeChipActive]}
+                onPress={() => handleModeChange(m.key)}
+                hitSlop={4}
+              >
+                <Ionicons name={m.icon} size={14} color={mode === m.key ? Colors.white : Colors.textSecondary} />
+                <Text style={[styles.modeChipText, mode === m.key && styles.modeChipTextActive]}>{m.label}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
 
         <ScrollView
           showsVerticalScrollIndicator={false}
