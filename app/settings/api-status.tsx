@@ -149,9 +149,16 @@ function StatusCard({ status, onTest }: { status: EnrichedStatus; onTest: () => 
         {testResult && (
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>Latency</Text>
-            <Text style={[styles.infoValue, { color: testResult.connected ? Colors.success : Colors.error }]}>
-              {testResult.connected ? `${testResult.latencyMs}ms ✓` : 'Failed ✗'}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <Text style={[styles.infoValue, { color: testResult.connected ? Colors.success : Colors.error }]}>
+                {testResult.connected ? `${testResult.latencyMs}ms` : 'Failed'}
+              </Text>
+              <Ionicons
+                name={testResult.connected ? 'checkmark-circle' : 'close-circle'}
+                size={14}
+                color={testResult.connected ? Colors.success : Colors.error}
+              />
+            </View>
           </View>
         )}
       </View>

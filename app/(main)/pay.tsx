@@ -939,7 +939,10 @@ export default function PayScreen() {
                   <View style={styles.payIdResultSuccess}>
                     <Ionicons name="checkmark-circle" size={22} color={Colors.success} />
                     <View style={{ flex: 1 }}>
-                      <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.success }}>PayID Found ✓</Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <Ionicons name="checkmark" size={13} color={Colors.success} />
+                        <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.success }}>PayID Found</Text>
+                      </View>
                       <Text style={{ fontSize: 16, fontFamily: Fonts.bold, color: Colors.textPrimary, marginTop: 2 }}>{payIdLookupResult.name}</Text>
                       <Text style={{ fontSize: 12, fontFamily: Fonts.regular, color: Colors.textSecondary, marginTop: 1 }}>{payIdLookupResult.institution}</Text>
                     </View>

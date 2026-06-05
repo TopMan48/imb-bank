@@ -177,6 +177,37 @@ interface DataSlice {
 
 export type AppStore = PreferencesSlice & DataSlice;
 
+// Persist middleware config — extracted to avoid linter confusion with store actions
+const PERSIST_CONFIG = {
+  name: 'imb-bank-storage-v4',
+  storage: createJSONStorage(() => AsyncStorage),
+  /** Merge loaded state with defaults to handle schema migrations */
+  merge: (persistedState: unknown, currentState: AppStore): AppStore => {
+    const ps = persistedState as Partial<AppStore>;
+    return {
+      ...currentState,
+      ...ps,
+      notifications: { ...DEFAULT_NOTIFICATIONS, ...(ps.notifications ?? {}) },
+      security: { ...DEFAULT_SECURITY, ...(ps.security ?? {}) },
+      accessibility: { ...DEFAULT_ACCESSIBILITY, ...(ps.accessibility ?? {}) },
+    };
+  },
+  partialize: (state: AppStore) => ({
+    preferences: state.preferences,
+    cards: state.cards,
+    payees: state.payees,
+    accounts: state.accounts,
+    transactions: state.transactions,
+    payToAgreements: state.payToAgreements,
+    scheduledPayments: state.scheduledPayments,
+    notifications: state.notifications,
+    profile: state.profile,
+    loginActivity: state.loginActivity,
+    security: state.security,
+    accessibility: state.accessibility,
+  }),
+} as const;
+
 const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 export const useAppStore = create<AppStore>()(
@@ -504,34 +535,6 @@ export const useAppStore = create<AppStore>()(
           scheduledPayments: state.scheduledPayments.filter((p) => p.id !== id),
         })),
     }),
-    {
-      name: 'imb-bank-storage-v4',
-      storage: createJSONStorage(() => AsyncStorage),
-      // Merge loaded state with defaults to handle schema migrations
-      merge: (persistedState: unknown, currentState) => {
-        const ps = persistedState as Partial<typeof currentState>;
-        return {
-          ...currentState,
-          ...ps,
-          notifications: { ...DEFAULT_NOTIFICATIONS, ...(ps.notifications ?? {}) },
-          security: { ...DEFAULT_SECURITY, ...(ps.security ?? {}) },
-          accessibility: { ...DEFAULT_ACCESSIBILITY, ...(ps.accessibility ?? {}) },
-        };
-      },
-      partialize: (state) => ({
-        preferences: state.preferences,
-        cards: state.cards,
-        payees: state.payees,
-        accounts: state.accounts,
-        transactions: state.transactions,
-        payToAgreements: state.payToAgreements,
-        scheduledPayments: state.scheduledPayments,
-        notifications: state.notifications,
-        profile: state.profile,
-        loginActivity: state.loginActivity,
-        security: state.security,
-        accessibility: state.accessibility,
-      }),
-    }
+    PERSIST_CONFIG
   )
 );
