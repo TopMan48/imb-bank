@@ -138,9 +138,9 @@ export default function SecurityScreen() {
           />
           <SettingRow
             icon="time-outline"
-            label="Recent Logins"
-            subtitle="View login history"
-            onPress={() => Alert.alert('Recent Logins', 'iPhone 16 Pro Max\nWollongong, NSW\nToday 9:42 AM\n\niPhone 16 Pro Max\nWollongong, NSW\nYesterday 11:15 PM')}
+            label="Login Activity"
+            subtitle="View full login history"
+            onPress={() => router.push('/settings/login-activity')}
             isLast
           />
         </View>

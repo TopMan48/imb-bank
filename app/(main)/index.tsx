@@ -5,6 +5,7 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
+  Modal,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,35 +27,11 @@ const CATEGORY_ICONS: Record<string, { icon: keyof typeof Ionicons.glyphMap; bg:
   other: { icon: 'ellipsis-horizontal-outline', bg: '#ECEFF1' },
 };
 
-function formatCurrency(amount: number, showSign = false): string {
+function formatCurrency(amount: number): string {
   const abs = Math.abs(amount);
-  const formatted = abs >= 1000
-    ? `$${(abs / 1000).toFixed(1)}k`
-    : `$${abs.toFixed(2)}`;
-  if (showSign && amount > 0) return `+${formatted}`;
+  const formatted = `$${abs.toFixed(2)}`;
   if (amount < 0) return `-${formatted}`;
   return formatted;
-}
-
-function TransactionRow({ tx }: { tx: Transaction }) {
-  const cat = CATEGORY_ICONS[tx.category] ?? CATEGORY_ICONS.other;
-  const isCredit = tx.type === 'credit';
-  return (
-    <View style={styles.txRow}>
-      <View style={[styles.txIcon, { backgroundColor: cat.bg }]}>
-        <Ionicons name={cat.icon} size={18} color={Colors.primary} />
-      </View>
-      <View style={styles.txInfo}>
-        <Text style={styles.txName} numberOfLines={1}>
-          {tx.merchant ?? tx.description}
-        </Text>
-        <Text style={styles.txDate}>{formatDate(tx.date)}</Text>
-      </View>
-      <Text style={[styles.txAmount, isCredit ? styles.txCredit : styles.txDebit]}>
-        {isCredit ? '+' : ''}{formatCurrency(tx.amount)}
-      </Text>
-    </View>
-  );
 }
 
 function formatDate(dateStr: string): string {
@@ -67,13 +44,78 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
 }
 
+function formatLoginTime(iso: string): string {
+  const d = new Date(iso);
+  const now = new Date();
+  const diffMs = now.getTime() - d.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  if (diffMins < 2) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+}
+
+function TransactionDetailModal({ tx, visible, onClose }: { tx: Transaction | null; visible: boolean; onClose: () => void }) {
+  if (!tx) return null;
+  const cat = CATEGORY_ICONS[tx.category] ?? CATEGORY_ICONS.other;
+  const isCredit = tx.type === 'credit';
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="formSheet" onRequestClose={onClose}>
+      <View style={{ flex: 1, backgroundColor: Colors.background }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingTop: 24, backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+          <Text style={{ flex: 1, fontSize: 18, fontFamily: Fonts.bold, color: Colors.textPrimary }}>Transaction Details</Text>
+          <Pressable onPress={onClose} style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' }}>
+            <Ionicons name="close" size={20} color={Colors.textSecondary} />
+          </Pressable>
+        </View>
+        <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
+          <View style={{ alignItems: 'center', gap: 12, paddingVertical: 12 }}>
+            <View style={[{ width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center' }, { backgroundColor: cat.bg }]}>
+              <Ionicons name={cat.icon} size={28} color={Colors.primary} />
+            </View>
+            <Text style={{ fontSize: 30, fontFamily: Fonts.bold, color: isCredit ? Colors.success : Colors.textPrimary }}>
+              {isCredit ? '+' : '-'}{formatCurrency(Math.abs(tx.amount))}
+            </Text>
+            <Text style={{ fontSize: 16, fontFamily: Fonts.semiBold, color: Colors.textPrimary }}>
+              {tx.merchant ?? tx.description}
+            </Text>
+          </View>
+          <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 2px 10px rgba(0,75,90,0.06)' }}>
+            {[
+              { label: 'Date', value: new Date(tx.date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }) },
+              { label: 'Category', value: tx.category.charAt(0).toUpperCase() + tx.category.slice(1) },
+              tx.paymentMethod ? { label: 'Method', value: tx.paymentMethod.toUpperCase() } : null,
+              tx.recipientName ? { label: 'To/From', value: tx.recipientName } : null,
+              tx.reference ? { label: 'Reference', value: tx.reference } : null,
+              { label: 'Status', value: 'Settled' },
+            ].filter(Boolean).map((row, idx, arr) => (
+              <View key={row!.label} style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 14, borderBottomWidth: idx === arr.length - 1 ? 0 : 1, borderBottomColor: Colors.borderLight }}>
+                <Text style={{ fontSize: 14, fontFamily: Fonts.regular, color: Colors.textSecondary }}>{row!.label}</Text>
+                <Text style={{ fontSize: 14, fontFamily: Fonts.semiBold, color: Colors.textPrimary }} selectable>{row!.value}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+}
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const accounts = useAppStore((s) => s.accounts);
   const transactions = useAppStore((s) => s.transactions);
   const setAuthenticated = useAppStore((s) => s.setAuthenticated);
   const profile = useAppStore((s) => s.profile);
+  const loginActivity = useAppStore((s) => s.loginActivity);
+  const preferences = useAppStore((s) => s.preferences);
+  const dismissBanner = useAppStore((s) => s.dismissBanner);
+
   const [balanceVisible, setBalanceVisible] = useState(true);
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
+  const [showTxDetail, setShowTxDetail] = useState(false);
 
   const primaryAccount = accounts.find((a) => a.type === 'everyday') ?? accounts[0];
   const recentTx = transactions
@@ -83,9 +125,24 @@ export default function HomeScreen() {
 
   const totalBalance = accounts.reduce((sum, a) => sum + (a.balance > 0 ? a.balance : 0), 0);
 
+  const recentLogins = loginActivity
+    .filter((a) => a.successful)
+    .slice(0, 3);
+
+  const greetingHour = new Date().getHours();
+  const greeting = greetingHour < 12 ? 'Good morning,' : greetingHour < 18 ? 'Good afternoon,' : 'Good evening,';
+
+  const scamAlertDismissed = preferences.dismissedBanners?.includes('scam-alert-2026');
+  const maintenanceDismissed = preferences.dismissedBanners?.includes('maintenance-2026');
+
   const handleSignOut = () => {
     setAuthenticated(false);
     router.replace('/');
+  };
+
+  const handleTxPress = (tx: Transaction) => {
+    setSelectedTx(tx);
+    setShowTxDetail(true);
   };
 
   return (
@@ -93,11 +150,11 @@ export default function HomeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good morning,</Text>
+          <Text style={styles.greeting}>{greeting}</Text>
           <Text style={styles.userName}>{profile.firstName} {profile.lastName}</Text>
         </View>
         <View style={styles.headerRight}>
-          <Pressable style={styles.headerBtn}>
+          <Pressable style={styles.headerBtn} onPress={() => router.push('/settings/notifications')}>
             <Ionicons name="notifications-outline" size={22} color={Colors.primary} />
           </Pressable>
           <Pressable style={styles.headerBtn} onPress={handleSignOut}>
@@ -110,15 +167,47 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
-        {/* Balance Hero Card */}
+        {/* ── Scam Alert Banner ──────────────────────────────────────────── */}
+        {!scamAlertDismissed && (
+          <View style={styles.alertBanner}>
+            <Ionicons name="warning" size={18} color="#B71C1C" />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.alertTitle}>Scam Alert</Text>
+              <Text style={styles.alertText}>
+                IMB Bank will never ask for your passcode or full card number via SMS or phone. Report scams at imb.com.au/security.
+              </Text>
+              <Pressable onPress={() => router.push('/settings/report-scam')}>
+                <Text style={styles.alertLink}>Report a scam →</Text>
+              </Pressable>
+            </View>
+            <Pressable onPress={() => dismissBanner('scam-alert-2026')} hitSlop={12}>
+              <Ionicons name="close" size={18} color="#B71C1C" />
+            </Pressable>
+          </View>
+        )}
+
+        {/* ── Maintenance Notice ─────────────────────────────────────────── */}
+        {!maintenanceDismissed && (
+          <View style={styles.maintenanceBanner}>
+            <Ionicons name="information-circle" size={18} color={Colors.info} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.maintenanceTitle}>Service Update</Text>
+              <Text style={styles.maintenanceText}>
+                Scheduled maintenance Sunday 8 June, 2–4am AEST. Pay Anyone and BPAY may be temporarily unavailable.
+              </Text>
+            </View>
+            <Pressable onPress={() => dismissBanner('maintenance-2026')} hitSlop={12}>
+              <Ionicons name="close" size={18} color={Colors.info} />
+            </Pressable>
+          </View>
+        )}
+
+        {/* ── Balance Hero Card ──────────────────────────────────────────── */}
         <View style={styles.heroCard}>
           <View style={styles.heroCardInner}>
             <View style={styles.balanceRow}>
               <Text style={styles.balanceLabel}>Total Balance</Text>
-              <Pressable
-                onPress={() => setBalanceVisible((v) => !v)}
-                hitSlop={12}
-              >
+              <Pressable onPress={() => setBalanceVisible((v) => !v)} hitSlop={12}>
                 <Ionicons
                   name={balanceVisible ? 'eye-outline' : 'eye-off-outline'}
                   size={18}
@@ -131,12 +220,11 @@ export default function HomeScreen() {
             </Text>
             <Text style={styles.balanceDate}>As at {new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</Text>
           </View>
-          {/* Decorative circles */}
           <View style={styles.circle1} />
           <View style={styles.circle2} />
         </View>
 
-        {/* Quick Actions */}
+        {/* ── Quick Actions ──────────────────────────────────────────────── */}
         <View style={styles.quickActions}>
           {[
             { label: 'Pay', icon: 'send-outline' as const, onPress: () => router.push('/(main)/pay') },
@@ -159,7 +247,7 @@ export default function HomeScreen() {
           ))}
         </View>
 
-        {/* Accounts Section */}
+        {/* ── Accounts Section ───────────────────────────────────────────── */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>My Accounts</Text>
@@ -172,7 +260,7 @@ export default function HomeScreen() {
             <Pressable
               key={account.id}
               style={({ pressed }) => [styles.accountCard, pressed && { opacity: 0.9 }]}
-              onPress={() => router.push(`/(main)/accounts`)}
+              onPress={() => router.push('/(main)/accounts')}
             >
               <View style={[styles.accountIcon, {
                 backgroundColor: account.type === 'loan' ? '#FFF3E0' : account.type === 'savings' ? '#E8F5E9' : '#E3F2FD',
@@ -202,23 +290,77 @@ export default function HomeScreen() {
           ))}
         </View>
 
-        {/* Recent Transactions */}
+        {/* ── Recent Transactions ────────────────────────────────────────── */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recent Transactions</Text>
-            <Pressable onPress={() => router.push('/(main)/accounts')}>
-              <Text style={styles.seeAll}>See all</Text>
+            <Pressable onPress={() => router.push('/settings/transaction-history')}>
+              <Text style={styles.seeAll}>View all</Text>
             </Pressable>
           </View>
 
-          <View style={styles.txList}>
-            {recentTx.map((tx) => (
-              <TransactionRow key={tx.id} tx={tx} />
-            ))}
-          </View>
+          {recentTx.length === 0 ? (
+            <View style={[styles.txList, { padding: 24, alignItems: 'center', gap: 8 }]}>
+              <Ionicons name="receipt-outline" size={32} color={Colors.textSecondary} />
+              <Text style={{ fontSize: 14, fontFamily: Fonts.regular, color: Colors.textSecondary }}>No recent transactions</Text>
+            </View>
+          ) : (
+            <View style={styles.txList}>
+              {recentTx.map((tx, index) => {
+                const cat = CATEGORY_ICONS[tx.category] ?? CATEGORY_ICONS.other;
+                const isCredit = tx.type === 'credit';
+                return (
+                  <Pressable
+                    key={tx.id}
+                    style={({ pressed }) => [styles.txRow, pressed && { backgroundColor: Colors.background }, index === recentTx.length - 1 && { borderBottomWidth: 0 }]}
+                    onPress={() => handleTxPress(tx)}
+                  >
+                    <View style={[styles.txIcon, { backgroundColor: cat.bg }]}>
+                      <Ionicons name={cat.icon} size={18} color={Colors.primary} />
+                    </View>
+                    <View style={styles.txInfo}>
+                      <Text style={styles.txName} numberOfLines={1}>
+                        {tx.merchant ?? tx.description}
+                      </Text>
+                      <Text style={styles.txDate}>{formatDate(tx.date)}</Text>
+                    </View>
+                    <Text style={[styles.txAmount, isCredit ? styles.txCredit : styles.txDebit]}>
+                      {isCredit ? '+' : ''}{formatCurrency(tx.amount)}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          )}
         </View>
 
-        {/* Promo Banner */}
+        {/* ── Recent Login Activity ──────────────────────────────────────── */}
+        {recentLogins.length > 0 && (
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Login Activity</Text>
+              <Pressable onPress={() => router.push('/settings/login-activity')}>
+                <Text style={styles.seeAll}>View all</Text>
+              </Pressable>
+            </View>
+            <View style={styles.loginCard}>
+              {recentLogins.map((login, index) => (
+                <View key={login.id} style={[styles.loginRow, index === recentLogins.length - 1 && { borderBottomWidth: 0 }]}>
+                  <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: '#E8F5E9', alignItems: 'center', justifyContent: 'center' }}>
+                    <Ionicons name="shield-checkmark-outline" size={18} color={Colors.success} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.loginDevice}>{login.device}</Text>
+                    <Text style={styles.loginMeta}>{login.location}</Text>
+                  </View>
+                  <Text style={styles.loginTime}>{formatLoginTime(login.timestamp)}</Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+
+        {/* ── Promo Banner ───────────────────────────────────────────────── */}
         <View style={styles.promoBanner}>
           <View style={styles.promoContent}>
             <Text style={styles.promoTitle}>Get up to</Text>
@@ -235,6 +377,12 @@ export default function HomeScreen() {
           <View style={styles.promoCircle} />
         </View>
       </ScrollView>
+
+      <TransactionDetailModal
+        tx={selectedTx}
+        visible={showTxDetail}
+        onClose={() => setShowTxDetail(false)}
+      />
     </View>
   );
 }
@@ -280,6 +428,60 @@ const styles = StyleSheet.create({
     gap: 20,
     paddingBottom: 32,
   },
+  // ── Alert banners ────────────────────────────────────────────────────────────
+  alertBanner: {
+    backgroundColor: '#FFEBEE',
+    borderRadius: 14,
+    padding: 14,
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'flex-start',
+    borderWidth: 1,
+    borderColor: '#FFCDD2',
+    borderCurve: 'continuous',
+  },
+  alertTitle: {
+    fontSize: 13,
+    fontFamily: Fonts.semiBold,
+    color: '#B71C1C',
+    marginBottom: 3,
+  },
+  alertText: {
+    fontSize: 12,
+    fontFamily: Fonts.regular,
+    color: '#C62828',
+    lineHeight: 17,
+  },
+  alertLink: {
+    fontSize: 12,
+    fontFamily: Fonts.semiBold,
+    color: '#B71C1C',
+    marginTop: 6,
+  },
+  maintenanceBanner: {
+    backgroundColor: '#E3F2FD',
+    borderRadius: 14,
+    padding: 14,
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'flex-start',
+    borderWidth: 1,
+    borderColor: '#BBDEFB',
+    borderCurve: 'continuous',
+  },
+  maintenanceTitle: {
+    fontSize: 13,
+    fontFamily: Fonts.semiBold,
+    color: Colors.info,
+    marginBottom: 3,
+  },
+  maintenanceText: {
+    fontSize: 12,
+    fontFamily: Fonts.regular,
+    color: Colors.info,
+    lineHeight: 17,
+  },
+  // ── Hero card ────────────────────────────────────────────────────────────────
   heroCard: {
     backgroundColor: Colors.primary,
     borderRadius: 20,
@@ -332,6 +534,7 @@ const styles = StyleSheet.create({
     right: 40,
     bottom: -30,
   },
+  // ── Quick actions ─────────────────────────────────────────────────────────────
   quickActions: {
     flexDirection: 'row',
     backgroundColor: Colors.white,
@@ -359,6 +562,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.medium,
     color: Colors.textPrimary,
   },
+  // ── Sections ─────────────────────────────────────────────────────────────────
   section: {
     gap: 12,
   },
@@ -377,6 +581,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.medium,
     color: Colors.primary,
   },
+  // ── Accounts ─────────────────────────────────────────────────────────────────
   accountCard: {
     backgroundColor: Colors.white,
     borderRadius: 14,
@@ -424,6 +629,7 @@ const styles = StyleSheet.create({
     color: Colors.success,
     marginTop: 2,
   },
+  // ── Transactions ──────────────────────────────────────────────────────────────
   txList: {
     backgroundColor: Colors.white,
     borderRadius: 14,
@@ -438,6 +644,7 @@ const styles = StyleSheet.create({
     gap: 12,
     borderBottomWidth: 1,
     borderBottomColor: Colors.borderLight,
+    minHeight: 60,
   },
   txIcon: {
     width: 38,
@@ -471,6 +678,39 @@ const styles = StyleSheet.create({
   txDebit: {
     color: Colors.textPrimary,
   },
+  // ── Login activity ────────────────────────────────────────────────────────────
+  loginCard: {
+    backgroundColor: Colors.white,
+    borderRadius: 14,
+    overflow: 'hidden',
+    borderCurve: 'continuous',
+    boxShadow: '0 2px 8px rgba(0, 75, 90, 0.06)',
+  },
+  loginRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    gap: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLight,
+  },
+  loginDevice: {
+    fontSize: 13,
+    fontFamily: Fonts.medium,
+    color: Colors.textPrimary,
+  },
+  loginMeta: {
+    fontSize: 11,
+    fontFamily: Fonts.regular,
+    color: Colors.textSecondary,
+    marginTop: 1,
+  },
+  loginTime: {
+    fontSize: 12,
+    fontFamily: Fonts.regular,
+    color: Colors.textSecondary,
+  },
+  // ── Promo ─────────────────────────────────────────────────────────────────────
   promoBanner: {
     backgroundColor: Colors.primary,
     borderRadius: 16,

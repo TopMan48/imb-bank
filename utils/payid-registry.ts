@@ -22,12 +22,13 @@ const REGISTRY: PayIdRecord[] = [
   // ── App user (Alex Johnson at IMB Bank) ─────────────────────────────────────
   { payId: 'alex.johnson@email.com', type: 'email', registeredName: 'Alex Johnson', financialInstitution: 'IMB Bank' },
   { payId: '0401234567', type: 'mobile', registeredName: 'Alex Johnson', financialInstitution: 'IMB Bank' },
+  { payId: '0412345678', type: 'mobile', registeredName: 'Alex Johnson', financialInstitution: 'IMB Bank' },
 
   // ── Family & friends ────────────────────────────────────────────────────────
   { payId: 'mum@imb.com.au', type: 'email', registeredName: 'Margaret Johnson', financialInstitution: 'IMB Bank' },
   { payId: '0411111111', type: 'mobile', registeredName: 'Margaret Johnson', financialInstitution: 'IMB Bank' },
   { payId: 'sarah.johnson@gmail.com', type: 'email', registeredName: 'Sarah Johnson', financialInstitution: 'CommBank' },
-  { payId: '0412345678', type: 'mobile', registeredName: 'Sarah Johnson', financialInstitution: 'CommBank' },
+  { payId: '0411234567', type: 'mobile', registeredName: 'Sarah Johnson', financialInstitution: 'CommBank' },
   { payId: 'tom.williams@outlook.com', type: 'email', registeredName: 'Tom Williams', financialInstitution: 'Westpac' },
   { payId: '0423456789', type: 'mobile', registeredName: 'Tom Williams', financialInstitution: 'Westpac' },
   { payId: 'james.chen@icloud.com', type: 'email', registeredName: 'James Chen', financialInstitution: 'NAB' },
@@ -41,6 +42,14 @@ const REGISTRY: PayIdRecord[] = [
   { payId: 'david.wilson@gmail.com', type: 'email', registeredName: 'David Wilson', financialInstitution: 'ING' },
   { payId: '0478901234', type: 'mobile', registeredName: 'David Wilson', financialInstitution: 'ING' },
 
+  // ── Common test patterns ─────────────────────────────────────────────────────
+  { payId: '0400000000', type: 'mobile', registeredName: 'Test User', financialInstitution: 'CommBank' },
+  { payId: '0400123456', type: 'mobile', registeredName: 'Jane Doe', financialInstitution: 'ANZ' },
+  { payId: '0400555555', type: 'mobile', registeredName: 'Bob Smith', financialInstitution: 'Westpac' },
+  { payId: 'test@test.com', type: 'email', registeredName: 'Test Account', financialInstitution: 'NAB' },
+  { payId: 'demo@demo.com', type: 'email', registeredName: 'Demo User', financialInstitution: 'IMB Bank' },
+  { payId: 'pay@imb.com.au', type: 'email', registeredName: 'IMB Bank Payments', financialInstitution: 'IMB Bank' },
+
   // ── Services / merchants ─────────────────────────────────────────────────────
   { payId: 'billing@spotify.com.au', type: 'email', registeredName: 'Spotify Australia Pty Ltd', financialInstitution: 'NAB' },
   { payId: 'payments@nrma.com.au', type: 'email', registeredName: 'NRMA Insurance', financialInstitution: 'ANZ' },
@@ -49,6 +58,7 @@ const REGISTRY: PayIdRecord[] = [
   { payId: 'rentals@realestate.com.au', type: 'email', registeredName: 'REA Group Ltd', financialInstitution: 'CommBank' },
   { payId: 'pay@ausgrid.com.au', type: 'email', registeredName: 'Ausgrid', financialInstitution: 'ANZ' },
   { payId: 'accounts@bodycorp.com.au', type: 'email', registeredName: 'Body Corp Manager', financialInstitution: 'Westpac' },
+  { payId: 'info@imb.com.au', type: 'email', registeredName: 'IMB Bank Ltd', financialInstitution: 'IMB Bank' },
 
   // ── ABN-registered businesses ────────────────────────────────────────────────
   { payId: '51824753556', type: 'abn', registeredName: 'Woolworths Group Ltd', financialInstitution: 'CommBank' },
@@ -66,6 +76,44 @@ const REGISTRY: PayIdRecord[] = [
   { payId: 'ORG007890', type: 'organisation-id', registeredName: 'Services Australia (Centrelink)', financialInstitution: 'Reserve Bank of Australia' },
 ];
 
+// Demo names for smart simulation (used when mobile starts with 04xx)
+const DEMO_FIRST_NAMES = ['Emma', 'Liam', 'Olivia', 'Noah', 'Charlotte', 'Jack', 'Mia', 'Oliver', 'Ava', 'William', 'Isabella', 'James', 'Sophia', 'Lucas', 'Chloe'];
+const DEMO_LAST_NAMES = ['Smith', 'Jones', 'Williams', 'Taylor', 'Brown', 'Davis', 'Wilson', 'Anderson', 'Thomas', 'Jackson', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Robinson'];
+const DEMO_BANKS = ['CommBank', 'Westpac', 'ANZ', 'NAB', 'ING', 'Bendigo Bank', 'Macquarie Bank', 'Suncorp Bank', 'IMB Bank', 'Bank Australia'];
+
+/** Generate a deterministic but realistic-looking name from a mobile number */
+function generateDemoName(mobile: string): { name: string; bank: string } {
+  const digits = mobile.replace(/\D/g, '');
+  // Use last few digits to pick names deterministically
+  const seed = parseInt(digits.slice(-4), 10) || 0;
+  const firstName = DEMO_FIRST_NAMES[seed % DEMO_FIRST_NAMES.length];
+  const lastName = DEMO_LAST_NAMES[Math.floor(seed / 10) % DEMO_LAST_NAMES.length];
+  const bank = DEMO_BANKS[Math.floor(seed / 100) % DEMO_BANKS.length];
+  return { name: `${firstName} ${lastName}`, bank };
+}
+
+/** Generate a demo name from email domain */
+function generateDemoNameFromEmail(email: string): { name: string; bank: string } | null {
+  const lower = email.toLowerCase();
+  // Well-known Australian domains
+  if (lower.includes('@imb.')) return { name: 'IMB Bank Customer', bank: 'IMB Bank' };
+  if (lower.includes('@anz.')) return { name: 'ANZ Customer', bank: 'ANZ' };
+  if (lower.includes('@commbank.') || lower.includes('@cba.')) return { name: 'CBA Customer', bank: 'CommBank' };
+  if (lower.includes('@westpac.')) return { name: 'Westpac Customer', bank: 'Westpac' };
+  if (lower.includes('@nab.')) return { name: 'NAB Customer', bank: 'NAB' };
+  // Extract name from email local part
+  const [local] = email.split('@');
+  const parts = local.split(/[._-]/).filter((p) => p.length > 1 && !/^\d+$/.test(p));
+  if (parts.length >= 2) {
+    const firstName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+    const lastName = parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase();
+    const seed = email.charCodeAt(0) + email.charCodeAt(email.length - 1);
+    const bank = DEMO_BANKS[seed % DEMO_BANKS.length];
+    return { name: `${firstName} ${lastName}`, bank };
+  }
+  return null;
+}
+
 /**
  * Normalise a PayID string for case-insensitive comparison.
  * Strips whitespace, hyphens, and lowercases so that:
@@ -78,6 +126,8 @@ function normalise(s: string): string {
 
 /**
  * Look up a PayID against the registry.
+ * For demo mode, mobile numbers starting with 04 and emails with name patterns
+ * return realistic simulated results instead of "not found".
  *
  * @param payId         The PayID string entered by the user (any format).
  * @param extraEntries  Optional additional records to check (e.g. the current user's
@@ -93,7 +143,35 @@ export async function lookupPayId(
   const norm = normalise(payId);
   // Search static registry first, then any caller-supplied dynamic entries
   const allEntries = [...REGISTRY, ...extraEntries];
-  return allEntries.find((r) => normalise(r.payId) === norm) ?? null;
+  const found = allEntries.find((r) => normalise(r.payId) === norm);
+  if (found) return found;
+
+  // Smart demo simulation for Australian mobile numbers (04xx)
+  const mobileDigits = norm.replace(/\D/g, '');
+  if (/^04\d{8}$/.test(mobileDigits) || /^614\d{8}$/.test(mobileDigits)) {
+    const { name, bank } = generateDemoName(mobileDigits);
+    return {
+      payId: payId.trim(),
+      type: 'mobile',
+      registeredName: name,
+      financialInstitution: bank,
+    };
+  }
+
+  // Smart demo simulation for email addresses
+  if (isValidEmail(payId.trim())) {
+    const demo = generateDemoNameFromEmail(payId.trim());
+    if (demo) {
+      return {
+        payId: payId.trim(),
+        type: 'email',
+        registeredName: demo.name,
+        financialInstitution: demo.bank,
+      };
+    }
+  }
+
+  return null;
 }
 
 /**

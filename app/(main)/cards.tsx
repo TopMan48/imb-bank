@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Switch,
   Alert,
+  Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -20,7 +21,6 @@ function CardVisual({ card, flipped }: { card: Card; flipped: boolean }) {
   if (flipped) {
     return (
       <View style={[styles.cardVisual, { backgroundColor: card.colour }]}>
-        {/* Magnetic strip */}
         <View style={styles.magneticStrip} />
         <View style={styles.cvvRow}>
           <View style={styles.cvvBox}>
@@ -38,18 +38,13 @@ function CardVisual({ card, flipped }: { card: Card; flipped: boolean }) {
 
   return (
     <View style={[styles.cardVisual, { backgroundColor: card.colour }]}>
-      {/* Chip */}
       <View style={styles.chipArea}>
         <View style={styles.chip} />
         {card.isContactless && (
           <Ionicons name="wifi-outline" size={20} color="rgba(255,255,255,0.6)" style={{ transform: [{ rotate: '90deg' }] }} />
         )}
       </View>
-
-      <Text style={styles.cardNumber}>
-        •••• •••• •••• {card.last4}
-      </Text>
-
+      <Text style={styles.cardNumber}>•••• •••• •••• {card.last4}</Text>
       <View style={styles.cardBottomRow}>
         <View>
           <Text style={styles.cardLabel}>Card Holder</Text>
@@ -61,26 +56,191 @@ function CardVisual({ card, flipped }: { card: Card; flipped: boolean }) {
         </View>
         <Text style={styles.cardNetwork}>VISA</Text>
       </View>
-
-      {/* Decorative circles */}
       <View style={styles.cardDecor1} />
       <View style={styles.cardDecor2} />
-
       {card.isLocked && (
         <View style={styles.lockOverlay}>
           <Ionicons name="lock-closed" size={32} color={Colors.white} />
           <Text style={styles.lockText}>Card Locked</Text>
         </View>
       )}
+      {(card.status === 'reported-lost' || card.status === 'reported-stolen' || card.status === 'reported-damaged') && (
+        <View style={[styles.lockOverlay, { backgroundColor: 'rgba(198,40,40,0.7)' }]}>
+          <Ionicons name="warning" size={32} color={Colors.white} />
+          <Text style={styles.lockText}>
+            {card.status === 'reported-lost' ? 'Reported Lost' : card.status === 'reported-stolen' ? 'Reported Stolen' : 'Reported Damaged'}
+          </Text>
+        </View>
+      )}
     </View>
+  );
+}
+
+function TravelModeModal({ card, visible, onClose }: { card: Card; visible: boolean; onClose: () => void }) {
+  const COUNTRIES = ['New Zealand', 'United Kingdom', 'United States', 'Japan', 'Singapore', 'France', 'Germany', 'Canada', 'Italy', 'Thailand'];
+  const [selected, setSelected] = useState<string[]>([]);
+
+  const toggle = (c: string) => {
+    setSelected((prev) => prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]);
+  };
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="formSheet" onRequestClose={onClose}>
+      <View style={{ flex: 1, backgroundColor: Colors.background }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingTop: 24, backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+          <Text style={{ flex: 1, fontSize: 18, fontFamily: Fonts.bold, color: Colors.textPrimary }}>Travel Mode</Text>
+          <Pressable onPress={onClose} style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' }}>
+            <Ionicons name="close" size={20} color={Colors.textSecondary} />
+          </Pressable>
+        </View>
+        <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
+          <View style={{ backgroundColor: '#E3F2FD', borderRadius: 12, padding: 14, flexDirection: 'row', gap: 10 }}>
+            <Ionicons name="airplane-outline" size={18} color={Colors.info} />
+            <Text style={{ flex: 1, fontSize: 13, fontFamily: Fonts.regular, color: Colors.info, lineHeight: 18 }}>
+              Enable Travel Mode so your card works overseas without triggering fraud alerts. Select your destination countries.
+            </Text>
+          </View>
+          <Text style={{ fontSize: 12, fontFamily: Fonts.semiBold, color: Colors.textSecondary, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            Destinations
+          </Text>
+          <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 2px 10px rgba(0,75,90,0.06)' }}>
+            {COUNTRIES.map((country, index) => (
+              <Pressable
+                key={country}
+                style={({ pressed }) => [{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: 14,
+                  gap: 12,
+                  borderBottomWidth: index === COUNTRIES.length - 1 ? 0 : 1,
+                  borderBottomColor: Colors.borderLight,
+                  minHeight: 52,
+                  backgroundColor: pressed ? Colors.background : 'transparent',
+                }]}
+                onPress={() => toggle(country)}
+              >
+                <Ionicons name={selected.includes(country) ? 'checkmark-circle' : 'ellipse-outline'} size={22} color={selected.includes(country) ? Colors.primary : Colors.border} />
+                <Text style={{ flex: 1, fontSize: 14, fontFamily: Fonts.medium, color: Colors.textPrimary }}>{country}</Text>
+              </Pressable>
+            ))}
+          </View>
+          <Pressable
+            style={({ pressed }) => [{
+              backgroundColor: selected.length > 0 ? Colors.accent : Colors.border,
+              borderRadius: 14,
+              paddingVertical: 16,
+              alignItems: 'center',
+              borderCurve: 'continuous',
+              opacity: pressed ? 0.85 : 1,
+            }]}
+            onPress={() => {
+              if (selected.length === 0) return;
+              Alert.alert(
+                'Travel Mode Enabled',
+                `Your card ending in ${card.last4} is now enabled for: ${selected.join(', ')}.\n\nRemember to disable Travel Mode when you return.`,
+                [{ text: 'Done', onPress: onClose }]
+              );
+            }}
+            disabled={selected.length === 0}
+          >
+            <Text style={{ fontSize: 16, fontFamily: Fonts.bold, color: selected.length > 0 ? Colors.primary : Colors.textSecondary }}>
+              Enable Travel Mode{selected.length > 0 ? ` (${selected.length})` : ''}
+            </Text>
+          </Pressable>
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+}
+
+function CardActivationModal({ card, visible, onClose }: { card: Card; visible: boolean; onClose: () => void }) {
+  const [done, setDone] = useState(false);
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="formSheet" onRequestClose={onClose}>
+      <View style={{ flex: 1, backgroundColor: Colors.background }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingTop: 24, backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+          <Text style={{ flex: 1, fontSize: 18, fontFamily: Fonts.bold, color: Colors.textPrimary }}>Activate Card</Text>
+          <Pressable onPress={onClose} style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' }}>
+            <Ionicons name="close" size={20} color={Colors.textSecondary} />
+          </Pressable>
+        </View>
+        <View style={{ flex: 1, padding: 20, gap: 20 }}>
+          {done ? (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+              <View style={{ width: 80, height: 80, borderRadius: 40, backgroundColor: '#E8F5E9', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="checkmark-circle" size={48} color={Colors.success} />
+              </View>
+              <Text style={{ fontSize: 22, fontFamily: Fonts.bold, color: Colors.textPrimary }}>Card Activated!</Text>
+              <Text style={{ fontSize: 14, fontFamily: Fonts.regular, color: Colors.textSecondary, textAlign: 'center' }}>
+                Your Visa card ending in {card.last4} is now active and ready to use.
+              </Text>
+              <Pressable
+                style={{ backgroundColor: Colors.accent, borderRadius: 14, paddingVertical: 14, paddingHorizontal: 40, borderCurve: 'continuous' }}
+                onPress={onClose}
+              >
+                <Text style={{ fontSize: 15, fontFamily: Fonts.bold, color: Colors.primary }}>Done</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <>
+              <View style={{ backgroundColor: '#E8F5E9', borderRadius: 12, padding: 14, flexDirection: 'row', gap: 10 }}>
+                <Ionicons name="information-circle-outline" size={18} color={Colors.success} />
+                <Text style={{ flex: 1, fontSize: 13, fontFamily: Fonts.regular, color: Colors.textPrimary, lineHeight: 18 }}>
+                  {'To activate your new card, you\'ll need to make a purchase or ATM transaction with your PIN. Alternatively, tap "Activate Now" below.'}
+                </Text>
+              </View>
+              <View style={{ backgroundColor: Colors.white, borderRadius: 16, padding: 18, gap: 10, borderCurve: 'continuous', boxShadow: '0 2px 10px rgba(0,75,90,0.06)' }}>
+                <Text style={{ fontSize: 13, fontFamily: Fonts.semiBold, color: Colors.textSecondary, textTransform: 'uppercase', letterSpacing: 0.5 }}>Card Details</Text>
+                <Text style={{ fontSize: 15, fontFamily: Fonts.medium, color: Colors.textPrimary }}>Visa •••• {card.last4}</Text>
+                <Text style={{ fontSize: 13, fontFamily: Fonts.regular, color: Colors.textSecondary }}>{card.name}</Text>
+                <Text style={{ fontSize: 13, fontFamily: Fonts.regular, color: Colors.textSecondary }}>Expires: {card.expiry}</Text>
+              </View>
+              <View style={{ flex: 1 }} />
+              <Pressable
+                style={({ pressed }) => [{
+                  backgroundColor: Colors.accent,
+                  borderRadius: 14,
+                  paddingVertical: 16,
+                  alignItems: 'center',
+                  borderCurve: 'continuous',
+                  opacity: pressed ? 0.85 : 1,
+                }]}
+                onPress={() => setDone(true)}
+              >
+                <Text style={{ fontSize: 16, fontFamily: Fonts.bold, color: Colors.primary }}>Activate Card Now</Text>
+              </Pressable>
+            </>
+          )}
+        </View>
+      </View>
+    </Modal>
   );
 }
 
 function CardItem({ card }: { card: Card }) {
   const [flipped, setFlipped] = useState(false);
+  const [showTravel, setShowTravel] = useState(false);
+  const [showActivation, setShowActivation] = useState(false);
   const toggleCardLock = useAppStore((s) => s.toggleCardLock);
   const accounts = useAppStore((s) => s.accounts);
   const account = accounts.find((a) => a.id === card.accountId);
+
+  const handleReplacement = () => {
+    Alert.alert(
+      'Request Card Replacement',
+      `Your current card ending in ${card.last4} will be cancelled and a new card will be issued.\n\nEstimated delivery: 5–7 business days to your registered address.\n\n42 Coastal Drive, Wollongong NSW 2500`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Request Replacement',
+          onPress: () => Alert.alert('Replacement Requested', 'A new card will be delivered within 5–7 business days. Your current card remains active until the new one arrives.'),
+        },
+      ]
+    );
+  };
+
+  const isReported = card.status && card.status !== 'active';
 
   return (
     <View style={styles.cardWrapper}>
@@ -119,8 +279,8 @@ function CardItem({ card }: { card: Card }) {
           <View style={styles.cardDetailLeft}>
             <Ionicons name={card.isLocked ? 'lock-closed' : 'lock-open-outline'} size={18} color={card.isLocked ? Colors.error : Colors.primary} />
             <View>
-              <Text style={styles.cardDetailLabel}>Lock Card</Text>
-              <Text style={styles.cardDetailSub}>Temporarily freeze your card</Text>
+              <Text style={styles.cardDetailLabel}>Freeze Card</Text>
+              <Text style={styles.cardDetailSub}>Temporarily block all transactions</Text>
             </View>
           </View>
           <Switch
@@ -128,8 +288,24 @@ function CardItem({ card }: { card: Card }) {
             onValueChange={() => toggleCardLock(card.id)}
             trackColor={{ false: Colors.borderLight, true: '#FFCDD2' }}
             thumbColor={card.isLocked ? Colors.error : Colors.white}
+            disabled={isReported}
           />
         </View>
+
+        {isReported && (
+          <View>
+            <View style={styles.divider} />
+            <View style={[styles.cardDetailRow, { paddingVertical: 12 }]}>
+              <View style={[styles.reportedBadge]}>
+                <Ionicons name="warning-outline" size={14} color="#B71C1C" />
+                <Text style={styles.reportedText}>
+                  This card has been {card.status === 'reported-lost' ? 'reported lost' : card.status === 'reported-stolen' ? 'reported stolen' : 'reported damaged'}.
+                  {card.reportedAt ? ` Reported on ${new Date(card.reportedAt).toLocaleDateString('en-AU')}.` : ''}
+                </Text>
+              </View>
+            </View>
+          </View>
+        )}
       </View>
 
       {/* Quick Actions */}
@@ -137,13 +313,23 @@ function CardItem({ card }: { card: Card }) {
         {[
           {
             icon: 'pin-outline' as const,
-            label: 'PIN',
+            label: 'Change PIN',
             onPress: () => Alert.alert('Change PIN', 'To change your card PIN, please visit an IMB Bank ATM or call us on 133 462.'),
           },
           {
-            icon: 'shield-outline' as const,
-            label: 'Manage',
-            onPress: () => router.push('/settings/security'),
+            icon: 'airplane-outline' as const,
+            label: 'Travel Mode',
+            onPress: () => setShowTravel(true),
+          },
+          {
+            icon: 'flash-outline' as const,
+            label: 'Activate',
+            onPress: () => setShowActivation(true),
+          },
+          {
+            icon: 'refresh-outline' as const,
+            label: 'Replace',
+            onPress: handleReplacement,
           },
           {
             icon: 'receipt-outline' as const,
@@ -151,7 +337,7 @@ function CardItem({ card }: { card: Card }) {
             onPress: () => router.push('/settings/transaction-history'),
           },
           {
-            icon: 'help-circle-outline' as const,
+            icon: 'warning-outline' as const,
             label: 'Report',
             onPress: () => router.push('/settings/report-card'),
           },
@@ -164,6 +350,9 @@ function CardItem({ card }: { card: Card }) {
           </Pressable>
         ))}
       </View>
+
+      <TravelModeModal card={card} visible={showTravel} onClose={() => setShowTravel(false)} />
+      <CardActivationModal card={card} visible={showActivation} onClose={() => setShowActivation(false)} />
     </View>
   );
 }
@@ -386,22 +575,41 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.medium,
     color: Colors.textSecondary,
   },
+  reportedBadge: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    backgroundColor: '#FFEBEE',
+    borderRadius: 10,
+    padding: 12,
+    alignItems: 'flex-start',
+  },
+  reportedText: {
+    flex: 1,
+    fontSize: 12,
+    fontFamily: Fonts.regular,
+    color: '#B71C1C',
+    lineHeight: 17,
+  },
   divider: {
     height: 1,
     backgroundColor: Colors.borderLight,
   },
   cardActions: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     backgroundColor: Colors.white,
     borderRadius: 16,
     padding: 16,
-    justifyContent: 'space-around',
     borderCurve: 'continuous',
     boxShadow: '0 2px 10px rgba(0, 75, 90, 0.06)',
+    gap: 8,
   },
   cardAction: {
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
+    width: '30%',
+    minWidth: 70,
     flex: 1,
   },
   cardActionIcon: {
@@ -416,6 +624,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: Fonts.medium,
     color: Colors.textPrimary,
+    textAlign: 'center',
   },
   newCardBtn: {
     flexDirection: 'row',

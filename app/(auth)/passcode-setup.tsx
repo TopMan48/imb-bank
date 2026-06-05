@@ -50,9 +50,10 @@ export default function PasscodeSetupScreen() {
         <PasscodePad
           key="create"
           title="Create a Passcode"
-          subtitle="Set a 4-digit passcode to secure your account"
+          subtitle="Set a 6-digit passcode to secure your account"
           onComplete={handleCreate}
           error={createError}
+          length={6}
         />
       ) : (
         // key="confirm" forces a fresh remount when transitioning create → confirm,
@@ -60,9 +61,10 @@ export default function PasscodeSetupScreen() {
         <PasscodePad
           key="confirm"
           title="Confirm Passcode"
-          subtitle="Re-enter your passcode to confirm"
+          subtitle="Re-enter your 6-digit passcode to confirm"
           onComplete={handleConfirm}
           error={confirmError}
+          length={6}
         />
       )}
     </View>

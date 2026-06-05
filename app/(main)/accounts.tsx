@@ -33,6 +33,53 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+function TransactionDetailModal({ tx, visible, onClose }: { tx: Transaction | null; visible: boolean; onClose: () => void }) {
+  if (!tx) return null;
+  const cat = CATEGORY_ICONS[tx.category] ?? CATEGORY_ICONS.other;
+  const isCredit = tx.type === 'credit';
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="formSheet" onRequestClose={onClose}>
+      <View style={{ flex: 1, backgroundColor: Colors.background }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, paddingTop: 24, backgroundColor: Colors.white, borderBottomWidth: 1, borderBottomColor: Colors.borderLight }}>
+          <Text style={{ flex: 1, fontSize: 18, fontFamily: Fonts.bold, color: Colors.textPrimary }}>Transaction Details</Text>
+          <Pressable onPress={onClose} style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' }}>
+            <Ionicons name="close" size={20} color={Colors.textSecondary} />
+          </Pressable>
+        </View>
+        <ScrollView contentContainerStyle={{ padding: 20, gap: 16 }}>
+          <View style={{ alignItems: 'center', gap: 12, paddingVertical: 12 }}>
+            <View style={[{ width: 64, height: 64, borderRadius: 32, alignItems: 'center', justifyContent: 'center' }, { backgroundColor: cat.bg }]}>
+              <Ionicons name={cat.icon} size={28} color={Colors.primary} />
+            </View>
+            <Text style={{ fontSize: 30, fontFamily: Fonts.bold, color: isCredit ? Colors.success : Colors.textPrimary }}>
+              {isCredit ? '+' : '-'}${Math.abs(tx.amount).toFixed(2)}
+            </Text>
+            <Text style={{ fontSize: 16, fontFamily: Fonts.semiBold, color: Colors.textPrimary }}>
+              {tx.merchant ?? tx.description}
+            </Text>
+          </View>
+          <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 2px 10px rgba(0,75,90,0.06)' }}>
+            {[
+              { label: 'Date', value: new Date(tx.date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }) },
+              { label: 'Category', value: tx.category.charAt(0).toUpperCase() + tx.category.slice(1) },
+              tx.paymentMethod ? { label: 'Method', value: tx.paymentMethod.toUpperCase() } : null,
+              tx.recipientName ? { label: 'To/From', value: tx.recipientName } : null,
+              tx.reference ? { label: 'Reference', value: tx.reference } : null,
+              { label: 'Status', value: 'Settled' },
+            ].filter(Boolean).map((row, idx, arr) => (
+              <View key={row!.label} style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 14, borderBottomWidth: idx === arr.length - 1 ? 0 : 1, borderBottomColor: Colors.borderLight }}>
+                <Text style={{ fontSize: 14, fontFamily: Fonts.regular, color: Colors.textSecondary }}>{row!.label}</Text>
+                <Text style={{ fontSize: 14, fontFamily: Fonts.semiBold, color: Colors.textPrimary }} selectable>{row!.value}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+}
+
 function AccountDetailModal({
   account,
   transactions,
@@ -45,112 +92,139 @@ function AccountDetailModal({
   onClose: () => void;
 }) {
   const insets = useSafeAreaInsets();
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
+  const [showTxDetail, setShowTxDetail] = useState(false);
+
   const txForAccount = transactions
     .filter((t) => t.accountId === account.id)
     .sort((a, b) => b.date.localeCompare(a.date));
 
-  return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet">
-      <View style={[styles.modalContainer, { paddingBottom: insets.bottom }]}>
-        {/* Modal Header */}
-        <View style={[styles.modalHeader, { paddingTop: insets.top + 12 }]}>
-          <Pressable onPress={onClose} style={styles.closeBtn}>
-            <Ionicons name="chevron-down" size={24} color={Colors.primary} />
-          </Pressable>
-          <Text style={styles.modalTitle}>{account.name}</Text>
-          <View style={{ width: 44 }} />
-        </View>
+  const handleTxPress = (tx: Transaction) => {
+    setSelectedTx(tx);
+    setShowTxDetail(true);
+  };
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-          {/* Balance Card */}
-          <View style={styles.detailHero}>
-            <View style={styles.detailHeroInner}>
-              <Text style={styles.detailBalanceLabel}>
-                {account.balance < 0 ? 'Amount Owing' : 'Available Balance'}
-              </Text>
-              <Text style={styles.detailBalance}>
-                ${Math.abs(account.balance).toLocaleString('en-AU', { minimumFractionDigits: 2 })}
-              </Text>
-              <View style={styles.detailMeta}>
-                <View style={styles.detailMetaItem}>
-                  <Text style={styles.detailMetaLabel}>BSB</Text>
-                  <Text style={styles.detailMetaValue} selectable>{account.bsb}</Text>
+  return (
+    <>
+      <Modal visible={visible} animationType="slide" presentationStyle="pageSheet">
+        <View style={[styles.modalContainer, { paddingBottom: insets.bottom }]}>
+          {/* Modal Header */}
+          <View style={[styles.modalHeader, { paddingTop: insets.top + 12 }]}>
+            <Pressable onPress={onClose} style={styles.closeBtn}>
+              <Ionicons name="chevron-down" size={24} color={Colors.primary} />
+            </Pressable>
+            <Text style={styles.modalTitle}>{account.name}</Text>
+            <View style={{ width: 44 }} />
+          </View>
+
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+            {/* Balance Card */}
+            <View style={styles.detailHero}>
+              <View style={styles.detailHeroInner}>
+                <Text style={styles.detailBalanceLabel}>
+                  {account.balance < 0 ? 'Amount Owing' : 'Available Balance'}
+                </Text>
+                <Text style={styles.detailBalance}>
+                  ${Math.abs(account.balance).toLocaleString('en-AU', { minimumFractionDigits: 2 })}
+                </Text>
+                <View style={styles.detailMeta}>
+                  <View style={styles.detailMetaItem}>
+                    <Text style={styles.detailMetaLabel}>BSB</Text>
+                    <Text style={styles.detailMetaValue} selectable>{account.bsb}</Text>
+                  </View>
+                  <View style={styles.detailMetaDivider} />
+                  <View style={styles.detailMetaItem}>
+                    <Text style={styles.detailMetaLabel}>Account</Text>
+                    <Text style={styles.detailMetaValue} selectable>{account.accountNumber}</Text>
+                  </View>
+                  {account.interestRate && (
+                    <>
+                      <View style={styles.detailMetaDivider} />
+                      <View style={styles.detailMetaItem}>
+                        <Text style={styles.detailMetaLabel}>Interest</Text>
+                        <Text style={styles.detailMetaValue}>{account.interestRate}% p.a.</Text>
+                      </View>
+                    </>
+                  )}
                 </View>
-                <View style={styles.detailMetaDivider} />
-                <View style={styles.detailMetaItem}>
-                  <Text style={styles.detailMetaLabel}>Account</Text>
-                  <Text style={styles.detailMetaValue} selectable>{account.accountNumber}</Text>
-                </View>
-                {account.interestRate && (
-                  <>
-                    <View style={styles.detailMetaDivider} />
-                    <View style={styles.detailMetaItem}>
-                      <Text style={styles.detailMetaLabel}>Interest</Text>
-                      <Text style={styles.detailMetaValue}>{account.interestRate}% p.a.</Text>
-                    </View>
-                  </>
-                )}
               </View>
             </View>
-          </View>
 
-          {/* Quick Actions */}
-          <View style={styles.detailActions}>
-            {([
-              { label: 'Transfer', icon: 'swap-horizontal-outline' as const, mode: 'internal' },
-              { label: 'Pay', icon: 'send-outline' as const, mode: 'pay-anyone' },
-              { label: 'BPAY', icon: 'barcode-outline' as const, mode: 'bpay' },
-            ]).map((action) => (
-              <Pressable
-                key={action.label}
-                style={({ pressed }) => [styles.detailAction, pressed && { opacity: 0.7 }]}
-                onPress={() => {
-                  onClose();
-                  router.push('/(main)/pay');
-                }}
-              >
-                <View style={styles.detailActionIcon}>
-                  <Ionicons name={action.icon} size={20} color={Colors.primary} />
-                </View>
-                <Text style={styles.detailActionLabel}>{action.label}</Text>
-              </Pressable>
-            ))}
-          </View>
-
-          {/* Transactions */}
-          <View style={styles.txSection}>
-            <Text style={styles.txSectionTitle}>Transactions</Text>
-            {txForAccount.length === 0 ? (
-              <View style={styles.emptyState}>
-                <Ionicons name="receipt-outline" size={40} color={Colors.textSecondary} />
-                <Text style={styles.emptyStateText}>No transactions yet</Text>
-              </View>
-            ) : (
-              txForAccount.map((tx) => {
-                const cat = CATEGORY_ICONS[tx.category] ?? CATEGORY_ICONS.other;
-                const isCredit = tx.type === 'credit';
-                return (
-                  <View key={tx.id} style={styles.txRow}>
-                    <View style={[styles.txIcon, { backgroundColor: cat.bg }]}>
-                      <Ionicons name={cat.icon} size={18} color={Colors.primary} />
-                    </View>
-                    <View style={styles.txInfo}>
-                      <Text style={styles.txName} numberOfLines={1}>
-                        {tx.merchant ?? tx.description}
-                      </Text>
-                      <Text style={styles.txDate}>{formatDate(tx.date)}</Text>
-                    </View>
-                    <Text style={[styles.txAmount, isCredit ? styles.txCredit : styles.txDebit]}>
-                      {isCredit ? '+' : ''}${Math.abs(tx.amount).toFixed(2)}
-                    </Text>
+            {/* Quick Actions */}
+            <View style={styles.detailActions}>
+              {([
+                { label: 'Transfer', icon: 'swap-horizontal-outline' as const },
+                { label: 'Pay', icon: 'send-outline' as const },
+                { label: 'BPAY', icon: 'barcode-outline' as const },
+              ]).map((action) => (
+                <Pressable
+                  key={action.label}
+                  style={({ pressed }) => [styles.detailAction, pressed && { opacity: 0.7 }]}
+                  onPress={() => {
+                    onClose();
+                    router.push('/(main)/pay');
+                  }}
+                >
+                  <View style={styles.detailActionIcon}>
+                    <Ionicons name={action.icon} size={20} color={Colors.primary} />
                   </View>
-                );
-              })
-            )}
-          </View>
-        </ScrollView>
-      </View>
-    </Modal>
+                  <Text style={styles.detailActionLabel}>{action.label}</Text>
+                </Pressable>
+              ))}
+            </View>
+
+            {/* Transactions */}
+            <View style={styles.txSection}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                <Text style={styles.txSectionTitle}>Transactions</Text>
+                <Pressable onPress={() => { onClose(); router.push('/settings/transaction-history'); }}>
+                  <Text style={{ fontSize: 13, fontFamily: Fonts.medium, color: Colors.primary }}>View all</Text>
+                </Pressable>
+              </View>
+              {txForAccount.length === 0 ? (
+                <View style={styles.emptyState}>
+                  <Ionicons name="receipt-outline" size={40} color={Colors.textSecondary} />
+                  <Text style={styles.emptyStateText}>No transactions yet</Text>
+                </View>
+              ) : (
+                <View style={{ backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderCurve: 'continuous', boxShadow: '0 2px 8px rgba(0,75,90,0.06)' }}>
+                  {txForAccount.map((tx, index) => {
+                    const cat = CATEGORY_ICONS[tx.category] ?? CATEGORY_ICONS.other;
+                    const isCredit = tx.type === 'credit';
+                    return (
+                      <Pressable
+                        key={tx.id}
+                        style={({ pressed }) => [styles.txRow, pressed && { backgroundColor: Colors.background }, index === txForAccount.length - 1 && { borderBottomWidth: 0 }]}
+                        onPress={() => handleTxPress(tx)}
+                      >
+                        <View style={[styles.txIcon, { backgroundColor: cat.bg }]}>
+                          <Ionicons name={cat.icon} size={18} color={Colors.primary} />
+                        </View>
+                        <View style={styles.txInfo}>
+                          <Text style={styles.txName} numberOfLines={1}>
+                            {tx.merchant ?? tx.description}
+                          </Text>
+                          <Text style={styles.txDate}>{formatDate(tx.date)}</Text>
+                        </View>
+                        <Text style={[styles.txAmount, isCredit ? styles.txCredit : styles.txDebit]}>
+                          {isCredit ? '+' : ''}${Math.abs(tx.amount).toFixed(2)}
+                        </Text>
+                        <Ionicons name="chevron-forward" size={14} color={Colors.textSecondary} />
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
+      <TransactionDetailModal
+        tx={selectedTx}
+        visible={showTxDetail}
+        onClose={() => setShowTxDetail(false)}
+      />
+    </>
   );
 }
 
@@ -535,10 +609,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 14,
     gap: 12,
-    backgroundColor: Colors.white,
-    borderRadius: 14,
-    borderCurve: 'continuous',
-    boxShadow: '0 2px 6px rgba(0, 75, 90, 0.05)',
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.borderLight,
+    minHeight: 60,
   },
   txIcon: {
     width: 38,
@@ -576,6 +649,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 40,
     gap: 12,
+    backgroundColor: Colors.white,
+    borderRadius: 16,
+    borderCurve: 'continuous',
   },
   emptyStateText: {
     fontSize: 15,

@@ -11,6 +11,7 @@ import type {
   UserProfile,
   PayToAgreement,
   ScheduledPayment,
+  LoginActivity,
 } from './types';
 
 const DEFAULT_NOTIFICATIONS: NotificationPreferences = {
@@ -37,16 +38,63 @@ const DEFAULT_PROFILE: UserProfile = {
   memberSince: '2019',
 };
 
+// Pre-populated login history for demo realism
+const SEED_LOGIN_ACTIVITY: LoginActivity[] = [
+  {
+    id: 'la1',
+    timestamp: new Date(Date.now() - 1 * 60 * 1000).toISOString(), // 1 min ago
+    device: 'iPhone 16 Pro Max',
+    location: 'Wollongong, NSW',
+    ipAddress: '101.168.xxx.xxx',
+    successful: true,
+  },
+  {
+    id: 'la2',
+    timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(), // 8h ago
+    device: 'iPhone 16 Pro Max',
+    location: 'Wollongong, NSW',
+    ipAddress: '101.168.xxx.xxx',
+    successful: true,
+  },
+  {
+    id: 'la3',
+    timestamp: new Date(Date.now() - 26 * 60 * 60 * 1000).toISOString(), // Yesterday
+    device: 'iPhone 16 Pro Max',
+    location: 'Sydney, NSW',
+    ipAddress: '203.45.xxx.xxx',
+    successful: true,
+  },
+  {
+    id: 'la4',
+    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    device: 'MacBook Pro (Safari)',
+    location: 'Wollongong, NSW',
+    ipAddress: '101.168.xxx.xxx',
+    successful: true,
+  },
+  {
+    id: 'la5',
+    timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    device: 'iPhone 16 Pro Max',
+    location: 'Wollongong, NSW',
+    ipAddress: '101.168.xxx.xxx',
+    successful: false,
+  },
+];
+
 interface PreferencesSlice {
   preferences: Preferences;
   notifications: NotificationPreferences;
   profile: UserProfile;
+  loginActivity: LoginActivity[];
   setPasscode: (code: string) => void;
   verifyPasscode: (code: string) => boolean;
   setAuthenticated: (value: boolean) => void;
   dismissBanner: (bannerId: string) => void;
   updateNotifications: (prefs: Partial<NotificationPreferences>) => void;
   updateProfile: (profile: Partial<UserProfile>) => void;
+  addLoginActivity: (activity: Omit<LoginActivity, 'id'>) => void;
+  clearLoginActivity: () => void;
 }
 
 interface DataSlice {
@@ -90,6 +138,7 @@ export const useAppStore = create<AppStore>()(
       preferences: {},
       notifications: DEFAULT_NOTIFICATIONS,
       profile: DEFAULT_PROFILE,
+      loginActivity: SEED_LOGIN_ACTIVITY,
 
       accounts: [
         {
@@ -124,20 +173,20 @@ export const useAppStore = create<AppStore>()(
       ],
 
       transactions: [
-        { id: 't1', accountId: '1', description: 'Woolworths Wollongong', merchant: 'Woolworths', amount: -87.45, date: '2026-05-19', type: 'debit', category: 'shopping' },
-        { id: 't2', accountId: '1', description: 'Salary - IMB Bank', merchant: 'IMB Bank', amount: 3250.00, date: '2026-05-17', type: 'credit', category: 'income' },
-        { id: 't3', accountId: '1', description: 'McDonald\'s Shellharbour', merchant: 'McDonald\'s', amount: -14.50, date: '2026-05-17', type: 'debit', category: 'food' },
-        { id: 't4', accountId: '1', description: 'Netflix', merchant: 'Netflix', amount: -22.99, date: '2026-05-16', type: 'debit', category: 'entertainment' },
-        { id: 't5', accountId: '1', description: 'Shell Petrol', merchant: 'Shell', amount: -85.20, date: '2026-05-16', type: 'debit', category: 'transport' },
-        { id: 't6', accountId: '1', description: 'Ausgrid Electricity', merchant: 'Ausgrid', amount: -124.00, date: '2026-05-15', type: 'debit', category: 'utilities' },
-        { id: 't7', accountId: '1', description: 'Transfer to Smart Saver', amount: -500.00, date: '2026-05-14', type: 'debit', category: 'transfer', paymentMethod: 'internal' },
-        { id: 't8', accountId: '1', description: 'Chemist Warehouse', merchant: 'Chemist Warehouse', amount: -32.80, date: '2026-05-13', type: 'debit', category: 'health' },
-        { id: 't9', accountId: '1', description: 'JB Hi-Fi', merchant: 'JB Hi-Fi', amount: -349.00, date: '2026-05-12', type: 'debit', category: 'shopping' },
-        { id: 't10', accountId: '1', description: 'Uber Eats', merchant: 'Uber Eats', amount: -28.90, date: '2026-05-11', type: 'debit', category: 'food' },
-        { id: 't11', accountId: '2', description: 'Transfer from Everyday', amount: 500.00, date: '2026-05-14', type: 'credit', category: 'transfer', paymentMethod: 'internal' },
-        { id: 't12', accountId: '2', description: 'Interest Payment', amount: 78.50, date: '2026-05-01', type: 'credit', category: 'income' },
-        { id: 't13', accountId: '3', description: 'Home Loan Repayment', amount: -1850.00, date: '2026-05-01', type: 'debit', category: 'transfer' },
-        { id: 't14', accountId: '3', description: 'Home Loan Repayment', amount: -1850.00, date: '2026-04-01', type: 'debit', category: 'transfer' },
+        { id: 't1', accountId: '1', description: 'Woolworths Wollongong', merchant: 'Woolworths', amount: -87.45, date: '2026-06-04', type: 'debit', category: 'shopping' },
+        { id: 't2', accountId: '1', description: 'Salary - IMB Bank', merchant: 'IMB Bank', amount: 3250.00, date: '2026-06-03', type: 'credit', category: 'income' },
+        { id: 't3', accountId: '1', description: 'McDonald\'s Shellharbour', merchant: 'McDonald\'s', amount: -14.50, date: '2026-06-03', type: 'debit', category: 'food' },
+        { id: 't4', accountId: '1', description: 'Netflix', merchant: 'Netflix', amount: -22.99, date: '2026-06-02', type: 'debit', category: 'entertainment' },
+        { id: 't5', accountId: '1', description: 'Shell Petrol', merchant: 'Shell', amount: -85.20, date: '2026-06-02', type: 'debit', category: 'transport' },
+        { id: 't6', accountId: '1', description: 'Ausgrid Electricity', merchant: 'Ausgrid', amount: -124.00, date: '2026-06-01', type: 'debit', category: 'utilities' },
+        { id: 't7', accountId: '1', description: 'Transfer to Smart Saver', amount: -500.00, date: '2026-05-31', type: 'debit', category: 'transfer', paymentMethod: 'internal' },
+        { id: 't8', accountId: '1', description: 'Chemist Warehouse', merchant: 'Chemist Warehouse', amount: -32.80, date: '2026-05-30', type: 'debit', category: 'health' },
+        { id: 't9', accountId: '1', description: 'JB Hi-Fi', merchant: 'JB Hi-Fi', amount: -349.00, date: '2026-05-28', type: 'debit', category: 'shopping' },
+        { id: 't10', accountId: '1', description: 'Uber Eats', merchant: 'Uber Eats', amount: -28.90, date: '2026-05-27', type: 'debit', category: 'food' },
+        { id: 't11', accountId: '2', description: 'Transfer from Everyday', amount: 500.00, date: '2026-05-31', type: 'credit', category: 'transfer', paymentMethod: 'internal' },
+        { id: 't12', accountId: '2', description: 'Interest Payment', amount: 78.50, date: '2026-06-01', type: 'credit', category: 'income' },
+        { id: 't13', accountId: '3', description: 'Home Loan Repayment', amount: -1850.00, date: '2026-06-01', type: 'debit', category: 'transfer' },
+        { id: 't14', accountId: '3', description: 'Home Loan Repayment', amount: -1850.00, date: '2026-05-01', type: 'debit', category: 'transfer' },
       ],
 
       cards: [
@@ -238,7 +287,7 @@ export const useAppStore = create<AppStore>()(
           payeeName: 'Mum',
           amount: 200.00,
           frequency: 'fortnightly',
-          nextDate: '2026-05-28',
+          nextDate: '2026-06-05',
           accountId: '1',
           description: 'Weekly transfer',
           status: 'active',
@@ -276,6 +325,14 @@ export const useAppStore = create<AppStore>()(
         set((state) => ({
           profile: { ...state.profile, ...updates },
         })),
+
+      addLoginActivity: (activity) =>
+        set((state) => ({
+          loginActivity: [{ ...activity, id: generateId() }, ...state.loginActivity].slice(0, 50),
+        })),
+
+      clearLoginActivity: () =>
+        set({ loginActivity: [] }),
 
       // ─── Card actions ──────────────────────────────────────────────────────
 
@@ -362,7 +419,7 @@ export const useAppStore = create<AppStore>()(
         })),
     }),
     {
-      name: 'imb-bank-storage-v2',
+      name: 'imb-bank-storage-v3',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         preferences: state.preferences,
@@ -374,6 +431,7 @@ export const useAppStore = create<AppStore>()(
         scheduledPayments: state.scheduledPayments,
         notifications: state.notifications,
         profile: state.profile,
+        loginActivity: state.loginActivity,
       }),
     }
   )

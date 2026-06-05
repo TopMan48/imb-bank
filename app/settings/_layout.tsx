@@ -34,6 +34,7 @@ export default function SettingsLayout() {
       <Stack.Screen name="about" options={{ title: 'About IMB Bank' }} />
       <Stack.Screen name="terms" options={{ title: 'Terms & Conditions' }} />
       <Stack.Screen name="report-scam" options={{ title: 'Report a Scam' }} />
+      <Stack.Screen name="login-activity" options={{ title: 'Login Activity' }} />
     </Stack>
   );
 }

@@ -111,3 +111,12 @@ export interface ScheduledPayment {
   description?: string;
   status: 'active' | 'paused' | 'cancelled';
 }
+
+export interface LoginActivity {
+  id: string;
+  timestamp: string;
+  device: string;
+  location: string;
+  ipAddress: string;
+  successful: boolean;
+}

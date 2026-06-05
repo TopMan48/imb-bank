@@ -215,6 +215,11 @@ export default function MoreScreen() {
       label: 'Terms & Conditions',
       onPress: () => router.push('/settings/terms'),
     },
+    {
+      icon: 'eye-outline',
+      label: 'Privacy Policy',
+      onPress: () => router.push('/settings/privacy'),
+    },
   ];
 
   return (

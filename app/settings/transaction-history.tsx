@@ -50,7 +50,7 @@ export default function TransactionHistoryScreen() {
   const [searchText, setSearchText] = useState('');
 
   const filtered = useMemo(() => {
-    const now = new Date('2026-05-21');
+    const now = new Date();
     const cutoffs: Record<DateFilter, number> = {
       all: 0,
       '7d': 7,
@@ -93,8 +93,9 @@ export default function TransactionHistoryScreen() {
 
   const formatDate = (d: string) => {
     const date = new Date(d);
-    const today = new Date('2026-05-21');
-    const yesterday = new Date('2026-05-20');
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
     if (d === today.toISOString().slice(0, 10)) return 'Today';
     if (d === yesterday.toISOString().slice(0, 10)) return 'Yesterday';
     return date.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' });
